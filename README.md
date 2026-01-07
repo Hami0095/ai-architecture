@@ -1,30 +1,43 @@
-# Autonomous Iterative AI Improvement System
+# AI Architect 🏗️
 
-This project implements an autonomous loop used to improve AI task performance (specifically Python unit test generation) using Ollama LLMs.
+**Autonomous Iterative AI Improvement System & Architectural Auditor**
 
-## Architecture
-- **Core AI**: Generates unit tests.
-- **Evaluator**: Runs tests using `pytest` and calculates coverage.
-- **Improvement Eng ine**: Analyzes failures and proposes strategies (with XAI).
-- **Reconciler**: Selects the best strategy based on risk/impact.
-- **XAI Layer**: Provides explanations for decisions.
+AI Architect is an autonomous system that iteratively improves AI task performance (starting with Python unit test generation) and provides deep architectural auditing of project structures.
+
+[GitHub Repository](https://github.com/Hami0095/ai-architecture.git)
+
+## Key Features
+- **Core AI**: Generates comprehensive `pytest` unit tests for Python functions.
+- **Autonomous Feedback Loop**: Iteratively improves code based on coverage and pass/fail metrics.
+- **Architectural Auditor**: Scans project directories to identify flaws in structure, logic, and DB schema.
+- **XAI Integration**: Provides explainable AI justifications for every improvement strategy and decision.
+- **Ollama Manager**: Automatically handles LLM detection and model pulling (`gemma3:1b` by default).
+
+## Installation
+
+Install directly from the source:
+```bash
+git clone https://github.com/Hami0095/ai-architecture.git
+cd ai-architecture
+pip install .
+```
+
+## Quick Start (CLI)
+
+Once installed, you can launch the interactive wizard from anywhere:
+
+```bash
+ai-architect
+```
+
+### Usage Modes
+1. **Interactive Mode**: Run `ai-architect` and follow the on-screen prompts.
+2. **Library Mode**: Import components like `ArchitecturalAuditor` into your own scripts.
 
 ## Prerequisites
-- Python 3.10+
-- [Ollama](https://ollama.com/) installed and running (`ollama serve`).
-- `gemma3:1b` model pulled (`ollama pull gemma3:1b`).
+- **Python**: 3.10+
+- **Ollama**: [Installed and running](https://ollama.com/) (`ollama serve`).
 
-## Setup
-1. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+## License
+MIT
 
-2. Run the system:
-   ```bash
-   python main.py
-   ```
-
-## Configuration
-- Modify `main.py` to change the `target_score` or `max_iterations`.
-- Models are defined in the class `__init__` methods (default: `gemma3:1b`).
