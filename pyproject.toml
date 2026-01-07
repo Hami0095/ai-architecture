@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai_architect"
+version = "0.1.0"
+authors = [
+  { name="Your Name", email="your.email@example.com" },
+]
+description = "Autonomous Iterative AI Improvement System"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "ollama",
+    "pydantic",
+    "pytest",
+    "pytest-cov",
+    "tenacity"
+]
+
+[project.scripts]
+ai-architect = "ai_architect.cli:run_cli"
+
+[tool.setuptools]
+packages = [
+    "ai_architect", 
+    "ai_architect.core_ai", 
+    "ai_architect.data", 
+    "ai_architect.evaluations", 
+    "ai_architect.improvement_engine", 
+    "ai_architect.reconciler", 
+    "ai_architect.utils", 
+    "ai_architect.xai"
+]

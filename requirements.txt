@@ -1,0 +1,5 @@
+ollama
+pydantic
+pytest
+pytest-cov
+tenacity
