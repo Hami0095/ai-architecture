@@ -53,7 +53,7 @@ graph TD
 
 ## 3. Technology Stack
 - **Language**: Python 3.10+
-- **AI Backend**: Ollama (Local LLM - gemma3:1b/4b)
+- **AI Backend**: Ollama (Local LLM - qwen3-coder:480b-cloud recommended)
 - **Data Persistence**: SQLite (for logging/metrics)
 - **Output Formats**: CLI, JSON, Markdown.
 
