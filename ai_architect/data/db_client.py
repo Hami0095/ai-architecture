@@ -51,7 +51,7 @@ class DBClient:
             metrics.tests_passed,
             metrics.coverage_percent,
             metrics.total_score,
-            json.dumps(metrics.details),
+            json.dumps(metrics.details, default=str),
             datetime.now()
         ))
         conn.commit()

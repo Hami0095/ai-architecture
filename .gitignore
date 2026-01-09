@@ -1,33 +1,16 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
 env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Development
-.venv/
 venv/
-ENV/
-
-# Project Specific
-system_metrics.db
-audit_tickets.json
+.venv/
+build/
+dist/
+*.egg-info/
+*.db
+archai_report.json
 target_calc.py
-temp_tests/
+.idea/
+.vscode/

@@ -5,7 +5,7 @@ from ..data.models import ImprovementSuggestion
 from ..xai.explainer import XAI
 
 class ImprovementEngine:
-    def __init__(self, model="gemma3:1b"):
+    def __init__(self, model="qwen3-coder:480b-cloud"):
         self.model = model
         self.xai = XAI(model=model)
 
@@ -58,5 +58,5 @@ class ImprovementEngine:
             
         except Exception as e:
             print(f"Improvement Engine Error: {e}")
-            print(f"Raw Output: {response['message']['content']}")
+            # Ensure response is defined before access to avoid further errors
             return []

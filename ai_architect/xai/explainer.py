@@ -2,8 +2,8 @@ import ollama
 from ..core_ai.prompts import XAI_SYSTEM_PROMPT
 
 class XAI:
-    def __init__(self, model="gemma3:1b"):
-        self.model = model
+    def __init__(self, model="qwen3-coder:480b-cloud"):
+        self.model = model 
 
     def explain_suggestion(self, suggestion, failure_context):
         """

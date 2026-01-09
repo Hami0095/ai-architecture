@@ -90,47 +90,96 @@ async def run_test_generation_loop(model_name):
         new_instruction = f"\nIMPORTANT IMPROVEMENT: {result.selected_strategy} - {result.rationale}"
         core.update_prompt(core.system_prompt + new_instruction)
 
-async def run_audit(model_name):
-    path = input("Enter project path to audit (default: .): ") or "."
+import argparse
+
+async def run_audit(model_name, path=None, context=None, status=None, goal=None):
+    if not path:
+        path = input("Enter project path to audit (default: .): ") or "."
     path = os.path.abspath(path)
     
-    # New Context Inputs
-    print("\n--- Additional Context (Optional) ---")
-    user_context = input("Enter Project Context (What is this app?): ")
-    project_status = input("Enter Project Status (e.g., Prototype, Production, MVP): ")
-    expected_output = input("Enter Expected Plan/Output (What do you want to achieve?): ")
+    if not context:
+        print("\n--- Project Context (ArchAI) ---")
+        context = input("Enter Goal/Purpose of the app: ")
+    if not status:
+        status = input("Current Status (e.g. Planning, Alpha, MVP, Prod): ")
+    if not goal:
+        goal = input("Perfect State (What are you trying to build?): ")
     
     auditor = ArchitecturalAuditor(model=model_name)
-    print(f"\nStarting audit for: {path}")
+    print(f"\nStarting ArchAI Analysis for: {path}")
     
-    report = auditor.audit_project(path, user_context, project_status, expected_output)
+    report = auditor.audit_project(path, context, status, goal)
     
-    tickets = report.get('tickets', [])
-    print(f"\nFound {len(tickets)} issues.")
-    
-    output_file = "audit_tickets.json"
+    # Save Report
+    output_file = "archai_report.json"
     with open(output_file, "w") as f:
         json.dump(report, f, indent=2)
-        
-    print(f"Tickets saved to {output_file}")
-    print("\n--- Summary ---")
-    for t in tickets:
-        print(f"[{t.get('type', 'General').upper()}] {t.get('title')} ({t.get('severity')})")
+    
+    # Display Results
+    print(f"\n{'='*60}")
+    print(f" ARCHAI ANALYSIS REPORT: {os.path.basename(path)} ")
+    print(f"{'='*60}")
+    
+    discovery = report.get('discovery', {})
+    print(f"\n[DISCOVERY]")
+    print(f" - Languages: {', '.join(discovery.get('languages', []))}")
+    print(f" - Frameworks: {', '.join(discovery.get('frameworks', []))}")
+    print(f" - Arch Type: {discovery.get('architecture_type', 'Unknown')}")
+    
+    print(f"\n[GAP ANALYSIS]")
+    print(report.get('gap_analysis', 'No gap analysis available.'))
+    
+    print(f"\n[TICKETS FOUND: {len(report.get('tickets', []))}]")
+    for t in report.get('tickets', []):
+        print(f" - [{t.get('priority', 'Medium')}] {t.get('title')} ({t.get('effort_hours')}h)")
+
+    print(f"\n[5-DAY SPRINT PLAN]")
+    for day in report.get('sprint_plan', []):
+        if day.get('tickets'):
+            print(f" {day.get('day')} ({day.get('total_hours')}h):")
+            for t in day.get('tickets'):
+                print(f"   * {t.get('title')} [{t.get('module') or 'General'}]")
+        else:
+            print(f" {day.get('day')}: No tasks assigned.")
+
+    print(f"\n{'='*60}")
+    print(f"Full report saved to {output_file}")
+    print(f"{'='*60}")
 
 async def main():
-    # 1. Initialize Ollama First
-    model_name = initialize_ollama(preferred_model="gemma3:1b")
+    parser = argparse.ArgumentParser(description="AI Architect: Autonomous Improvement & Audit System")
+    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+
+    # Audit command
+    audit_parser = subparsers.add_parser("audit", help="Run an architectural audit (ArchAI)")
+    audit_parser.add_argument("path", nargs="?", default=None, help="Path to project root")
+    audit_parser.add_argument("--context", help="Project goal/context")
+    audit_parser.add_argument("--status", help="Current project status")
+    audit_parser.add_argument("--goal", help="Target 'perfect' state")
+
+    # Test command
+    test_parser = subparsers.add_parser("test", help="Run iterative test generation loop")
+    test_parser.add_argument("--model", default="qwen3-coder:480b-cloud", help="Model to use")
+
+    args = parser.parse_args()
+
+    # 1. Initialize Ollama
+    model_name = initialize_ollama(preferred_model=getattr(args, 'model', "qwen3-coder:480b-cloud"))
     
-    print("\nSelect Mode:")
-    print("1. Test Generation Loop (Core Task)")
-    print("2. Architectural Audit (Scan Project)")
-    
-    choice = input("Enter 1 or 2: ")
-    
-    if choice == "2":
-        await run_audit(model_name)
-    else:
+    if args.command == "audit":
+        await run_audit(model_name, args.path, args.context, args.status, args.goal)
+    elif args.command == "test":
         await run_test_generation_loop(model_name)
+    else:
+        # Interactive mode fallback
+        print("\nWelcome to AI Architect!")
+        print("1. Architectural Audit (ArchAI)")
+        print("2. Test Generation Loop")
+        choice = input("Select (1/2): ")
+        if choice == "1":
+            await run_audit(model_name)
+        else:
+            await run_test_generation_loop(model_name)
 
 def run_cli():
     try:

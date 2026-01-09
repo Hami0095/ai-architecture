@@ -2,7 +2,7 @@ import ollama
 from .prompts import BASE_SYSTEM_PROMPT
 
 class CoreAI:
-    def __init__(self, model="gemma3:1b", system_prompt=BASE_SYSTEM_PROMPT):
+    def __init__(self, model="qwen3-coder:480b-cloud", system_prompt=BASE_SYSTEM_PROMPT):
         self.model = model
         self.system_prompt = system_prompt
 

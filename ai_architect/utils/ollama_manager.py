@@ -63,7 +63,7 @@ def pull_model(model_name):
     proc.wait()
     return proc.returncode == 0
 
-def initialize_ollama(preferred_model="gemma3:1b"):
+def initialize_ollama(preferred_model="qwen3-coder:480b-cloud"):
     """
     Orchestrates the Ollama setup.
     1. Checks installation.
@@ -114,7 +114,7 @@ def initialize_ollama(preferred_model="gemma3:1b"):
         
         # Try to find a close match
         for m in models:
-            if "gemma" in m or "llama" in m or "mistral" in m:
+            if "qwen" in m or "coder" in m or "gemma" in m or "llama" in m:
                 print(f"[Ollama Manager] Falling back to available model: {m}")
                 return m
                 
