@@ -20,7 +20,7 @@ class ModuleNode:
         self.file_path = file_path
         self.module_name = module_name
         self.classes: Dict[str, List[str]] = {} # class_name -> [method_names]
-        self.functions: Dict[str, FunctionNode] = {} # func_name -> FunctionNode
+        self.functions: Dict[str, FunctionNode] = {} # func_name -> FunctionNode (includes class.method)
         self.imports: List[str] = [] # Absolute module names after resolution
         self.docstring: Optional[str] = None
         self.ownership: str = "Unknown"
@@ -166,7 +166,7 @@ class GraphEngine:
             node.metrics["fan_in"] = fan_in
             node.metrics["callers_count"] = fan_in # Approximation
 
-            # 3. Churn (Mocked or simple git if available)
+            # 3. Churn
             node.metrics["churn"] = self._get_git_churn(node.file_path)
 
             # 4. Dependency Depth (recursive)
@@ -190,7 +190,6 @@ class GraphEngine:
     def _get_git_churn(self, file_path: Path) -> int:
         """Returns commit count for file using git CLI."""
         try:
-            # Using subprocess to get commit count
             result = subprocess.run(
                 ["git", "rev-list", "--count", "HEAD", str(file_path)],
                 capture_output=True, text=True, cwd=self.root_path, check=False
@@ -199,7 +198,7 @@ class GraphEngine:
                 return int(result.stdout.strip())
         except Exception:
             pass
-        return 1 # Default
+        return 1
 
     def get_graph_summary(self) -> Dict[str, Any]:
         """Returns a structured summary of the architecture graph including call hierarchy and metrics."""
@@ -235,42 +234,78 @@ class GraphEngine:
         
         return summary
 
-    def find_execution_paths(self, entry_point_module: str, entry_point_func: str, max_depth: int = 5) -> List[List[str]]:
-        paths = []
-        def trace(current_mod: str, current_func: str, current_path: List[str], depth: int):
-            if depth > max_depth or f"{current_mod}.{current_func}" in current_path:
-                paths.append(current_path)
+    def get_impact_scope(self, target_symbol: str, max_depth: int = 3) -> List[Dict[str, Any]]:
+        """
+        Finds all components that depend on or call the target symbol (upward/backward trace).
+        """
+        impacted = []
+        visited = set()
+        
+        # Normalize symbol name (remove module prefix if present)
+        target_name = target_symbol.split('.')[-1]
+        
+        def trace_up(current_symbol: str, depth: int):
+            if depth > max_depth or current_symbol in visited:
                 return
-            node = self.nodes.get(current_mod)
-            if not node: return
-            func_node = node.functions.get(current_func)
-            if not func_node: return
-            new_path = current_path + [f"{current_mod}.{current_func}"]
-            branching = False
-            for call in func_node.calls:
-                resolved_mod, resolved_func = self._resolve_call(current_mod, call)
-                if resolved_mod and resolved_func:
-                    branching = True
-                    trace(resolved_mod, resolved_func, new_path, depth + 1)
-            if not branching:
-                paths.append(new_path)
-        trace(entry_point_module, entry_point_func, [], 0)
-        return paths
+            visited.add(current_symbol)
+            
+            # Search all functions in all modules for calls to current_symbol
+            for mod_name, node in self.nodes.items():
+                for func_name, func_node in node.functions.items():
+                    full_func_name = f"{mod_name}.{func_name}"
+                    for call in func_node.calls:
+                        # Match logic: if the call contains the symbol name or matches full name
+                        if current_symbol == call or current_symbol.endswith('.' + call) or call.endswith('.' + current_symbol):
+                            if full_func_name not in [i['name'] for i in impacted]:
+                                impacted.append({
+                                    "name": full_func_name,
+                                    "depth": depth,
+                                    "file": str(node.file_path.relative_to(self.root_path))
+                                })
+                            trace_up(full_func_name, depth + 1)
 
-    def _resolve_call(self, caller_mod: str, call_target: str) -> Tuple[Optional[str], Optional[str]]:
-        caller_node = self.nodes.get(caller_mod)
-        if not caller_node: return None, None
-        if call_target in caller_node.functions:
-            return caller_mod, call_target
-        parts = call_target.split('.')
-        if len(parts) > 1:
-            prefix = parts[0]
-            suffix = '.'.join(parts[1:])
-            for imp in caller_node.imports:
-                if imp.endswith("." + prefix) or imp == prefix:
-                    matched_mod = next((n for n in self.nodes.keys() if imp == n or imp.startswith(n + ".")), None)
-                    if matched_mod:
-                        target_node = self.nodes.get(matched_mod)
-                        if target_node and suffix in target_node.functions:
-                            return matched_mod, suffix
-        return None, None
+        trace_up(target_symbol, 1)
+        # Also check module-level imports
+        for mod_name, node in self.nodes.items():
+            for imp in node.imports:
+                if target_symbol == imp or target_symbol.startswith(imp + "."):
+                    impacted.append({
+                        "name": f"Module Import: {mod_name}",
+                        "depth": 1,
+                        "file": str(node.file_path.relative_to(self.root_path))
+                    })
+                    
+        return impacted
+
+    def get_symbol_metrics(self, symbol: str) -> Dict[str, Any]:
+        """Gathers metrics for a specific symbol by searching modules."""
+        # 1. Try direct module match
+        if symbol in self.nodes:
+            node = self.nodes[symbol]
+            return {
+                "module": symbol,
+                "churn": node.metrics["churn"],
+                "complexity": len(node.functions),
+                "fan_in": node.metrics["fan_in"],
+                "fan_out": node.metrics["fan_out"],
+                "depth": node.metrics["dependency_depth"]
+            }
+            
+        # 2. Try class/function match within modules
+        for mod_name, node in self.nodes.items():
+            if symbol in node.classes or symbol in node.functions or any(symbol in f for f in node.functions):
+                return {
+                    "module": mod_name,
+                    "churn": node.metrics["churn"],
+                    "complexity": len(node.functions.get(symbol, node.functions).calls if hasattr(node.functions.get(symbol), "calls") else []),
+                    "fan_in": node.metrics["fan_in"],
+                    "fan_out": node.metrics["fan_out"],
+                    "depth": node.metrics["dependency_depth"]
+                }
+        
+        # 3. Fuzzy match
+        for mod_name, node in self.nodes.items():
+            if symbol.lower() in mod_name.lower():
+                 return self.get_symbol_metrics(mod_name)
+                    
+        return {"error": "Symbol not found in graph"}

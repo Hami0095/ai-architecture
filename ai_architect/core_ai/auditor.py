@@ -11,7 +11,10 @@ from .prompts import (
     TICKET_GENERATION_SYSTEM_PROMPT,
     CONTEXT_BUILDER_SYSTEM_PROMPT,
     AUDITOR_VERIFIER_SYSTEM_PROMPT,
-    PATH_NAVIGATOR_SYSTEM_PROMPT
+    PATH_NAVIGATOR_SYSTEM_PROMPT,
+    CIRAS_SYSTEM_PROMPT,
+    WDP_SYSTEM_PROMPT,
+    SRC_SYSTEM_PROMPT
 )
 from ..data.models import (
     PathNavigatorOutput,
@@ -22,7 +25,12 @@ from ..data.models import (
     PlannerOutput,
     AuditorVerifierOutput,
     AuditTicket,
-    Evidence
+    Evidence,
+    ImpactAssessment,
+    WDPOutput,
+    SprintPlanConfig,
+    SRCOutput,
+    TaskPrediction
 )
 from ..models.base import BaseAIModel
 from ..models.factory import get_model
@@ -160,3 +168,126 @@ class ArchitecturalAuditor:
         goals = {"user_context": user_context, "project_status": project_status}
         orchestrator = Orchestrator(self)
         return await orchestrator.run_pipeline(root_path, goals)
+
+    def ImpactAnalyzer(self, root_path: str, target: str, max_depth: int = 3) -> ImpactAssessment:
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(Path(root_path))
+        engine.analyze_project()
+        
+        # 1. Structural Signals
+        impact_scope = engine.get_impact_scope(target, max_depth=max_depth)
+        metrics = engine.get_symbol_metrics(target)
+        
+        # 2. Historical Signals (churn)
+        churn = metrics.get('churn', 0)
+        
+        # 3. Signals Preparation
+        signals = {
+            "impact_scope": impact_scope,
+            "fan_in": metrics.get('fan_in'),
+            "fan_out": metrics.get('fan_out'),
+            "depth": metrics.get('depth'),
+            "churn": churn,
+            "insufficient_tests": metrics.get('depth', 0) > 3
+        }
+        
+        # 4. Call LLM for final reasoning
+        prompt = CIRAS_SYSTEM_PROMPT.format(
+            target=target,
+            structural_signals=json.dumps({k: signals[k] for k in ["impact_scope", "fan_in", "fan_out", "depth"]}),
+            historical_signals=json.dumps({"churn": signals["churn"]}),
+            quality_signals=json.dumps({"insufficient_tests": signals["insufficient_tests"]})
+        )
+        
+        raw = self._call_llm_json("You are CIRAS, the ArchAI Change Impact Agent.", prompt)
+        
+        if not raw or raw.get('insufficient_data'):
+            return ImpactAssessment(
+                target=target, risk_level="UNKNOWN", risk_score=0.0, 
+                confidence_score=0.0, insufficient_data=True, 
+                rationale=f"LLM returned insufficient data or analysis failed. Signals: {json.dumps(signals)}"
+            )
+            
+        return ImpactAssessment(**raw)
+
+    def WDPPlanner(self, root_path: str, goal: str, sprint_config: SprintPlanConfig = SprintPlanConfig()) -> WDPOutput:
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(Path(root_path))
+        engine.analyze_project()
+        arch_graph = engine.get_graph_summary()
+        
+        # 1. Get Impact Analysis for the Goal
+        # We fuzzy match the goal to a module if possible
+        impact = self.ImpactAnalyzer(root_path, goal)
+        
+        # 2. Get Historical Context (Aggregated churn)
+        metrics = {
+            "avg_churn": sum(n['complexity_metrics']['churn'] for n in arch_graph['modules'].values()) / max(1, len(arch_graph['modules'])),
+            "high_risk_modules": [name for name, m in arch_graph['modules'].items() if m['complexity_metrics']['churn'] > 10 or m['complexity_metrics']['dependency_depth'] > 5]
+        }
+        
+        # 3. Call LLM to generate Tasks
+        prompt = WDP_SYSTEM_PROMPT.format(
+            goal=goal,
+            arch_graph=json.dumps(arch_graph.get('layer_stats', {})),
+            impact_assessment=impact.model_dump_json(),
+            metrics=json.dumps(metrics),
+            sprint_config=sprint_config.model_dump_json()
+        )
+        
+        raw = self._call_llm_json("You are WDP-TG, the ArchAI Task Generation Engine.", prompt)
+        
+        if not raw:
+            return WDPOutput(
+                epics=[], 
+                sprint_feasibility={"status": "UNKNOWN", "rationale": "Failed to generate plan.", "bottlenecks": []},
+                overall_confidence=0.0,
+                assumptions=["LLM failed to return valid JSON"]
+            )
+            
+        return WDPOutput(**raw)
+
+    def SRCEngine(self, root_path: str, goal: str, wdp_plan: WDPOutput, sprint_config: SprintPlanConfig = SprintPlanConfig(), strict: bool = False) -> SRCOutput:
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(Path(root_path))
+        engine.analyze_project()
+        arch_graph = engine.get_graph_summary()
+        
+        # 1. Get Impact Analysis for the Goal
+        impact = self.ImpactAnalyzer(root_path, goal)
+        
+        # 2. Extract metrics
+        metrics = {
+             "avg_churn": sum(n['complexity_metrics']['churn'] for n in arch_graph['modules'].values()) / max(1, len(arch_graph['modules'])),
+             "high_risk_modules": [name for name, m in arch_graph['modules'].items() if m['complexity_metrics']['churn'] > 10]
+        }
+        
+        # 3. Call LLM to Simulate
+        prompt = SRC_SYSTEM_PROMPT.format(
+            goal=goal,
+            wdp_plan=wdp_plan.model_dump_json(),
+            ciras_data=impact.model_dump_json(),
+            team_context=sprint_config.model_dump_json(),
+            metrics=json.dumps(metrics)
+        )
+        
+        system_msg = "You are SRC-RS, the ArchAI Sprint Confidence Engine."
+        if strict:
+            system_msg += " STRICT MODE: Treat all UNKNOWN risks as CRITICAL."
+
+        raw = self._call_llm_json(system_msg, prompt)
+        
+        if not raw:
+            return SRCOutput(
+                sprint_goal=goal,
+                confidence_score=0.0,
+                status="Low Confidence",
+                task_predictions=[],
+                epic_forecasts=[],
+                risk_summary={"critical": [], "high": [], "medium": []},
+                recommendations=[],
+                bottlenecks=["Simulation aborted: LLM failure"],
+                confidence_rationale="Analysis failed to complete."
+            )
+            
+        return SRCOutput(**raw)

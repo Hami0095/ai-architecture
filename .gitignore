@@ -14,5 +14,8 @@ target_calc.py
 .idea/
 .vscode/
 *.env
-*.json
 *.log
+.vercel
+archai_report.json
+archai_feedback.json
+site/

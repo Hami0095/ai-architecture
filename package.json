@@ -1,0 +1,7 @@
+{
+    "name": "archai-docs",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "python3 -m pip install -r requirements-docs.txt && python3 -m mkdocs build"
+    }
+}
