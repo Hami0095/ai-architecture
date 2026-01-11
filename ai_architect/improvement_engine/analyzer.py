@@ -1,16 +1,17 @@
-import ollama
 import json
-from typing import List, Any
+from typing import List, Any, Optional
 from ..core_ai.prompts import IMPROVEMENT_SYSTEM_PROMPT
 from ..data.models import ImprovementSuggestion
 from ..xai.explainer import XAI
+from ..models.base import BaseAIModel
+from ..models.factory import get_model
 
 class ImprovementEngine:
-    def __init__(self, model="qwen3-coder:480b-cloud"):
-        self.model = model
-        self.xai = XAI(model=model)
+    def __init__(self, model: Optional[BaseAIModel] = None):
+        self.model = model or get_model()
+        self.xai = XAI(model=self.model)
 
-    def generate_suggestions(self, source_code, failure_details) -> list[ImprovementSuggestion]:
+    def generate_suggestions(self, source_code, failure_details) -> List[ImprovementSuggestion]:
         """
         Analyzes metrics and generates 3 improvement strategies with XAI explanations.
         """
@@ -25,19 +26,14 @@ class ImprovementEngine:
         """
         
         try:
-            response = ollama.chat(model=self.model, format='json', messages=[
-                {'role': 'system', 'content': IMPROVEMENT_SYSTEM_PROMPT},
-                {'role': 'user', 'content': prompt}
-            ])
+            content = self.model.chat(
+                messages=[
+                    {'role': 'system', 'content': IMPROVEMENT_SYSTEM_PROMPT},
+                    {'role': 'user', 'content': prompt}
+                ],
+                format='json'
+            )
             
-            # Parse JSON
-            content = response['message']['content']
-            # Basic cleanup for JSON
-            if "```json" in content:
-                content = content.split("```json")[1].split("```")[0].strip()
-            elif "```" in content:
-                content = content.split("```")[1].split("```")[0].strip()
-                
             data = json.loads(content)
             strategies_data = data.get('strategies', [])
             
@@ -59,11 +55,11 @@ class ImprovementEngine:
             
         except Exception as e:
             print(f"Improvement Engine Error: {e}")
-            # Ensure response is defined before access to avoid further errors
             return []
+
 class ProactiveStabilityAnalyzer:
-    def __init__(self, model="qwen3-coder:480b-cloud"):
-        self.model = model
+    def __init__(self, model: Optional[BaseAIModel] = None):
+        self.model = model or get_model()
 
     def analyze_stability_risks(self, agent_history: List[Any]) -> List[str]:
         """
@@ -80,10 +76,13 @@ class ProactiveStabilityAnalyzer:
         """
         
         try:
-            response = ollama.chat(model=self.model, messages=[
-                {'role': 'system', 'content': "You are an AI Stability Monitor."},
-                {'role': 'user', 'content': prompt}
-            ])
-            return response['message']['content'].split('\n')
-        except:
+            content = self.model.chat(
+                messages=[
+                    {'role': 'system', 'content': "You are an AI Stability Monitor."},
+                    {'role': 'user', 'content': prompt}
+                ]
+            )
+            return content.split('\n')
+        except Exception as e:
+            print(f"Stability Analyzer Error: {e}")
             return ["Maintain current resource limits.", "Monitor upstream latency."]
