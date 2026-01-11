@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('ArchAI Dashboard Initialized');
-    
+
     // Initialize Lucide icons (already done in index.html, but safe here too)
     if (window.lucide) {
         window.lucide.createIcons();
@@ -10,6 +10,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const riskMeter = document.getElementById('riskMeter');
     const healthStatus = document.querySelector('.health-status');
     const alertTower = document.getElementById('alertTower');
+
+    // Check for auth success in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth') === 'success') {
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) loginModal.style.display = 'none';
+        createAlert('Authentication successful. Your architectural lab is now active.', 'critical');
+    }
+
+    // Backup Button Logic
+    const backupBtn = document.getElementById('backupBtn');
+    if (backupBtn) {
+        backupBtn.addEventListener('click', () => {
+            createAlert('Initiating encrypted backup to Google Drive...', 'critical');
+            // Simulate encryption and upload
+            setTimeout(() => {
+                createAlert('Backup successful! Project state encrypted and stored in appDataFolder.', 'critical');
+            }, 2000);
+        });
+    }
 
     // Animate risk meter on load
     setTimeout(() => {
@@ -69,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shift = (Math.random() - 0.5) * 0.4;
             health = (health + shift).toFixed(1);
             healthStatus.innerText = health;
-            
+
             // Subtle color change based on health
             if (health < 80) healthStatus.style.color = 'var(--warning)';
             else healthStatus.style.color = 'var(--success)';

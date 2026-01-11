@@ -15,3 +15,8 @@ jira:
 trello:
   api_key: "your-trello-api-key"
   token: "your-trello-token"
+
+# Security & State
+user_id: "default-local-user" # Used as a seed for PBKDF2 encryption
+security:
+  salt: "archai-construction-salt-v1"

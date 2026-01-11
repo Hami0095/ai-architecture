@@ -11,3 +11,7 @@ uvicorn
 httpx
 jira
 py-trello
+authlib
+google-api-python-client
+google-auth-oauthlib
+cryptography

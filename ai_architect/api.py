@@ -8,9 +8,16 @@ from .infrastructure.config_manager import config
 from .infrastructure.monitoring import monitor
 from .infrastructure.caching import cached
 
-from fastapi.security import APIKeyHeader
+from starlette.middleware.sessions import SessionMiddleware
+from .api import auth
 
 app = FastAPI(title="ArchAI API", description="REST API for Autonomous Architectural Audits")
+
+# Add Session Middleware for OAuth
+app.add_middleware(SessionMiddleware, secret_key=config.get_secret("session_secret", "archai-dev-secret"))
+
+# Register Auth Router
+app.include_router(auth.router)
 
 API_KEY = config.get("api_key", "archai-secret-key")
 api_key_header = APIKeyHeader(name="X-API-Key")

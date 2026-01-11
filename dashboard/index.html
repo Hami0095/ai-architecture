@@ -1,179 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ArchAI | Structural Integrity Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArchAI | Structural Integrity Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
-  <header>
-    <div class="logo">
-      <i data-lucide="shield-check"></i>
-      <span>ArchAI Structural Lab</span>
+    <header>
+        <div class="logo">
+            <i data-lucide="shield-check"></i>
+            <span>ArchAI Structural Lab</span>
+        </div>
+        <nav class="nav-links">
+            <a class="nav-item active">Dashboard</a>
+            <a class="nav-item">Blueprint Lab</a>
+            <a class="nav-item">Stress Control</a>
+            <a class="nav-item" id="backupBtn"><i data-lucide="cloud-upload" style="width: 14px;"></i> Backup</a>
+        </nav>
+        <div class="user-control">
+            <div class="glass" style="padding: 8px 16px; font-size: 13px; color: var(--primary); border-radius: 20px;">
+                <i data-lucide="git-branch"
+                    style="width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i>
+                feat/dashboard-v1
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Sidebar: Structural Integrity Lab -->
+        <section class="sidebar-panel">
+            <div class="card glass">
+                <h3 class="card-title"><i data-lucide="microscope"></i> Integrity Lab</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Assessing safety of proposed
+                    structural changes.</p>
+
+                <div class="integrity-target">
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Current Focus
+                    </div>
+                    <div style="font-weight: 600; margin-bottom: 12px;">auth_layer/validator.py</div>
+                </div>
+
+                <div class="risk-meter">
+                    <div class="risk-fill" id="riskMeter" style="width: 68%;"></div>
+                </div>
+
+                <div class="stat-group">
+                    <div class="stat-item">
+                        <span class="stat-label">Risk Level</span>
+                        <span class="stat-value" style="color: var(--warning);">Medium</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Confidence</span>
+                        <span class="stat-value">92%</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 24px;">
+                    <h4
+                        style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">
+                        Risky Components</h4>
+                    <div class="task-beam" style="color: var(--danger);">
+                        <span>CoreValidator.check()</span>
+                        <span><i data-lucide="trending-up" style="width: 14px;"></i></span>
+                    </div>
+                    <div class="task-beam">
+                        <span>AuthMiddleware</span>
+                        <span><i data-lucide="minus" style="width: 14px;"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card glass">
+                <h3 class="card-title"><i data-lucide="alert-triangle"></i> Actionable Alerts</h3>
+                <div id="alertStack">
+                    <div
+                        style="font-size: 13px; padding: 10px; border-radius: 8px; background: rgba(244, 63, 94, 0.05); border: 1px solid rgba(244, 63, 94, 0.2); margin-bottom: 10px;">
+                        <strong style="color: var(--danger);">Critical:</strong> Fan-in > 10 detected on
+                        <code>user_session.py</code>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content: Blueprint Decomposer & Stress Simulator -->
+        <section class="main-content">
+            <div class="card glass">
+                <h3 class="card-title"><i data-lucide="layout"></i> Blueprint Decomposer</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <div>
+                        <h2 style="font-family: var(--font-display);">Modernizing Legacy Auth Bridge</h2>
+                        <p style="font-size: 14px; color: var(--text-muted);">High-level construction goal
+                            decomposition.</p>
+                    </div>
+                    <button class="glass"
+                        style="padding: 10px 20px; color: var(--primary); cursor: pointer; border: 1px solid var(--primary);">Export
+                        Blueprint</button>
+                </div>
+
+                <div class="phase-list">
+                    <div class="phase-item">
+                        <div class="phase-header">
+                            <span class="phase-name">PHASE I: FOUNDATION REINFORCEMENT</span>
+                            <span style="font-size: 12px; color: var(--text-muted);">Effort: 14h</span>
+                        </div>
+                        <div class="task-beam">
+                            <span>SUPPORT PILLAR: Implement JWT Interface</span>
+                            <span style="color: var(--success);">READY</span>
+                        </div>
+                        <div class="task-beam">
+                            <span>TASK BEAM: Refactor Secret Store</span>
+                            <span style="color: var(--warning);">RISKY</span>
+                        </div>
+                    </div>
+
+                    <div class="phase-item"
+                        style="border-left-color: var(--secondary); background: rgba(192, 132, 252, 0.05);">
+                        <div class="phase-header">
+                            <span class="phase-name" style="color: var(--secondary);">PHASE II: SUPERSTRUCTURE
+                                ASSEMBLY</span>
+                            <span style="font-size: 12px; color: var(--text-muted);">Effort: 28h</span>
+                        </div>
+                        <div class="task-beam">
+                            <span>TASK BEAM: Migrate Core User Registry</span>
+                            <span style="color: var(--text-muted);">PENDING</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                <div class="card glass">
+                    <h3 class="card-title"><i data-lucide="activity"></i> Load & Stress Simulator</h3>
+                    <div class="health-index">
+                        <svg class="gauge-svg" viewBox="0 0 100 50">
+                            <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="#1e293b" stroke-width="8"
+                                stroke-linecap="round" />
+                            <path d="M 10 45 A 35 35 0 0 1 78 18" fill="none" stroke="url(#gradient)" stroke-width="8"
+                                stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="var(--primary)" />
+                                    <stop offset="100%" stop-color="var(--secondary)" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="gauge-text">
+                            <div class="health-status">84.2</div>
+                            <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">
+                                Structural Health Index</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 13px; color: var(--text-muted); text-align: center;">
+                        "Simulation predicts 84% probability of a defect-free release given current load."
+                    </div>
+                </div>
+
+                <div class="card glass">
+                    <h3 class="card-title"><i data-lucide="database"></i> Construction Traceability</h3>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+                            <div style="font-size: 11px; color: var(--text-muted);">SOURCE REPO</div>
+                            <div style="font-weight: 500;">Hami0095/ai-architecture</div>
+                        </div>
+                        <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+                            <div style="font-size: 11px; color: var(--text-muted);">LAST SYNC COMMIT</div>
+                            <div style="font-family: monospace; font-size: 13px; color: var(--secondary);">12f9c18...
+                                implement agents</div>
+                        </div>
+                        <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+                            <div style="font-size: 11px; color: var(--text-muted);">ACTIVE BLUEPRINT</div>
+                            <div style="font-weight: 500;">B-2401-AUTH-MODERN</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="glass"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 60px; z-index: 1000; text-align: center; width: 400px;">
+        <h2 style="font-family: var(--font-display); margin-bottom: 20px;">Welcome to ArchAI</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px;">Please authenticate to access the Structural Integrity
+            Lab.</p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <a href="/auth/login/github" class="glass"
+                style="padding: 14px; text-decoration: none; color: var(--text-main); font-weight: 600; border: 1px solid var(--border-color);">
+                <i data-lucide="github" style="width: 18px; margin-right: 10px; display: inline-block;"></i> Sign in
+                with GitHub
+            </a>
+            <a href="/auth/login/google" class="glass"
+                style="padding: 14px; text-decoration: none; color: var(--text-main); font-weight: 600; border: 1px solid var(--border-color);">
+                <i data-lucide="mail" style="width: 18px; margin-right: 10px; display: inline-block;"></i> Sign in with
+                Google
+            </a>
+        </div>
     </div>
-    <nav class="nav-links">
-      <a class="nav-item active">Dashboard</a>
-      <a class="nav-item">Blueprint Lab</a>
-      <a class="nav-item">Stress Control</a>
-      <a class="nav-item">Alert Towers</a>
-    </nav>
-    <div class="user-control">
-      <div class="glass" style="padding: 8px 16px; font-size: 13px; color: var(--primary); border-radius: 20px;">
-        <i data-lucide="git-branch" style="width: 14px; height: 14px; display: inline-block; margin-right: 6px;"></i>
-        feat/dashboard-v1
-      </div>
+
+    <div class="alert-tower" id="alertTower">
+        <!-- Dynamic alerts will appear here -->
     </div>
-  </header>
 
-  <main class="dashboard-container">
-    <!-- Sidebar: Structural Integrity Lab -->
-    <section class="sidebar-panel">
-      <div class="card glass">
-        <h3 class="card-title"><i data-lucide="microscope"></i> Integrity Lab</h3>
-        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Assessing safety of proposed structural changes.</p>
-        
-        <div class="integrity-target">
-          <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Current Focus</div>
-          <div style="font-weight: 600; margin-bottom: 12px;">auth_layer/validator.py</div>
-        </div>
-
-        <div class="risk-meter">
-          <div class="risk-fill" id="riskMeter" style="width: 68%;"></div>
-        </div>
-        
-        <div class="stat-group">
-          <div class="stat-item">
-            <span class="stat-label">Risk Level</span>
-            <span class="stat-value" style="color: var(--warning);">Medium</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Confidence</span>
-            <span class="stat-value">92%</span>
-          </div>
-        </div>
-
-        <div style="margin-top: 24px;">
-          <h4 style="font-size: 12px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">Risky Components</h4>
-          <div class="task-beam" style="color: var(--danger);">
-            <span>CoreValidator.check()</span>
-            <span><i data-lucide="trending-up" style="width: 14px;"></i></span>
-          </div>
-          <div class="task-beam">
-            <span>AuthMiddleware</span>
-            <span><i data-lucide="minus" style="width: 14px;"></i></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card glass">
-        <h3 class="card-title"><i data-lucide="alert-triangle"></i> Actionable Alerts</h3>
-        <div id="alertStack">
-          <div style="font-size: 13px; padding: 10px; border-radius: 8px; background: rgba(244, 63, 94, 0.05); border: 1px solid rgba(244, 63, 94, 0.2); margin-bottom: 10px;">
-            <strong style="color: var(--danger);">Critical:</strong> Fan-in > 10 detected on <code>user_session.py</code>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Main Content: Blueprint Decomposer & Stress Simulator -->
-    <section class="main-content">
-      <div class="card glass">
-        <h3 class="card-title"><i data-lucide="layout"></i> Blueprint Decomposer</h3>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-          <div>
-            <h2 style="font-family: var(--font-display);">Modernizing Legacy Auth Bridge</h2>
-            <p style="font-size: 14px; color: var(--text-muted);">High-level construction goal decomposition.</p>
-          </div>
-          <button class="glass" style="padding: 10px 20px; color: var(--primary); cursor: pointer; border: 1px solid var(--primary);">Export Blueprint</button>
-        </div>
-
-        <div class="phase-list">
-          <div class="phase-item">
-            <div class="phase-header">
-              <span class="phase-name">PHASE I: FOUNDATION REINFORCEMENT</span>
-              <span style="font-size: 12px; color: var(--text-muted);">Effort: 14h</span>
-            </div>
-            <div class="task-beam">
-              <span>SUPPORT PILLAR: Implement JWT Interface</span>
-              <span style="color: var(--success);">READY</span>
-            </div>
-            <div class="task-beam">
-              <span>TASK BEAM: Refactor Secret Store</span>
-              <span style="color: var(--warning);">RISKY</span>
-            </div>
-          </div>
-
-          <div class="phase-item" style="border-left-color: var(--secondary); background: rgba(192, 132, 252, 0.05);">
-            <div class="phase-header">
-              <span class="phase-name" style="color: var(--secondary);">PHASE II: SUPERSTRUCTURE ASSEMBLY</span>
-              <span style="font-size: 12px; color: var(--text-muted);">Effort: 28h</span>
-            </div>
-            <div class="task-beam">
-              <span>TASK BEAM: Migrate Core User Registry</span>
-              <span style="color: var(--text-muted);">PENDING</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <div class="card glass">
-          <h3 class="card-title"><i data-lucide="activity"></i> Load & Stress Simulator</h3>
-          <div class="health-index">
-            <svg class="gauge-svg" viewBox="0 0 100 50">
-              <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
-              <path d="M 10 45 A 35 35 0 0 1 78 18" fill="none" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round"/>
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="var(--primary)" />
-                  <stop offset="100%" stop-color="var(--secondary)" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <div class="gauge-text">
-              <div class="health-status">84.2</div>
-              <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase;">Structural Health Index</div>
-            </div>
-          </div>
-          <div style="margin-top: 10px; font-size: 13px; color: var(--text-muted); text-align: center;">
-            "Simulation predicts 84% probability of a defect-free release given current load."
-          </div>
-        </div>
-
-        <div class="card glass">
-          <h3 class="card-title"><i data-lucide="database"></i> Construction Traceability</h3>
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-              <div style="font-size: 11px; color: var(--text-muted);">SOURCE REPO</div>
-              <div style="font-weight: 500;">Hami0095/ai-architecture</div>
-            </div>
-            <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-              <div style="font-size: 11px; color: var(--text-muted);">LAST SYNC COMMIT</div>
-              <div style="font-family: monospace; font-size: 13px; color: var(--secondary);">12f9c18... implement agents</div>
-            </div>
-            <div style="padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-              <div style="font-size: 11px; color: var(--text-muted);">ACTIVE BLUEPRINT</div>
-              <div style="font-weight: 500;">B-2401-AUTH-MODERN</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="alert-tower" id="alertTower">
-    <!-- Dynamic alerts will appear here -->
-  </div>
-
-  <script src="app.js"></script>
-  <script>
-    lucide.createIcons();
-  </script>
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
+
 </html>
