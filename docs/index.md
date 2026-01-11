@@ -19,6 +19,14 @@ Decomposes high-level goals into hierarchical Epics, Tasks, and Subtasks. It aut
 **"Will we succeed?"**
 Simulates sprint execution using probabilistic modeling. It highlights bottlenecks, predicts task completion likelihood, and provides an overall confidence score for your release.
 
+### 🔗 GitHub Integration
+**"Workflow-Native Intelligence"**
+ArchAI connects directly to your GitHub repositories, providing automated PR risk assessments and posting actionable advice directly into your code review process.
+
+### 📅 PM Tool Integration
+**"Actionable Roadmaps"**
+Automatically push decomposed tasks and epics to Jira and Trello. ArchAI ensures that every ticket is risk-aware and fully traceable to the codebase.
+
 ---
 
 ## 🚀 Getting Started

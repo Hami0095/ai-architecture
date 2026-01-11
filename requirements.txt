@@ -3,3 +3,11 @@ pydantic
 pytest
 pytest-cov
 tenacity
+PyGithub>=2.1.0
+PyYAML
+python-dotenv
+fastapi
+uvicorn
+httpx
+jira
+py-trello

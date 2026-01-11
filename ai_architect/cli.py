@@ -151,6 +151,35 @@ def run_cli():
     rel_parser.add_argument("--json", action="store_true")
     rel_parser.add_argument("--strict", action="store_true")
 
+    # GitHub
+    github_parser = subparsers.add_parser("github", help="GitHub Project Integration & PR Analysis")
+    gh_subparsers = github_parser.add_subparsers(dest="gh_command", help="GitHub Commands")
+    
+    gh_connect = gh_subparsers.add_parser("connect", help="Verify connection to a repository")
+    gh_connect.add_argument("repo", help="Owner/Repo name")
+    
+    gh_prs = gh_subparsers.add_parser("prs", help="List open Pull Requests")
+    gh_prs.add_argument("repo", help="Owner/Repo name")
+    
+    gh_analyze = gh_subparsers.add_parser("analyze-pr", help="Analyze a specific PR")
+    gh_analyze.add_argument("repo", help="Owner/Repo name")
+    gh_analyze.add_argument("pr_number", type=int, help="PR number")
+    gh_analyze.add_argument("--path", help="Local clone path (defaults to current dir)")
+    gh_analyze.add_argument("--comment", action="store_true", help="Post results as a PR comment")
+    gh_analyze.add_argument("--json", action="store_true")
+    gh_analyze.add_argument("--verbose", action="store_true")
+
+    # PM
+    pm_parser = subparsers.add_parser("pm", help="Project Management Tool Integration (Jira/Trello)")
+    pm_subparsers = pm_parser.add_subparsers(dest="pm_command", help="PM Commands")
+    
+    pm_push = pm_subparsers.add_parser("push", help="Push a generated plan to the PM tool")
+    pm_push.add_argument("goal", help="The goal used to generate the plan")
+    pm_push.add_argument("--tool", choices=["jira", "trello"], default="jira")
+    pm_push.add_argument("--project", required=True, help="Jira Project Key or Trello Board ID")
+    pm_push.add_argument("--team-size", type=int, default=3)
+    pm_push.add_argument("--days", type=int, default=10)
+
     args = parser.parse_args()
 
     if args.command == "audit":
@@ -388,6 +417,80 @@ def run_cli():
                 print(f" - {b}")
 
         print(f"\n{'='*70}")
+
+    elif args.command == "github":
+        from .connectors.github import GitHubConnector
+        connector = GitHubConnector()
+        
+        if args.gh_command == "connect":
+            repo = connector.get_repo(args.repo)
+            if repo:
+                print(f"✅ Successfully connected to: {repo.full_name}")
+                print(f" Stars: {repo.stargazers_count} | Language: {repo.language}")
+            else:
+                print(f"❌ Failed to connect to {args.repo}. Check your token and repo name.")
+
+        elif args.gh_command == "prs":
+            prs = connector.fetch_open_prs(args.repo)
+            print(f"\n📂 Open PRs for {args.repo}:")
+            for pr in prs:
+                print(f" #{pr.number} | {pr.title} | Author: {pr.author}")
+
+        elif args.gh_command == "analyze-pr":
+            if args.verbose:
+                logging.getLogger("ArchAI").setLevel(logging.INFO)
+            
+            initialize_ollama()
+            path = args.path or os.getcwd()
+            print(f"🔍 Analyzing PR #{args.pr_number} in {args.repo}...")
+            
+            report = connector.analyze_pr(args.repo, args.pr_number, path)
+            if not report:
+                print("❌ PR Analysis failed.")
+                return
+            
+            if args.json:
+                print(report.model_dump_json(indent=4))
+            else:
+                imp = report.impact_assessment
+                print(f"\n{'='*70}")
+                print(f" PR #{args.pr_number} RISK ASSESSMENT: {args.repo} ")
+                print(f"{'='*70}")
+                print(f" Risk Level: {imp.risk_level} (Score: {imp.risk_score:.1f}/100)")
+                print(f" Confidence: {imp.confidence_score*100:.1f}%")
+                print(f" Rationale: {imp.rationale}")
+                
+                if report.confidence_prediction:
+                    src = report.confidence_prediction
+                    print(f"\n Sprint Confidence: {src.confidence_score*100:.1f}% ({src.status})")
+                    print(f" Rationale: {src.confidence_rationale}")
+                
+                print(f"\n{'='*70}")
+
+            if args.comment:
+                connector.post_pr_comment(args.repo, args.pr_number, report)
+
+    elif args.command == "pm":
+        if args.pm_command == "push":
+            initialize_ollama()
+            from .connectors.pm import PMConnector
+            from .core_ai.auditor import ArchitecturalAuditor
+            from .data.models import SprintPlanConfig
+            
+            auditor = ArchitecturalAuditor()
+            config = SprintPlanConfig(team_size=args.team_size, days=args.days)
+            
+            print(f"🚀 Generating plan for: {args.goal}...")
+            plan = auditor.WDPPlanner(os.getcwd(), args.goal, sprint_config=config)
+            
+            print(f"📤 Pushing plan to {args.tool} ({args.project})...")
+            pm = PMConnector(tool=args.tool)
+            report = pm.push_plan(args.project, plan)
+            
+            if report.errors:
+                print(f"❌ Failed to push plan: {', '.join(report.errors)}")
+            else:
+                print(f"✅ Successfully pushed {report.tasks_created} tasks to {args.tool}!")
 
     else:
         print("ArchAI: Use 'audit', 'trace', 'explain', 'impact' or 'validate'.")

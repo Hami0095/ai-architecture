@@ -41,6 +41,8 @@ nav:
       - CIRAS: architecture/ciras.md
       - WDP-TG: architecture/wdp-tg.md
       - SRC-RS: architecture/src-rs.md
+      - GitHub Integration: architecture/github-integration.md
+      - PM Integration: architecture/pm-integration.md
   - Tutorials:
       - Getting Started: tutorials/getting_started.md
       - Chaining Workflows: tutorials/chaining_workflows.md

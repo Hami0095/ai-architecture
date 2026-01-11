@@ -54,6 +54,43 @@ ai-architect test
 - **Explainable AI (XAI)**: Context-aware reasoning for every architectural decision.
 - **Self-Monitoring**: The orchestrator tracks agent performance and latency for stability analysis.
 
+## 🔗 Workflow Automation & GitHub Integration
+ArchAI is designed to live where your code lives. It provides native integration for GitHub projects:
+
+- **Automated PR Analysis**: Runs CIRAS and WDP-TG on every Pull Request to evaluate architectural impact before merging.
+- **GitHub-Native Reporting**: Posts risk assessments and task breakdowns directly as PR comments.
+- **Workflow Simulation**: Predicts release confidence for proposed changes based on team capacity and codebase health.
+
+### GitHub CLI Commands:
+```bash
+# Analyze a PR and post feedback
+ai-architect github analyze-pr owner/repo 123 --comment
+```
+
+- **Project Management Integration**: Automatically push generated engineering tasks to Jira or Trello boards, preserving hierarchical relationships and risk metadata.
+
+### PM CLI Commands:
+```bash
+# Push a generated plan to Jira
+ai-architect pm push "Modernize API" --tool jira --project "PROJ-KEY"
+```
+
+## 🏗️ Master Planner Dashboard
+ArchAI features a futuristic, interactive dashboard that visualizes your codebase as a living architectural project:
+
+- **Structural Integrity Lab**: Real-time risk assessment and module stability tracking.
+- **Blueprint Decomposer**: Visualizes engineering goals as construction phases and task beams.
+- **Load & Stress Simulator**: Predictive models for sprint success and release confidence.
+- **Dynamic Alert Towers**: Actionable notifications via Slack, Email, and the web UI.
+
+To view the dashboard locally:
+```bash
+# Navigate to the dashboard directory
+cd dashboard
+# Start a local server (example)
+python -m http.server 8080
+```
+
 ---
 
 ## 📦 Installation
