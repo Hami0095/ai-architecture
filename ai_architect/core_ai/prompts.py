@@ -158,10 +158,10 @@ Instructions:
 4. Return the most likely absolute path.
 
 Expected Output JSON:
-{
+{{
     "resolved_path": "/absolute/path/to/project",
     "exists_hint": true,
     "rationale": "Why this path was chosen"
-}
+}}
 Return ONLY valid JSON.
 """

@@ -32,6 +32,9 @@ Run a full 7-agent audit on any project:
 ai-architect audit /path/to/project --context "Modernizing legacy API" --goal "Production-ready REST API"
 ```
 
+> **⚠️ Path Navigation Note:**
+> Users on **macOS/Ubuntu** should provide full absolute paths starting with `/Users/<username>/` (macOS) or `/home/<username>/` (Linux) to ensure the Path Navigator agent correctly resolves the target directory.
+
 ### Options & Observability
 - `--verbose`: Show real-time agent execution logs and latency metrics.
 - `--diagnostics`: Run a filesystem scan only (no AI) to verify path readability.
