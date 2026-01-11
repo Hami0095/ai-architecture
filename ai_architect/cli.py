@@ -4,22 +4,39 @@ import os
 import json
 import argparse
 import logging
-from typing import Optional
+from datetime import datetime
+from typing import Optional, List, Dict, Any
 from .core_ai.generator import CoreAI
 from .evaluations.runner import EvaluationRunner
 from .improvement_engine.analyzer import ImprovementEngine
 from .reconciler.logic import Reconciler
 from .core_ai.auditor import ArchitecturalAuditor
 from .utils.ollama_manager import initialize_ollama
+from .analysis.validator import ArchValidator
 
 # Global logging config
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
 logger = logging.getLogger("ArchAI.CLI")
 
+def save_feedback(useful: bool, rejected_ids: List[str]):
+    feedback_file = "archai_feedback.json"
+    data = []
+    if os.path.exists(feedback_file):
+        try:
+            with open(feedback_file, "r") as f:
+                data = json.load(f)
+        except: data = []
+    
+    entry = {
+        "timestamp": str(datetime.now()),
+        "useful": useful,
+        "rejected_ids": rejected_ids
+    }
+    data.append(entry)
+    with open(feedback_file, "w") as f:
+        json.dump(data, f, indent=4)
+
 async def run_archai_flow(path: str, context: Optional[str] = None, status: Optional[str] = None, goal: Optional[str] = None, verbose: bool = False, diagnostics: bool = False):
-    """
-    Orchestrates the ArchAI audit flow via CLI.
-    """
     if verbose:
         logging.getLogger("ArchAI").setLevel(logging.INFO)
     
@@ -29,159 +46,149 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
         print(f"\n[DIAGNOSTIC MODE] Scanning: {path}")
         structure = auditor.scan_directory(path)
         print(structure)
-        print("\n[DIAGNOSTIC MODE] Scan Complete. No LLM calls made.")
         return
 
-    print(f"\nStarting ArchAI Analysis for: {path}")
-    
-    # Run the audit
+    print(f"\n🚀 Starting ArchAI Sprint Planning Audit: {path}")
     report = await auditor.audit_project(
         root_path=path,
-        user_context=context or "General software project",
-        project_status=status or "Early Prototype",
-        expected_output=goal or "Production-ready system"
+        user_context=context or "Improve reliability and sprint planning",
+        project_status=status or "Stable"
     )
     
-    # Save Report
     with open("archai_report.json", "w") as f:
         json.dump(report, f, indent=4)
         
-    # Display Results (Handle both old and new Orchestrated formats)
-    print(f"\n{'='*60}")
-    print(f" ARCHAI ANALYSIS REPORT: {os.path.basename(path)} ")
-    print(f"{'='*60}")
+    print(f"\n{'='*70}")
+    print(f" ARCHAI SPRINT ADVISOR: {os.path.basename(path)} ")
+    print(f"{'='*70}")
     
-    # The new orchestrator uses keys like 'tasks' and 'sprintPlan'
     tasks = report.get('tasks', [])
     sprint_plan = report.get('sprintPlan', [])
     
-    if 'discoveryMetrics' in report.get('performance', {}):
-        metrics = report['performance']['discoveryMetrics']
-        print(f"\n[DISCOVERY METRICS]")
-        print(f" - Languages: {', '.join(metrics.get('languages', []))}")
-        print(f" - Frameworks: {', '.join(metrics.get('frameworks', []))}")
-    
-    print(f"\n[TASKS FOUND: {len(tasks)}]")
+    print(f"\n[IDENTIFIED WORK: {len(tasks)} items]")
     for t in tasks:
-        priority = t.get('priority', 'Medium')
-        title = t.get('title', 'Unknown Task')
-        effort = t.get('effortHours', 2)
-        print(f" - [{priority}] {title} ({effort}h)")
+        prio = t.get('priority', 'Medium')
+        tid = t.get('ticket_id', '???')
+        title = t.get('title', 'Unknown')
+        epic = t.get('epic', 'General')
+        risk = " [RISKY]" if t.get('risk_flags') else ""
+        conf = f"(Conf: {t.get('evidence', {}).get('confidence', 1.0):.2f})"
+        print(f" - [{tid}] {prio} | EPIC: {epic} | {title}{risk} {conf}")
 
-    print(f"\n[5-DAY SPRINT PLAN]")
+    print(f"\n[FEASIBILITY-DRIVEN SPRINT PLAN]")
     for day in sprint_plan:
-        day_name = day.get('day')
-        hours = day.get('total_hours', 0)
-        day_tasks = day.get('tickets', [])
-        
-        if day_tasks:
-            print(f" {day_name} ({hours}h):")
-            for t in day_tasks:
-                print(f"   * {t.get('title')} [{t.get('module') or 'General'}]")
-        else:
-            print(f" {day_name}: No tasks assigned.")
+        name = day.get('day')
+        hrs = day.get('total_hours', 0)
+        feas = day.get('feasibility', 'Unknown')
+        print(f"\n {name} ({hrs:.1f}h) - STATUS: {feas}")
+        for t in day.get('tickets', []):
+            print(f"   * [{t.get('ticket_id')}] {t.get('title')}")
 
-    print(f"\n{'='*60}")
-    print(f"Full report saved to archai_report.json")
-    print(f"Final Summary: {report.get('summary', 'Audit Complete')}")
-    print(f"{'='*60}")
-
-async def run_improvement_loop():
-    """
-    Main interactive entry point for ArchAI (Original Test Loop).
-    """
-    print("Welcome to ArchAI: Autonomous Development System")
+    print(f"\n{'='*70}")
+    print(f"Use 'ai-architect trace <ID>' to see evidence for a finding.")
+    print(f"Use 'ai-architect explain' for a detailed summary.")
     
-    target_code = input("\nEnter the code you want to test and improve (or path to file):\n")
-    if os.path.exists(target_code):
-        with open(target_code, "r") as f:
-            target_code = f.read()
-
-    # Initialize Components
-    generator = CoreAI()
-    runner = EvaluationRunner()
-    analyzer = ImprovementEngine()
-    reconciler = Reconciler()
-
-    max_iterations = 3
-    current_iteration = 0
-
-    while current_iteration < max_iterations:
-        current_iteration += 1
-        print(f"\n--- Iteration {current_iteration} ---")
-
-        # 1. Generate Tests
-        print("Generating tests...")
-        tests = generator.generate_tests(target_code)
-        
-        # 2. Run Tests & Evaluate
-        print("Running tests...")
-        metrics = runner.evaluate(target_code, tests)
-        print(f"Metrics: {metrics.to_dict()}")
-
-        if metrics.success_rate >= 1.0:
-            print("\nSuccess! Tests passed 100%.")
-            break
-
-        # 3. Analyze Failures
-        print("Analyzing failures and generating improvement strategies...")
-        failure_details = metrics.error_logs if metrics.error_logs else "Low coverage or logical gaps."
-        suggestions = analyzer.generate_suggestions(target_code, failure_details)
-
-        if not suggestions:
-            print("No improvements generated. Optimization stopped.")
-            break
-
-        # 4. Reconcile & Select Strategy
-        print("Reconciling strategies...")
-        decision = reconciler.reconcile(suggestions)
-        print(f"Selected Strategy: {decision.selected_strategy}")
-        print(f"Rationale: {decision.rationale}")
-
-        # Find the selected suggestion
-        selected_suggestion = next((s for s in suggestions if s.strategy_name == decision.selected_strategy), suggestions[0])
-
-        # 5. Apply Improvement (Update generator prompt)
-        generator.update_prompt(selected_suggestion.suggested_prompt_modification)
-
-    print("\nFinalizing ArchAI Session.")
+    useful = input("\nWas this sprint plan helpful? (y/n): ").lower().strip() == 'y'
+    save_feedback(useful, [])
+    print("Feedback saved. Thank you!")
 
 def run_cli():
-    parser = argparse.ArgumentParser(description="ArchAI: Autonomous Improvement & Audit System")
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
+    parser = argparse.ArgumentParser(description="ArchAI: Sprint Planning & Architectural Reliability")
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
 
-    # Audit command
-    audit_parser = subparsers.add_parser("audit", help="Run an orchestrated architectural audit (ArchAI)")
-    audit_parser.add_argument("path", nargs="?", default=None, help="Path to project root")
-    audit_parser.add_argument("--context", help="Project goal/context")
-    audit_parser.add_argument("--status", help="Current project status")
-    audit_parser.add_argument("--goal", help="Target 'perfect' state")
-    audit_parser.add_argument("--model", default="qwen3-coder:480b-cloud", help="Model to use")
-    audit_parser.add_argument("--verbose", action="store_true", help="Show detailed execution logs")
-    audit_parser.add_argument("--diagnostics", action="store_true", help="Run path scan only (no AI) to verify readability")
+    # Audit
+    audit_parser = subparsers.add_parser("audit", help="Run sprint planning audit")
+    audit_parser.add_argument("path", nargs="?", default=None)
+    audit_parser.add_argument("--verbose", action="store_true")
+    audit_parser.add_argument("--diagnostics", action="store_true")
+    audit_parser.add_argument("--explain", action="store_true", help="Show explanation after audit")
+    audit_parser.add_argument("--trace", help="Show evidence for specific ticket ID after audit")
 
-    # Test command
-    test_parser = subparsers.add_parser("test", help="Run iterative test generation loop")
-    test_parser.add_argument("--model", default="qwen3-coder:480b-cloud", help="Model to use")
-    test_parser.add_argument("--verbose", action="store_true", help="Show detailed execution logs")
+    # Trace
+    trace_parser = subparsers.add_parser("trace", help="Show evidence for a specific ticket ID")
+    trace_parser.add_argument("ticket_id")
+
+    # Explain
+    explain_parser = subparsers.add_parser("explain", help="Detailed architectural explanation")
+
+    # Validate
+    validate_parser = subparsers.add_parser("validate", help="CI/CD Validation")
+    validate_parser.add_argument("path", nargs="?", default=None)
 
     args = parser.parse_args()
 
-    # 1. Initialize Ollama
-    model_name = initialize_ollama(preferred_model=getattr(args, 'model', "qwen3-coder:480b-cloud"))
-
-    if args.verbose:
-        logging.getLogger("ArchAI").setLevel(logging.INFO)
-
     if args.command == "audit":
+        initialize_ollama()
         path = args.path or os.getcwd()
-        asyncio.run(run_archai_flow(path, args.context, args.status, args.goal, args.verbose, args.diagnostics))
-    elif args.command == "test":
-        asyncio.run(run_improvement_loop())
+        asyncio.run(run_archai_flow(path, verbose=args.verbose, diagnostics=args.diagnostics))
+        
+        if args.explain:
+            with open("archai_report.json", "r") as f:
+                report = json.load(f)
+            print("\n[ARCHITECTURAL EXPLANATION]")
+            print(report.get("gap_analysis", "No explanation available."))
+        
+        if args.trace:
+            with open("archai_report.json", "r") as f:
+                report = json.load(f)
+            ticket = next((t for t in report.get('tasks', []) if t.get('ticket_id') == args.trace), None)
+            if ticket:
+                ev = ticket.get('evidence', {})
+                print(f"\n[TRACE EVIDENCE FOR {args.trace}]")
+                print(f"File: {ev.get('file_path', 'N/A')} | Symbol: {ev.get('symbol', 'N/A')}")
+                print(f"Fix: {ticket.get('suggested_fix', 'N/A')}")
+            else:
+                print(f"Ticket {args.trace} not found.")
+    
+    elif args.command == "trace":
+        if not os.path.exists("archai_report.json"):
+            print("No report found. Run 'audit' first.")
+            return
+        with open("archai_report.json", "r") as f:
+            report = json.load(f)
+        
+        ticket = next((t for t in report.get('tasks', []) if t.get('ticket_id') == args.ticket_id), None)
+        if not ticket:
+            print(f"Ticket {args.ticket_id} not found.")
+            return
+        
+        ev = ticket.get('evidence', {})
+        print(f"\n[TRACE EVIDENCE FOR {args.ticket_id}]")
+        print(f"Title: {ticket.get('title')}")
+        print(f"Epic: {ticket.get('epic', 'N/A')}")
+        print(f"File: {ev.get('file_path', 'N/A')}")
+        print(f"Symbol: {ev.get('symbol', 'N/A')}")
+        print(f"Lines: {ev.get('line_range', 'N/A')}")
+        print(f"Confidence: {ev.get('confidence', 0.0):.2f}")
+        if ev.get('uncertainty_drivers'):
+            print(f"Uncertainty: {', '.join(ev.get('uncertainty_drivers'))}")
+        
+        deps = ticket.get('dependencies', [])
+        if deps:
+            print(f"Dependencies: {', '.join(deps)}")
+        
+        print(f"\nSuggested Fix:\n{ticket.get('suggested_fix', 'No fix suggested.')}")
+
+    elif args.command == "explain":
+        if not os.path.exists("archai_report.json"):
+            print("No report found.")
+            return
+        with open("archai_report.json", "r") as f:
+            report = json.load(f)
+        print("\n[ARCHITECTURAL SUMMARY]")
+        print(report.get("gap_analysis", "No detailed explanation available."))
+
+    elif args.command == "validate":
+        path = args.path or os.getcwd()
+        validator = ArchValidator(path)
+        result = validator.run_validation()
+        print(f"\nStatus: {'PASSED' if result['success'] else 'FAILED'}")
+        for v in result['violations']:
+            print(f" - [{v['severity']}] {v['message']}")
+        sys.exit(0 if result['success'] else 1)
+
     else:
-        # Interactive mode or help
-        print("\nNo command provided. Launching interactive wizard...")
-        asyncio.run(run_improvement_loop())
+        print("ArchAI: Use 'audit', 'trace', 'explain', or 'validate'.")
 
 if __name__ == "__main__":
     run_cli()

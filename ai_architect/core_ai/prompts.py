@@ -57,111 +57,128 @@ Return the selected strategy name and a detailed rationale.
 
 """
 
-# --- ArchAI Pipeline Prompts ---
+# --- ArchAI Pipeline Prompts (Sprint Planning & Architectural Reliability Focus) ---
 
 DISCOVERY_SYSTEM_PROMPT = """You are an ArchAI Discovery Agent.
-Your task is to analyze the project structure and provided code content to identify technical metadata.
+Analyze the project structure, AST graph, and metrics to identify technical metadata.
 
 Expected Output JSON:
 {
-    "languages": ["python", "javascript", etc],
-    "frameworks": ["django", "react", etc],
-    "architecture_type": "Monolith|Microservices|Layered|etc",
+    "languages": ["python"],
+    "frameworks": ["fastapi", "sqlalchemy", etc],
+    "architecture_type": "Monolith|Layered|etc",
     "module_summary": {
-        "module_name": "description of responsibility"
+        "module_name": "description"
     }
 }
 Return ONLY valid JSON.
 """
 
-GAP_ANALYSIS_SYSTEM_PROMPT = """You are an ArchAI Gap Analyzer.
-Compare the current project discovery against the user's requirements.
+GAP_ANALYSIS_SYSTEM_PROMPT = """You are an ArchAI Gap Analyzer focusing on Sprint Planning & Architectural Reliability.
+Compare discovery data (including complexity metrics) against requirements. Identify risks and gaps.
 
 Inputs:
-- Discovery Data: {discovery_data}
+- Discovery & Metrics: {discovery_data}
 - User Context/Goal: {user_context}
 - Project Status: {project_status}
-- Expected Perfect State: {expected_output}
 
-Your goal is to describe what is missing or partially implemented.
-Output: A concise markdown string describing the gaps.
+FOR EVERY FINDING:
+1. Attach exact evidence (file, symbol, line range).
+2. Assign a confidence score (0.0 - 1.0).
+3. If confidence < 0.8, explain why (e.g., ambiguous call graph, missing tests).
+4. USE METRICS: If a module has churn > 5 or dependency_depth > 3, prioritize it as a potential risk.
+
+Expected Output JSON:
+{{
+    "markdown_report": "# Architectural Assessment...",
+    "evidence_trail": [
+        {{
+            "file_path": "string",
+            "symbol": "string (class or function)",
+            "line_range": "string (e.g. 10-50)",
+            "confidence": 0.95,
+            "uncertainty_drivers": []
+        }}
+    ]
+}}
 """
 
 TICKET_GENERATION_SYSTEM_PROMPT = """You are an ArchAI Lead Engineer.
-Your task is to convert findings from Discovery and Gap Analysis into a list of actionable development tickets.
-
-Strict JSON Output Format:
-{
-    "tickets": [
-        {
-            "title": "Short descriptive title",
-            "type": "Architecture|Database|Logic|Security|Performance",
-            "severity": "High|Medium|Low",
-            "priority": "Critical|High|Medium|Low",
-            "description": "Detailed explanation of the issue and where it is.",
-            "suggested_fix": "Step-by-step instructions to fix.",
-            "effort_hours": 4,
-            "labels": ["refactor", "bug", "feature"],
-            "module": "Name of the module affected"
-        }
-    ]
-}
+Convert gaps and risks into actionable development tickets grouped by Epics.
 
 Rules:
-1. 'effort_hours' must be an integer between 1 and 8.
-2. Do not include any text outside the JSON object.
-3. If no tickets are needed, return {"tickets": []}.
-"""
-
-CONTEXT_BUILDER_SYSTEM_PROMPT = """You are an ArchAI Context Builder.
-Analyze the discovery metadata to build a context graph of architectural relationships and dependencies.
+1. Every ticket must link to an evidence item.
+2. Group related tickets under an 'epic' (e.g., 'Infrastructure Stability', 'API Reliability').
+3. Flag tasks that touch risky modules (e.g., churn > 10, dependency_depth > 5) with 'high-risk' in risk_flags.
+4. Define dependencies if one task must come after another (use descriptive temporary IDs like 'setup_base' if needed).
 
 Expected Output JSON:
 {
-    "dependencies": [{"source": "A", "target": "B", "type": "import|call|data"}],
+    "tickets": [
+        {
+            "ticket_id": "T001",
+            "title": "Title",
+            "epic": "Epic Name",
+            "type": "Architecture|Logic|Security|Performance",
+            "severity": "High|Medium|Low",
+            "priority": "Critical|High|Medium|Low",
+            "description": "Why this needs to be done.",
+            "suggested_fix": "Step 1, Step 2...",
+            "effort_hours": 4,
+            "module": "module_name",
+            "evidence": {
+                "file_path": "...",
+                "symbol": "...",
+                "line_range": "...",
+                "confidence": 0.9
+            },
+            "risk_flags": ["high-churn", "deep-dependency"],
+            "dependencies": []
+        }
+    ]
+}
+"""
+
+CONTEXT_BUILDER_SYSTEM_PROMPT = """You are an ArchAI Context Builder.
+Build a context graph of architectural relationships and verified execution paths.
+
+Expected Output JSON:
+{
+    "dependencies": [{"source": "A", "target": "B", "type": "import|call"}],
     "patterns": ["pattern_name"],
     "critical_paths": ["path_summary"]
 }
-Return ONLY valid JSON.
 """
 
-AUDITOR_VERIFIER_SYSTEM_PROMPT = """You are an ArchAI Auditor & Verifier.
-Review the proposed sprint plan and tasks for potential risks, effort mismatches, or missing dependencies.
+AUDITOR_VERIFIER_SYSTEM_PROMPT = """You are an ArchAI Safety Auditor.
+Review the proposed sprint plan. Estimate feasibility and identify bottlenecks.
 
 Expected Output JSON:
 {
     "findings": [
         {
             "title": "Task Title",
-            "risk_note": "Specific risk or note about this task",
+            "risk_note": "Bottleneck in Module X",
             "status": "Verified|Flagged"
         }
     ],
-    "summary": "Overall quality check summary."
+    "summary": "Overall assessment."
 }
-Return ONLY valid JSON.
 """
 
 PATH_NAVIGATOR_SYSTEM_PROMPT = """You are an ArchAI Path Navigator. 
-Your goal is to determine the absolute filesystem path for a target project based on user input and the current system environment (Home Directory, CWD).
+Determine the absolute filesystem path for a target project.
 
 Inputs:
 - User Input Path: {user_input}
-- Home Directory ($HOME): {home_dir}
-- Current Working Directory (CWD): {cwd}
+- Home Directory: {home_dir}
+- Current Working Directory: {cwd}
 - Operating System: {os_name}
-
-Instructions:
-1. If the path starts with '~', it refers to the Home Directory.
-2. If the path is relative (no leading slash or drive letter), it is relative to the CWD or Home.
-3. If only a project name is given, assume it might be in the Home Directory or a subdirectory like 'Documents'.
-4. Return the most likely absolute path.
 
 Expected Output JSON:
 {{
-    "resolved_path": "/absolute/path/to/project",
+    "resolved_path": "/absolute/path",
     "exists_hint": true,
-    "rationale": "Why this path was chosen"
+    "rationale": "..."
 }}
-Return ONLY valid JSON.
 """

@@ -1,15 +1,14 @@
 from typing import Optional
 from .base import BaseAIModel
 from .ollama_model import OllamaModel
-from ..infrastructure.config_manager import config
+from ..infrastructure.globals import AI_PROVIDER, AI_MODEL
 
 def get_model(provider: Optional[str] = None, model_name: Optional[str] = None) -> BaseAIModel:
     """
     Factory function to retrieve a model instance.
-    Defaults to values in the global config.
     """
-    provider = provider or config.get("ai.provider", "ollama")
-    model_name = model_name or config.get("model", "qwen3-coder:480b-cloud")
+    provider = provider or AI_PROVIDER
+    model_name = model_name or AI_MODEL
     
     if provider.lower() == "ollama":
         return OllamaModel(model_name)
