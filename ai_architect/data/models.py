@@ -55,6 +55,7 @@ class AuditReport(BaseModel):
     sprint_plan: List[SprintDay] = []
     summary: Optional[str] = None
     timestamp: datetime = Field(default_factory=datetime.now)
+
 class AgentResponse(BaseModel):
     agent_name: str
     success: bool
@@ -87,6 +88,7 @@ class DiscoveryOutput(BaseModel):
     architecture_type: str
     module_summary: Dict[str, str]
     raw_structure: Optional[str] = None
+    architecture_graph: Optional[Dict[str, Any]] = None
 
 class ContextBuilderOutput(BaseModel):
     dependencies: List[Dict[str, str]]

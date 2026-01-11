@@ -41,8 +41,6 @@ class ArchitecturalAuditor:
         cache_key = f"scan:{root}:{max_depth}"
         cached_summary = cache.get("scanner", cache_key)
         
-        # Note: In a real system, we'd check file mtimes or hashes to invalidate.
-        # For now, we assume if it's cached, it's valid for the TTL duration.
         if cached_summary:
             logger.info(f"Using cached file scan for {root}")
             return cached_summary
@@ -95,12 +93,10 @@ class ArchitecturalAuditor:
         final_result = summary + f"\n\nTotal Files Scanned: {files_scanned}\n\nKey File Contents:\n" + file_contents
         logger.info(f"Scan complete. {files_scanned} files included in analysis context.")
         
-        # Cache the result
-        cache.set("scanner", cache_key, final_result, ttl=300) # 5 minutes cache for scans
+        cache.set("scanner", cache_key, final_result, ttl=300)
         return final_result
 
     def _call_llm_json(self, system_prompt: str, user_prompt: str, retries: int = 2) -> dict:
-        # Check cache for identical prompts (useful for repetitive development runs)
         cache_key = {"sys": system_prompt, "usr": user_prompt, "model": getattr(self.model, "model_name", "unknown")}
         cached_response = cache.get("llm_json", cache_key)
         if cached_response:
@@ -116,7 +112,7 @@ class ArchitecturalAuditor:
                     format='json'
                 )
                 result = json.loads(content)
-                cache.set("llm_json", cache_key, result, ttl=3600) # 1 hour cache
+                cache.set("llm_json", cache_key, result, ttl=3600)
                 return result
             except Exception as e:
                 logger.warning(f"LLM JSON Error (Attempt {attempt+1}/{retries+1}): {e}")
@@ -179,8 +175,17 @@ class ArchitecturalAuditor:
         return output
 
     def Discovery(self, repo_path: str) -> DiscoveryOutput:
+        from ..analysis.graph_engine import GraphEngine
+        
+        # Deterministic Analysis
+        engine = GraphEngine(Path(repo_path))
+        engine.analyze_project()
+        arch_graph = engine.get_graph_summary()
+        
+        # LLM Augmentation
         code_structure = self.scan_directory(repo_path)
-        raw_discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {repo_path}\n\nCode Structure:\n{code_structure}")
+        prompt_with_graph = f"Project Path: {repo_path}\n\nDeterministic Graph Summary: {json.dumps(arch_graph)}\n\nCode Structure Snippet:\n{code_structure[:5000]}"
+        raw_discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, prompt_with_graph)
         
         languages = raw_discovery.get("languages", [])
         if not languages:
@@ -193,15 +198,23 @@ class ArchitecturalAuditor:
             frameworks=raw_discovery.get("frameworks", []),
             architecture_type=raw_discovery.get("architecture_type", "Unknown"),
             module_summary=raw_discovery.get("module_summary", {}),
-            raw_structure=code_structure
+            raw_structure=code_structure,
+            architecture_graph=arch_graph
         )
-        logger.info(f"Discovery detected languages: {output.languages}")
+        logger.info(f"Discovery complete. Deterministic modules analyzed: {len(arch_graph['modules'])}")
         return output
 
     def ContextBuilder(self, discovery_result: DiscoveryOutput) -> ContextBuilderOutput:
         raw_structure = discovery_result.raw_structure or ""
-        metadata = discovery_result.model_dump(exclude={'raw_structure'})
-        msg = f"Metadata: {json.dumps(metadata)}\nStructure Snippet: {raw_structure[:2000]}"
+        metadata = discovery_result.model_dump(exclude={'raw_structure', 'architecture_graph'})
+        arch_graph = discovery_result.architecture_graph or {}
+        
+        graph_json = json.dumps(arch_graph.get("relationships", []), indent=2)
+        msg = (
+            f"Metadata: {json.dumps(metadata)}\n"
+            f"Deterministic Relationships (from AST): {graph_json}\n"
+            f"Structure Snippet: {raw_structure[:2000]}"
+        )
         raw_result = self._call_llm_json(CONTEXT_BUILDER_SYSTEM_PROMPT, msg)
         
         return ContextBuilderOutput(
