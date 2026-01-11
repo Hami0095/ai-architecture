@@ -18,65 +18,51 @@ graph TD
     E --> F
     F --> G[Sprint Planner]
     G --> H[Final Report & Roadmap]
+    H --> P[Persistence Layer]
 ```
 
-## 2. Core Modules
+## 2. Infrastructure Layer (New)
 
-### 2.0 Path Navigator Agent
-- **Responsibility**: Resolve user-provided paths (relative, absolute, or home-based) into a valid absolute path across all OS.
-- **Inputs**: User input, Home Dir, CWD, OS Name.
-- **Outputs**: Validated Absolute Path.
+### 2.1 Logging & Error Handling
+- **Centralized Logging**: Specialized module in `ai_architect/infrastructure/logging_utils.py` provides formatted console and file logging.
+- **Custom Exceptions**: Defines `ArchAIError`, `AgentFailureError`, and `ConfigurationError` for fine-grained failure handling.
 
-### 2.1 Discovery Engine
-- **Responsibility**: Map the project structure and understand the tech stack.
-- **Inputs**: File system path.
-- **Outputs**: Project metadata (Languages, Frameworks, Module Map, Business Logic summary).
+### 2.2 Configuration Management
+- **ConfigManager**: Supports YAML, JSON, and Environment Variables (`ARCHAI_*`).
+- **Singleton Pattern**: Ensures a single source of truth for system settings across all modules.
 
-### 2.2 Gap Analyzer
-- **Responsibility**: Compare current implementation vs. the goal document.
-- **Inputs**: Project metadata, Goal document.
-- **Outputs**: List of missing features and architectural gaps.
+### 2.3 Data Persistence
+- **Storage**: Uses SQLite for local persistent storage of audit reports and performance metrics.
+- **Repository Pattern**: `PersistenceLayer` handles all SQL operations, providing an abstraction over raw database access.
 
-### 2.3 Risk Analyzer (Architectural Auditor)
-- **Responsibility**: Identify technical debt, bugs, and performance/security risks.
-- **Inputs**: Source code samples, project structure.
-- **Outputs**: Categorized list of technical issues.
+### 2.4 Security Framework
+- **Authentication**: Basic API Key verification for REST API integration.
+- **Access Control**: Role-based access control (RBAC) placeholders for future multi-user support.
 
-### 2.4 Ticket Synthesizer
-- **Responsibility**: Convert gaps and risks into actionable tickets.
-- **Attributes**: 
-    - Title, Description, Labels (Bug, Feature, Technical Debt).
-    - Effort Estimate (Hours).
-    - Priority (Critical, High, Medium, Low).
-- **Logic**: Use LLM templates to ensure consistent Jira-style formatting.
+### 2.5 REST API
+- **FastAPI**: Provides a swagger-documented interface for triggering audits and health monitoring.
 
-### 2.5 Sprint Planner
-- **Responsibility**: Create a 5-day developer roadmap.
-- **Constraints**: 
-    - Max 25 hours per sprint.
-    - Day-by-day breakdown (approx. 5 hrs/day).
-    - Higher priority tickets first.
-- **Outputs**: Markdown-formatted schedule.
+## 3. Core Modules (Agentic)
 
-## 3. Technology Stack
-- **Language**: Python 3.10+
-- **AI Backend**: Ollama (Local LLM - qwen3-coder:480b-cloud recommended)
-- **Data Persistence**: SQLite (for logging/metrics)
-- **Output Formats**: CLI, JSON, Markdown.
+### 3.1 Path Navigator Agent
+- **Responsibility**: Resolve user-provided paths into valid absolute paths across all OS.
+- **Outputs**: `PathNavigatorOutput` (Pydantic).
+
+### 3.2 Discovery Engine
+- **Responsibility**: Map project structure and tech stack.
+- **Outputs**: `DiscoveryOutput` (Pydantic).
+
+[... other agents ...]
 
 ## 4. Cross-Platform Stability
-- **Agentic Path Resolution**: Uses a specialized **Path Navigator** agent to intelligently resolve filesystems across Windows, Mac, and Ubuntu.
-- **Pathlib Foundations**: Built on `pathlib` for all underlying filesystem operations.
-- **Home Dir Awareness**: Automatically starts discovery from `$HOME` if ambiguous paths are provided.
+- **Agentic Path Resolution**: Uses Path Navigator.
+- **Pathlib Foundation**: OS-agnostic path handling.
 
-## 5. Scaling & Extensibility
-- **Plugins**: New analyzers (e.g., specialized Security scanners) can be added by implementing the `BaseAnalyzer` interface.
-- **Scaling UP**: Integrate with CI/CD pipelines to run audits on every PR.
-- **Scaling DOWN**: Skip deep code analysis for large projects and focus on structure-only discovery.
+## 5. Scaling & Monitoring
+- **Metrics Collection**: Every agent execution latency and success/failure is recorded in the persistence layer.
+- **Scalability**: The system is designed to be stateless in the core, with state managed via the `PersistenceLayer`.
 
 ## 6. Future Roadmap
-- **ML/NLP Improvements**: Fine-tune models on large-scale architectural pattern datasets to improve detection accuracy.
-- **CI/CD Integration**: Develop GitHub Actions/GitLab CI plugins to surface risks directly in pull requests.
-- **Dynamic Effort Estimation**: Use historical developer data to adjust ticket hour estimates based on actual completion times.
-- **Visual Timelines**: Generate Gantt charts or Mermaid.js timelines for even better roadmap visualization.
-- **Plugin System**: Standardize the `Analyzer` API to allow community-contributed scanners (e.g., specific for React, Rust, or Kubernetes).
+- **Documentation Auto-Gen**: Integrate Sphinx/pydoc to generate API documentation automatically.
+- **Caching**: Implement a caching layer for LLM responses to reduce latency and costs.
+- **Distributed Agents**: Allow agents to run in parallel or on different worker nodes using Celery or similar.

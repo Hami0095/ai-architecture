@@ -1,5 +1,4 @@
 import json
-import logging
 import time
 import asyncio
 from pathlib import Path
@@ -17,10 +16,8 @@ from ..data.models import (
     AuditorVerifierOutput
 )
 from ..improvement_engine.analyzer import ProactiveStabilityAnalyzer
-
-# Set up logger
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
-logger = logging.getLogger("ArchAI.Orchestrator")
+from ..infrastructure.logging_utils import logger, setup_logger
+from ..infrastructure.persistence import PersistenceLayer
 
 class Orchestrator:
     def __init__(self, auditor_instance):
@@ -28,6 +25,7 @@ class Orchestrator:
         self.logger = logger
         self.state: Optional[AgentState] = None
         self.stability_analyzer = ProactiveStabilityAnalyzer(model=auditor_instance.model)
+        self.persistence = PersistenceLayer()
 
     async def _execute_agent(self, agent_name: str, func, *args, **kwargs) -> bool:
         """
@@ -46,11 +44,11 @@ class Orchestrator:
             
             latency = (time.time() - start_time) * 1000
             
-            # Validation: Result must not be None and must be a dict or Pydantic model
+            # Validation: Result must not be None
             if result is None:
                 raise ValueError(f"Agent {agent_name} returned None.")
             
-            # Convert Pydantic model to dict for storage in AgentResponse.data
+            # Convert Pydantic model to dict
             data_dict = result.model_dump() if isinstance(result, BaseModel) else result
             
             response = AgentResponse(
@@ -60,6 +58,10 @@ class Orchestrator:
                 latency_ms=latency
             )
             self.state.history.append(response)
+            
+            # Persist metrics for monitoring
+            self.persistence.save_metric(agent_name, latency, True)
+            
             self.logger.info(f"--- [Agent DONE] {agent_name} (Success, Latency: {latency:.2f}ms) ---")
             return True
         except Exception as e:
@@ -73,6 +75,10 @@ class Orchestrator:
                 latency_ms=latency
             )
             self.state.history.append(response)
+            
+            # Persist failure metric
+            self.persistence.save_metric(agent_name, latency, False)
+            
             return False
 
     async def run_pipeline(self, repo_path: str, goals: Dict[str, Any]) -> Dict[str, Any]:
@@ -126,13 +132,12 @@ class Orchestrator:
         sprint_plan = [day.model_dump() for day in planner_data.sprint_plan]
 
         # 6. Auditor Verifier
-        # Note: We pass the raw sprint plan dicts for LLM processing
         if not await self._execute_agent("AuditorVerifier", self.auditor.AuditorVerifier, sprint_plan):
             return {"error": "Plan verification failed. Orchestration stopped."}
         
         audit_report = AuditorVerifierOutput(**self.state.get_last_data("AuditorVerifier"))
 
-        # --- Final Data Integration ---
+        # Final Integration
         findings = audit_report.findings
         notes_map = {note.get("title"): note.get("risk_note") for note in findings if isinstance(note, dict)}
         
@@ -149,10 +154,8 @@ class Orchestrator:
                 "notes": notes_map.get(task.title, "")
             })
 
-        # Calculate performance metrics
         total_latency = sum(r.latency_ms for r in self.state.history if r.latency_ms)
         
-        # Proactive Stability Analysis
         self.logger.info("Running Proactive Stability Analysis...")
         stability_recommendations = self.stability_analyzer.analyze_stability_risks(self.state.history)
 
@@ -173,11 +176,7 @@ class Orchestrator:
             }
         }
         
-        if len(tickets) == 0:
-            result_report["diagnostics"] = {
-                "languages_found": discovery_data.languages,
-                "architecture": discovery_data.architecture_type,
-                "reason": "Check if goals are already met or if prompts need adjustment."
-            }
+        # Save final report to persistence layer
+        self.persistence.save_report(resolved_path, result_report)
 
         return result_report
