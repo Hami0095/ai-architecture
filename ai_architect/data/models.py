@@ -169,3 +169,53 @@ class SRCOutput(BaseModel):
     recommendations: List[Dict[str, str]] # {task, action}
     bottlenecks: List[str]
     confidence_rationale: str
+
+# --- GitHub Integration Models ---
+
+class GitHubChange(BaseModel):
+    file_path: str
+    status: str # added, modified, removed
+    additions: int
+    deletions: int
+    patch: Optional[str] = None
+
+class GitHubCommit(BaseModel):
+    sha: str
+    message: str
+    author: str
+    timestamp: datetime
+    changes: List[GitHubChange] = []
+
+class GitHubPR(BaseModel):
+    number: int
+    title: str
+    state: str # open, closed
+    author: str
+    target_branch: str
+    source_branch: str
+    commits: List[GitHubCommit] = []
+    diff_url: Optional[str] = None
+
+class PRAnalysisReport(BaseModel):
+    pr_number: int
+    impact_assessment: ImpactAssessment
+    task_generation: Optional[WDPOutput] = None
+    confidence_prediction: Optional[SRCOutput] = None
+    timestamp: datetime = Field(default_factory=datetime.now)
+
+# --- PM Integration Models ---
+
+class PMTaskMetadata(BaseModel):
+    tool: str # jira, trello
+    remote_id: str
+    remote_url: Optional[str] = None
+    status: str
+    last_sync: datetime = Field(default_factory=datetime.now)
+
+class PMSyncReport(BaseModel):
+    tool: str
+    project_key: str
+    tasks_created: int
+    tasks_updated: int
+    errors: List[str] = []
+    sync_time: datetime = Field(default_factory=datetime.now)

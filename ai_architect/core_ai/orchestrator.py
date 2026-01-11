@@ -63,41 +63,41 @@ class Orchestrator:
         nav_data = PathNavigatorOutput(**self.state.get_last_data("PathNavigator"))
         resolved_path = nav_data.resolved_path
         
-        # 1. Discovery
-        if not await self._execute_agent("Discovery", self.auditor.Discovery, resolved_path):
-            return {"error": "Discovery failed."}
-        discovery_data = DiscoveryOutput(**self.state.get_last_data("Discovery"))
+        # 1. Context Acquisition
+        if not await self._execute_agent("ContextAcquisition", self.auditor.Discovery, resolved_path):
+            return {"error": "Context acquisition failed."}
+        discovery_data = DiscoveryOutput(**self.state.get_last_data("ContextAcquisition"))
 
-        # 2. Context Builder
-        if not await self._execute_agent("ContextBuilder", self.auditor.ContextBuilder, discovery_data):
-            return {"error": "Context building failed."}
+        # 2. Structural Analysis
+        if not await self._execute_agent("StructuralAnalysis", self.auditor.ContextBuilder, discovery_data):
+            return {"error": "Structural analysis failed."}
         
-        # 3. Gap Analyzer
-        context_data = ContextBuilderOutput(**self.state.get_last_data("ContextBuilder"))
-        # Include metrics in gap analyzer input
-        gap_input = context_data.model_dump()
-        gap_input["metrics"] = discovery_data.architecture_graph.get("modules", {}) if discovery_data.architecture_graph else {}
+        # 3. Risk Evaluation
+        context_data = ContextBuilderOutput(**self.state.get_last_data("StructuralAnalysis"))
+        # Include metrics in evaluation input
+        evaluation_input = context_data.model_dump()
+        evaluation_input["metrics"] = discovery_data.architecture_graph.get("modules", {}) if discovery_data.architecture_graph else {}
         
-        if not await self._execute_agent("GapAnalyzer", self.auditor.GapAnalyzer, gap_input, goals):
-            return {"error": "Gap analysis failed."}
-        gap_data = GapAnalyzerOutput(**self.state.get_last_data("GapAnalyzer"))
+        if not await self._execute_agent("RiskEvaluation", self.auditor.GapAnalyzer, evaluation_input, goals):
+            return {"error": "Risk evaluation failed."}
+        gap_data = GapAnalyzerOutput(**self.state.get_last_data("RiskEvaluation"))
 
-        # 4. Ticket Generator
-        if not await self._execute_agent("TicketGenerator", self.auditor.TicketGenerator, gap_data):
-            return {"error": "Ticket generation failed."}
-        tickets_out = TicketGeneratorOutput(**self.state.get_last_data("TicketGenerator"))
+        # 4. Work Decomposition
+        if not await self._execute_agent("WorkDecomposition", self.auditor.TicketGenerator, gap_data):
+            return {"error": "Work decomposition failed."}
+        tickets_out = TicketGeneratorOutput(**self.state.get_last_data("WorkDecomposition"))
         tickets = tickets_out.tickets
 
-        # 5. Planner
-        if not await self._execute_agent("Planner", self.auditor.Planner, tickets):
-            return {"error": "Planning failed."}
-        planner_data = PlannerOutput(**self.state.get_last_data("Planner"))
+        # 5. Execution Forecasting (Planner)
+        if not await self._execute_agent("ExecutionForecasting", self.auditor.Planner, tickets):
+            return {"error": "Execution forecasting failed."}
+        planner_data = PlannerOutput(**self.state.get_last_data("ExecutionForecasting"))
         sprint_plan = [day.model_dump() for day in planner_data.sprint_plan]
 
-        # 6. Auditor Verifier
-        if not await self._execute_agent("AuditorVerifier", self.auditor.AuditorVerifier, sprint_plan):
-            return {"error": "Verification failed."}
-        audit_report = AuditorVerifierOutput(**self.state.get_last_data("AuditorVerifier"))
+        # 6. Integrity Audit
+        if not await self._execute_agent("IntegrityAudit", self.auditor.AuditorVerifier, sprint_plan):
+            return {"error": "Integrity audit failed."}
+        audit_report = AuditorVerifierOutput(**self.state.get_last_data("IntegrityAudit"))
 
         # Mapping for UI/CLI
         findings = audit_report.findings

@@ -1,3 +1,22 @@
 model: "glm-4.6:cloud"
 ai:
   provider: "ollama"
+
+# GitHub Integration
+github_token: "your_personal_access_token_here"
+
+# Jira Integration
+jira:
+  server: "https://your-domain.atlassian.net"
+  email: "your-email@example.com"
+  token: "your-atlassian-api-token"
+
+# Trello Integration
+trello:
+  api_key: "your-trello-api-key"
+  token: "your-trello-token"
+
+# Security & State
+user_id: "default-local-user" # Used as a seed for PBKDF2 encryption
+security:
+  salt: "archai-construction-salt-v1"

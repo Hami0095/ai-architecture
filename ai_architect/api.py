@@ -8,9 +8,16 @@ from .infrastructure.config_manager import config
 from .infrastructure.monitoring import monitor
 from .infrastructure.caching import cached
 
-from fastapi.security import APIKeyHeader
+from starlette.middleware.sessions import SessionMiddleware
+from .api import auth
 
 app = FastAPI(title="ArchAI API", description="REST API for Autonomous Architectural Audits")
+
+# Add Session Middleware for OAuth
+app.add_middleware(SessionMiddleware, secret_key=config.get_secret("session_secret", "archai-dev-secret"))
+
+# Register Auth Router
+app.include_router(auth.router)
 
 API_KEY = config.get("api_key", "archai-secret-key")
 api_key_header = APIKeyHeader(name="X-API-Key")
@@ -50,6 +57,15 @@ class SimulationRequest(BaseModel):
     team_size: int = 3
     days: int = 10
     strict: bool = False
+
+class GitHubPRListRequest(BaseModel):
+    repo: str
+
+class GitHubPRAnalyzeRequest(BaseModel):
+    repo: str
+    pr_number: int
+    path: str
+    comment: bool = False
 
     # Make hashable for caching key generation
     def __hash__(self):
@@ -92,6 +108,23 @@ async def run_simulation(request: SimulationRequest):
 async def run_release_confidence(request: SimulationRequest):
     """SRC-RS: Release Integrity Assessment."""
     return await run_simulation(request)
+
+@app.post("/github/prs", dependencies=[Depends(get_api_key)])
+async def list_github_prs(request: GitHubPRListRequest):
+    """Lists open pull requests for a repository."""
+    from .connectors.github import GitHubConnector
+    connector = GitHubConnector()
+    return connector.fetch_open_prs(request.repo)
+
+@app.post("/github/analyze-pr", dependencies=[Depends(get_api_key)])
+async def analyze_github_pr(request: GitHubPRAnalyzeRequest):
+    """Analyzes a specific GitHub PR and optionally posts a comment."""
+    from .connectors.github import GitHubConnector
+    connector = GitHubConnector()
+    report = connector.analyze_pr(request.repo, request.pr_number, request.path)
+    if report and request.comment:
+        connector.post_pr_comment(request.repo, request.pr_number, report)
+    return report
 
 @app.post("/audit", dependencies=[Depends(get_api_key)])
 @cached(prefix="full_audit", ttl=300) # Cache identical audit requests for 5 minutes

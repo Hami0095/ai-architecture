@@ -42,6 +42,19 @@ class ArchitecturalAuditor:
     def __init__(self, model: Optional[BaseAIModel] = None):
         self.model = model or get_model()
 
+    def _locate_symbol(self, root: Path, symbol: str) -> Optional[str]:
+        """Scans the codebase for the definition of a symbol (class or function)."""
+        ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build'}
+        for path in root.rglob("*.py"):
+            if any(part in ignore_dirs for part in path.parts): continue
+            try:
+                content = path.read_text(encoding="utf-8", errors="ignore")
+                # Regex to find 'class Symbol' or 'def Symbol'
+                if re.search(fr"^\s*(class|def)\s+{re.escape(symbol)}\b", content, re.MULTILINE):
+                    return str(path)
+            except: pass
+        return None
+
     def scan_directory(self, root_path, max_depth=4) -> str:
         root = Path(root_path).expanduser().resolve()
         cache_key = f"scan:{root}:{max_depth}"
@@ -171,7 +184,21 @@ class ArchitecturalAuditor:
 
     def ImpactAnalyzer(self, root_path: str, target: str, max_depth: int = 3) -> ImpactAssessment:
         from ..analysis.graph_engine import GraphEngine
-        engine = GraphEngine(Path(root_path))
+        root = Path(root_path).resolve()
+        
+        # 0. Symbol Discovery (User-Requested "Get-Children" Logic)
+        location_hint = ""
+        resolved_target = target
+        if not (root / target).exists() and not target.endswith(".py"):
+            loc = self._locate_symbol(root, target)
+            if loc:
+                rel_loc = Path(loc).relative_to(root)
+                location_hint = f" (Found in: {rel_loc})"
+                logger.info(f"Resolved symbol '{target}' to {rel_loc}")
+                # Optional: You could update resolved_target to be the file path if GraphEngine supports it better
+                # resolved_target = str(rel_loc) 
+        
+        engine = GraphEngine(root)
         engine.analyze_project()
         
         # 1. Structural Signals
@@ -193,13 +220,13 @@ class ArchitecturalAuditor:
         
         # 4. Call LLM for final reasoning
         prompt = CIRAS_SYSTEM_PROMPT.format(
-            target=target,
+            target=f"{target}{location_hint}",
             structural_signals=json.dumps({k: signals[k] for k in ["impact_scope", "fan_in", "fan_out", "depth"]}),
             historical_signals=json.dumps({"churn": signals["churn"]}),
             quality_signals=json.dumps({"insufficient_tests": signals["insufficient_tests"]})
         )
         
-        raw = self._call_llm_json("You are CIRAS, the ArchAI Change Impact Agent.", prompt)
+        raw = self._call_llm_json("You are the ArchAI Risk Evaluation Agent (CIRAS).", prompt)
         
         if not raw or raw.get('insufficient_data'):
             return ImpactAssessment(

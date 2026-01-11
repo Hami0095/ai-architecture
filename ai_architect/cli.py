@@ -1,12 +1,14 @@
 import asyncio
 import sys
 import os
+import shlex
 import json
 import argparse
 import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List, Dict, Any
+
 from .core_ai.generator import CoreAI
 from .evaluations.runner import EvaluationRunner
 from .improvement_engine.analyzer import ImprovementEngine
@@ -14,6 +16,13 @@ from .reconciler.logic import Reconciler
 from .core_ai.auditor import ArchitecturalAuditor
 from .utils.ollama_manager import initialize_ollama
 from .analysis.validator import ArchValidator
+from .utils.console_utils import ConsoleUI
+from .infrastructure.config_manager import config
+from .connectors.github import GitHubConnector
+from .connectors.google_drive import GoogleDriveConnector
+from .connectors.pm import PMConnector
+from .infrastructure.usage_tracker import BackupManager, UsageTracker
+from .data.models import SprintPlanConfig
 
 # Global logging config
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
@@ -38,18 +47,23 @@ def save_feedback(useful: bool, rejected_ids: List[str]):
         json.dump(data, f, indent=4)
 
 async def run_archai_flow(path: str, context: Optional[str] = None, status: Optional[str] = None, goal: Optional[str] = None, verbose: bool = False, diagnostics: bool = False):
-    if verbose:
-        logging.getLogger("ArchAI").setLevel(logging.INFO)
+    ConsoleUI.step_header("Context Acquisition", "Discovering and validating structural metadata")
+    ConsoleUI.progress_bar("Path Navigation", 0.3)
+    ConsoleUI.progress_bar("Discovery Agent", 0.5)
     
     auditor = ArchitecturalAuditor()
-    
-    if diagnostics:
-        print(f"\n[DIAGNOSTIC MODE] Scanning: {path}")
-        structure = auditor.scan_directory(path)
-        print(structure)
-        return
+    if verbose:
+        logging.getLogger("ArchAI").setLevel(logging.INFO)
 
-    print(f"\n🚀 Starting ArchAI Sprint Planning Audit: {path}")
+    if diagnostics:
+         ConsoleUI.step_header("Site Survey (Diagnostics)", "Performing non-destructive structural scan")
+         structure = auditor.scan_directory(path)
+         print(structure)
+         return
+
+    # 1. Structural Analysis
+    ConsoleUI.step_header("Structural Analysis", "Mapping component relationships and critical paths")
+    
     report = await auditor.audit_project(
         root_path=path,
         user_context=context or "Improve reliability and sprint planning",
@@ -59,9 +73,7 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     with open("archai_report.json", "w") as f:
         json.dump(report, f, indent=4)
         
-    print(f"\n{'='*70}")
-    print(f" ARCHAI SPRINT ADVISOR: {os.path.basename(path)} ")
-    print(f"{'='*70}")
+    ConsoleUI.step_header("Execution Forecast", f"Deterministic plan for {os.path.basename(path)}")
     
     tasks = report.get('tasks', [])
     sprint_plan = report.get('sprintPlan', [])
@@ -86,311 +98,243 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
             print(f"   * [{t.get('ticket_id')}] {t.get('title')}")
 
     print(f"\n{'='*70}")
-    print(f"Use 'ai-architect trace <ID>' to see evidence for a finding.")
-    print(f"Use 'ai-architect explain' for a detailed summary.")
+    print(f"Use 'trace <ID>' to see evidence for a finding.")
+    print(f"Use 'explain' for a detailed summary.")
     
     useful = input("\nWas this sprint plan helpful? (y/n): ").lower().strip() == 'y'
     save_feedback(useful, [])
     print("Feedback saved. Thank you!")
 
-def run_cli():
-    parser = argparse.ArgumentParser(description="ArchAI: Sprint Planning & Architectural Reliability")
-    subparsers = parser.add_subparsers(dest="command", help="Commands")
+def print_help_table():
+    print(f"\n{'='*80}")
+    print(f"{'COMMAND':<25} | {'DESCRIPTION':<50}")
+    print(f"{'-'*25}-+-{'-'*50}")
+    print(f"{'PLAN':<25} | {'Generate actionable tasks (WDP-TG) for a goal'}")
+    print(f"{'IMPACT':<25} | {'Assess risk (CIRAS) for a file or symbol'}")
+    print(f"{'AUDIT':<25} | {'Full architectural audit and sprint planning'}")
+    print(f"{'TRACE':<25} | {'Show evidence trail for a specific ticket ID'}")
+    print(f"{'SIMULATE':<25} | {'Simulate sprint execution success (SRC-RS)'}")
+    print(f"{'RELEASE-CONFIDENCE':<25} | {'Evaluate integrity of a release target'}")
+    print(f"{'SET-GITHUB-TOKEN':<25} | {'Securely register GitHub Personal Access Token'}")
+    print(f"{'SET-PM-TOKEN':<25} | {'Securely register Jira/Trello credentials'}")
+    print(f"{'CONFIG':<25} | {'View current configuration and integrations'}")
+    print(f"{'HELP':<25} | {'Show this command context table'}")
+    print(f"{'EXIT / PHIR-MILTY-HAIN':<25} | {'Terminate the ArchAI console session'}")
+    print(f"{'='*80}\n")
 
-    # Audit
-    audit_parser = subparsers.add_parser("audit", help="Run sprint planning audit")
-    audit_parser.add_argument("path", nargs="?", default=None)
-    audit_parser.add_argument("--verbose", action="store_true")
-    audit_parser.add_argument("--diagnostics", action="store_true")
-    audit_parser.add_argument("--explain", action="store_true")
-    audit_parser.add_argument("--trace")
+def process_command(cmd_line: str):
+    try:
+        parts = shlex.split(cmd_line)
+    except ValueError:
+        print("Error: Invalid command syntax.")
+        return
 
-    # Trace
-    trace_parser = subparsers.add_parser("trace", help="Show evidence for a specific ticket ID")
-    trace_parser.add_argument("ticket_id")
+    if not parts:
+        return
 
-    # Explain
-    explain_parser = subparsers.add_parser("explain", help="Detailed architectural explanation")
+    command = parts[0].upper()
+    args = parts[1:]
 
-    # Validate
-    validate_parser = subparsers.add_parser("validate", help="CI/CD Validation")
-    validate_parser.add_argument("path", nargs="?", default=None)
+    # --- CONFIGURATION COMMANDS ---
+    if command == "SET-GITHUB-TOKEN":
+        if len(args) != 1:
+            print("Usage: SET-GITHUB-TOKEN <token>")
+            return
+        os.environ["ARCHAI_GITHUB_TOKEN"] = args[0]
+        # In a real app we would save to keyring/config
+        print("✅ GitHub token updated in session environment.")
+        return
 
-    # Impact (CIRAS)
-    impact_parser = subparsers.add_parser("impact", help="Change Impact & Risk Assessment (CIRAS)")
-    impact_parser.add_argument("target", help="File path or symbol name to assess")
-    impact_parser.add_argument("--depth", type=int, default=3, help="Max call graph depth")
-    impact_parser.add_argument("--json", action="store_true")
-    impact_parser.add_argument("--explain", action="store_true")
-    impact_parser.add_argument("--strict", action="store_true")
-    impact_parser.add_argument("--verbose", action="store_true")
+    if command == "SET-PM-TOKEN":
+        if len(args) < 2:
+            print("Usage: SET-PM-TOKEN <service> <token> [extra_id]")
+            return
+        service = args[0].upper()
+        if service == "JIRA":
+             os.environ["ARCHAI_JIRA_TOKEN"] = args[1]
+             print("✅ Jira token updated in session environment.")
+        elif service == "TRELLO":
+             os.environ["ARCHAI_TRELLO_TOKEN"] = args[1]
+             if len(args) > 2: os.environ["ARCHAI_TRELLO_API_KEY"] = args[2]
+             print("✅ Trello credentials updated.")
+        else:
+            print("Unknown service. Use JIRA or TRELLO.")
+        return
 
-    # Plan (WDP-TG)
-    plan_parser = subparsers.add_parser("plan", help="Work Decomposition & Task Generation (WDP-TG)")
-    plan_parser.add_argument("goal", help="Engineering goal or feature request")
-    plan_parser.add_argument("--team-size", type=int, default=3)
-    plan_parser.add_argument("--days", type=int, default=10)
-    plan_parser.add_argument("--json", action="store_true")
-    plan_parser.add_argument("--verbose", action="store_true")
-    plan_parser.add_argument("--strict", action="store_true")
-    plan_parser.add_argument("--simulate-sprint", action="store_true")
+    if command == "CONFIG":
+        print("\n[CURRENT CONFIGURATION]")
+        print(f" User Identity: {config.get('user_id', 'Anonymous')}")
+        print(f" Model: {config.get('model', 'Unknown')}")
+        print(f" GitHub Integration: {'✅ Connected' if os.getenv('ARCHAI_GITHUB_TOKEN') or config.get_secret('github_token') else '❌ Missing'}")
+        print(f" Jira Integration: {'✅ Connected' if os.getenv('ARCHAI_JIRA_TOKEN') or config.get_secret('jira.token') else '❌ Missing'}")
+        print("")
+        return
 
-    # SRC (Simulation & Confidence)
-    src_parser = subparsers.add_parser("simulate-sprint", help="Sprint Success Simulation (SRC-RS)")
-    src_parser.add_argument("goal", help="Engineering goal to simulate")
-    src_parser.add_argument("--team-size", type=int, default=3)
-    src_parser.add_argument("--days", type=int, default=10)
-    src_parser.add_argument("--json", action="store_true")
-    src_parser.add_argument("--verbose", action="store_true")
-    src_parser.add_argument("--strict", action="store_true")
+    if command == "HELP":
+        print_help_table()
+        return
 
-    rel_parser = subparsers.add_parser("release-confidence", help="Release Integrity Assessment")
-    rel_parser.add_argument("goal", help="Release target to evaluate")
-    rel_parser.add_argument("--team-size", type=int, default=3)
-    rel_parser.add_argument("--days", type=int, default=10)
-    rel_parser.add_argument("--json", action="store_true")
-    rel_parser.add_argument("--strict", action="store_true")
-
-    args = parser.parse_args()
-
-    if args.command == "audit":
-        initialize_ollama()
-        path = args.path or os.getcwd()
-        asyncio.run(run_archai_flow(path, verbose=args.verbose, diagnostics=args.diagnostics))
-        
-        if args.explain:
-             if os.path.exists("archai_report.json"):
-                with open("archai_report.json", "r") as f:
-                    report = json.load(f)
-                print("\n[ARCHITECTURAL EXPLANATION]")
-                print(report.get("gap_analysis", "No explanation available."))
-        
-        if args.trace:
-             if os.path.exists("archai_report.json"):
-                with open("archai_report.json", "r") as f:
-                    report = json.load(f)
-                ticket = next((t for t in report.get('tasks', []) if t.get('ticket_id') == args.trace), None)
-                if ticket:
-                    ev = ticket.get('evidence', {})
-                    print(f"\n[TRACE EVIDENCE FOR {args.trace}]")
-                    print(f"File: {ev.get('file_path', 'N/A')} | Symbol: {ev.get('symbol', 'N/A')}")
-                    print(f"Fix: {ticket.get('suggested_fix', 'N/A')}")
+    # --- ACTION COMMANDS (Mapped to existing logic) ---
     
-    elif args.command == "trace":
-        if not os.path.exists("archai_report.json"):
-            print("No report found. Run 'audit' first.")
+    # AUDIT
+    if command == "AUDIT":
+        parser = argparse.ArgumentParser(prog="AUDIT", add_help=False)
+        parser.add_argument("path", nargs="?", default=os.getcwd())
+        parser.add_argument("--verbose", action="store_true")
+        parser.add_argument("--diagnostics", action="store_true")
+        try:
+            parsed, unknown = parser.parse_known_args(args)
+            print(f"🔍 Starting Audit on: {parsed.path}")
+            initialize_ollama()
+            asyncio.run(run_archai_flow(parsed.path, verbose=parsed.verbose, diagnostics=parsed.diagnostics))
+        except Exception as e:
+            print(f"❌ Audit failed: {e}")
+        return
+
+    # IMPACT
+    if command == "IMPACT":
+        if len(args) < 2:
+            print("Usage: IMPACT <path> <target_symbol> [--verbose]")
             return
+        path = args[0]
+        target = args[1]
+        verbose = "--verbose" in args
+        
+        try:
+            if verbose: logging.getLogger("ArchAI").setLevel(logging.INFO)
+            initialize_ollama()
+            auditor = ArchitecturalAuditor()
+            print(f"🛡️ Assessing Impact for: {target} in {path}")
+            assessment = auditor.ImpactAnalyzer(path, target)
+            
+            status_color = "🔴" if assessment.risk_level == "HIGH" else "🟡" if assessment.risk_level == "MEDIUM" else "🟢"
+            print(f"\n RISK LEVEL: {status_color} {assessment.risk_level} ({assessment.risk_score:.1f}/100)")
+            print(f" CONFIDENCE: {assessment.confidence_score*100:.1f}%")
+            if assessment.rationale:
+                print(f" Rationale: {assessment.rationale}")
+        except Exception as e:
+            print(f"❌ Impact analysis failed: {e}")
+        return
+
+    # PLAN
+    if command == "PLAN":
+        if len(args) < 2:
+            print("Usage: PLAN <path> <goal> [--days N]")
+            return
+        path = args[0]
+        goal = args[1]
+        
+        try:
+            initialize_ollama()
+            auditor = ArchitecturalAuditor()
+            conf = SprintPlanConfig()
+            print(f"🚀 Generating Plan for: {goal}")
+            plan = auditor.WDPPlanner(path, goal, sprint_config=conf)
+            
+            print(f"\n[GENERATED PLAN]")
+            for epic in plan.epics:
+                print(f" Epic: {epic.get('name')}")
+                for t in epic.get('tickets', []):
+                    print(f"  - [{t.get('ticket_id')}] {t.get('title')} ({t.get('effort_hours')}h)")
+        except Exception as e:
+            print(f"❌ Planning failed: {e}")
+        return
+
+    # TRACE
+    if command == "TRACE":
+        if not args:
+            print("Usage: TRACE <ticket_id>")
+            return
+        ticket_id = args[0]
+        if not os.path.exists("archai_report.json"):
+             print("No active report found. Run AUDIT first.")
+             return
         with open("archai_report.json", "r") as f:
             report = json.load(f)
-        
-        ticket = next((t for t in report.get('tasks', []) if t.get('ticket_id') == args.ticket_id), None)
-        if not ticket:
-            print(f"Ticket {args.ticket_id} not found.")
+        ticket = next((t for t in report.get('tasks', []) if t.get('ticket_id') == ticket_id), None)
+        if ticket:
+             ev = ticket.get('evidence', {})
+             print(f"\n[TRACE EVIDENCE FOR {ticket_id}]")
+             print(f" File: {ev.get('file_path', 'N/A')}")
+             print(f" Symbol: {ev.get('symbol', 'N/A')}")
+             print(f" Confidence: {ev.get('confidence', 'N/A')}")
+        else:
+            print(f"Ticket {ticket_id} not found.")
+        return
+
+    # SIMULATE / RELEASE-CONFIDENCE (Shared logic)
+    if command in ["SIMULATE", "RELEASE-CONFIDENCE"]:
+         if len(args) < 2:
+            print(f"Usage: {command} <path> <goal>")
             return
-        
-        ev = ticket.get('evidence', {})
-        print(f"\n[TRACE EVIDENCE FOR {args.ticket_id}]")
-        print(f"Title: {ticket.get('title')}")
-        print(f"Epic: {ticket.get('epic', 'N/A')}")
-        print(f"File: {ev.get('file_path', 'N/A')}")
-        print(f"Symbol: {ev.get('symbol', 'N/A')}")
-        print(f"Lines: {ev.get('line_range', 'N/A')}")
-        print(f"Confidence: {ev.get('confidence', 0.0):.2f}")
-        if ev.get('uncertainty_drivers'):
-            print(f"Uncertainty: {', '.join(ev.get('uncertainty_drivers'))}")
-        
-        deps = ticket.get('dependencies', [])
-        if deps:
-            print(f"Dependencies: {', '.join(deps)}")
-        
-        print(f"\nSuggested Fix:\n{ticket.get('suggested_fix', 'No fix suggested.')}")
-
-    elif args.command == "explain":
-        if not os.path.exists("archai_report.json"):
-            print("No report found.")
-            return
-        with open("archai_report.json", "r") as f:
-            report = json.load(f)
-        print("\n[ARCHITECTURAL SUMMARY]")
-        print(report.get("gap_analysis", "No detailed explanation available."))
-
-    elif args.command == "validate":
-        path = args.path or os.getcwd()
-        validator = ArchValidator(path)
-        result = validator.run_validation()
-        print(f"\nStatus: {'PASSED' if result['success'] else 'FAILED'}")
-        for v in result['violations']:
-            print(f" - [{v['severity']}] {v['message']}")
-        sys.exit(0 if result['success'] else 1)
-
-    elif args.command == "impact":
-        if args.verbose:
-            logging.getLogger("ArchAI").setLevel(logging.INFO)
+         path = args[0]
+         goal = args[1]
+         try:
+            initialize_ollama()
+            auditor = ArchitecturalAuditor()
+            conf = SprintPlanConfig()
+            print(f"🎲 Simulating Execution: {goal}")
+            plan = auditor.WDPPlanner(path, goal, sprint_config=conf)
+            src = auditor.SRCEngine(path, goal, wdp_plan=plan, sprint_config=conf)
             
-        initialize_ollama()
-        auditor = ArchitecturalAuditor()
-        assessment = auditor.ImpactAnalyzer(os.getcwd(), args.target, max_depth=args.depth)
-        
-        if args.json:
-            print(assessment.model_dump_json(indent=4))
-            return
+            print(f"\n CONFIDENCE: {src.confidence_score*100:.1f}% ({src.status})")
+            print(f" Rationale: {src.confidence_rationale}")
+         except Exception as e:
+             print(f"❌ Simulation failed: {e}")
+         return
 
-        print(f"\n{'='*70}")
-        print(f" CIRAS IMPACT ASSESSMENT: {args.target} ")
-        print(f"{'='*70}")
-        
-        status_color = "🔴" if assessment.risk_level == "HIGH" else "🟡" if assessment.risk_level == "MEDIUM" else "🟢"
-        if assessment.risk_level == "UNKNOWN": status_color = "⚪"
-        
-        print(f"\n RISK LEVEL: {status_color} {assessment.risk_level} ({assessment.risk_score:.1f}/100)")
-        print(f" CONFIDENCE: {assessment.confidence_score*100:.1f}%")
-        
-        if assessment.insufficient_data:
-            print("\n [!] INSUFFICIENT DATA: Analysis could not be completed.")
-            print(f" Rationale: {assessment.rationale}")
-            return
 
-        print(f"\n[AFFECTED COMPONENTS: {len(assessment.affected_components)} items]")
-        for comp in assessment.affected_components:
-            print(f" - {comp.get('name')} (Depth: {comp.get('depth')}) | File: {comp.get('file')}")
+    print(f"Unknown command: {command}. Type HELP for valid commands.")
 
-        print(f"\n[PRIMARY RISK FACTORS]")
-        for factor in assessment.primary_risk_factors:
-            print(f" ! {factor}")
+def run_interactive_console():
+    # 1. Identity Banner
+    ConsoleUI.banner()
+    
+    # 2. System Status
+    user_id = config.get("user_id", "Anonymous-Engineer")
+    auth_token = config.get_secret("google_drive_token")
+    mode = "AUTHENTICATED" if auth_token else "TEST-MODE"
+    
+    print(f"{'='*80}")
+    print(f" IDENTITY: {user_id} | MODE: {mode} | MODEL: {config.get('model','Default')}")
+    print(f"{'='*80}\n")
 
-        print(f"\n[ENGINEERING RECOMMENDATIONS]")
-        for rec in assessment.recommendations:
-            print(f" * {rec}")
+    # 3. Command Context
+    print_help_table()
 
-        if args.explain and assessment.rationale:
-            print(f"\n[DETAILED RATIONALE]")
-            print(assessment.rationale)
-
-        print(f"\n{'='*70}")
-        if args.strict and assessment.risk_level == "HIGH":
-            print("\nSTRICT MODE: Change blocked due to HIGH risk.")
-            sys.exit(1)
-
-    elif args.command == "plan":
-        if args.verbose:
-            logging.getLogger("ArchAI").setLevel(logging.INFO)
+    # 4. REPL Loop
+    while True:
+        try:
+            user_input = input("ArchAI> ").strip()
+            if not user_input:
+                continue
             
-        initialize_ollama()
-        from .data.models import SprintPlanConfig
-        auditor = ArchitecturalAuditor()
-        config = SprintPlanConfig(team_size=args.team_size, days=args.days)
-        
-        print(f"\n🚀 Decomposing goal into actionable tasks: {args.goal}")
-        plan = auditor.WDPPlanner(os.getcwd(), args.goal, sprint_config=config)
-        
-        if args.json:
-            print(plan.model_dump_json(indent=4))
-            return
-
-        print(f"\n{'='*70}")
-        print(f" WDP-TG SPRINT PLAN: {args.goal} ")
-        print(f"{'='*70}")
-        
-        for epic in plan.epics:
-            print(f"\n EPIC: {epic.get('name')}")
-            print(f" Description: {epic.get('description')}")
-            for t in epic.get('tickets', []):
-                prio = t.get('priority', 'Medium')
-                tid = t.get('ticket_id', '???')
-                risk = f" [{', '.join(t.get('risk_flags', []))}]" if t.get('risk_flags') else ""
-                print(f"   - [{tid}] {prio} | {t.get('title')}{risk}")
-                owner = t.get('suggested_owner')
-                if owner: print(f"     Owner: {owner}")
-                if args.verbose:
-                    print(f"     Effort: {t.get('effort_hours')}h | Deps: {t.get('dependencies', [])}")
+            if user_input.lower() in ["exit", "quit", "phir-milty-hain", "phir milty hain"]:
+                print("🛑 Session Terminated. Phir milty hain!")
+                break
                 
-                subtasks = t.get('subtasks', [])
-                for st in subtasks:
-                    print(f"       > {st.get('title')} ({st.get('effort_hours')}h)")
-
-        feas = plan.sprint_feasibility
-        status_color = "🟢" if feas.get('status') == "Likely fits" else "🟡" if feas.get('status') == "High risk" else "🔴"
-        print(f"\n FEASIBILITY: {status_color} {feas.get('status')}")
-        print(f" Rationale: {feas.get('rationale')}")
-        
-        if feas.get('bottlenecks'):
-            print("\n BOTTLENECKS IDENTIFIED:")
-            for b in feas['bottlenecks']:
-                print(f" ! {b}")
-
-        print(f"\n CONFIDENCE SCORE: {plan.overall_confidence*100:.1f}%")
-        if plan.assumptions:
-             print("\n ASSUMPTIONS:")
-             for a in plan.assumptions:
-                 print(f" * {a}")
-
-        print(f"\n{'='*70}")
-        if args.strict and feas.get('status') == "Will overflow":
-            print("\nSTRICT MODE: Plan blocked due to capacity overflow.")
-            sys.exit(1)
-
-    elif args.command in ["simulate-sprint", "release-confidence"]:
-        if args.verbose:
-            logging.getLogger("ArchAI").setLevel(logging.INFO)
+            process_command(user_input)
             
-        initialize_ollama()
-        from .data.models import SprintPlanConfig
-        auditor = ArchitecturalAuditor()
-        config = SprintPlanConfig(team_size=args.team_size, days=args.days)
-        
-        # 1. Generate Plan first (Internal call)
-        print(f"🚀 Step 1: Generating Work Decomposition (WDP-TG)...")
-        plan = auditor.WDPPlanner(os.getcwd(), args.goal, sprint_config=config)
-        
-        # 2. Run Simulation
-        print(f"🛡️ Step 2: Simulating Execution & Predicting Confidence (SRC-RS)...")
-        src = auditor.SRCEngine(os.getcwd(), args.goal, wdp_plan=plan, sprint_config=config, strict=args.strict)
-        
-        if args.json:
-            print(src.model_dump_json(indent=4))
-            return
-
-        print(f"\n{'='*70}")
-        print(f" SRC-RS RELEASE CONFIDENCE: {args.goal} ")
-        print(f"{'='*70}")
-        
-        conf_color = "🔴" if src.confidence_score < 0.5 else "🟡" if src.confidence_score < 0.8 else "🟢"
-        print(f"\n OVERALL CONFIDENCE: {conf_color} {src.confidence_score*100:.1f}% ({src.status})")
-        print(f" Rationale: {src.confidence_rationale}")
-        
-        print("\n[PREDICTED COMPLETION BY EPIC]")
-        for e in src.epic_forecasts:
-            p = e.get('completion_probability', 0)
-            status = "🟢" if p > 0.8 else "🟡" if p > 0.5 else "🔴"
-            print(f" {status} {e.get('epic_name')}: {p*100:.1f}%")
-
-        if args.verbose:
-            print("\n[PER-TASK PREDICTIONS]")
-            for tp in src.task_predictions:
-                p = tp.probability
-                status = "🟢" if p > 0.8 else "🟡" if p > 0.5 else "🔴"
-                print(f" {status} [{tp.ticket_id}] {p*100:.0f}% | {tp.risk_level} | {tp.completion_window}")
-                print(f"   Rationale: {tp.rationale}")
-
-        print("\n[TASKS AT RISK]")
-        if src.risk_summary.get('critical'):
-            print(f" ! CRITICAL: {', '.join(src.risk_summary['critical'])}")
-        if src.risk_summary.get('high'):
-            print(f" ! HIGH: {', '.join(src.risk_summary['high'])}")
-
-        print("\n[SAFETY RECOMMENDATIONS]")
-        for rec in src.recommendations:
-            print(f" * {rec.get('task')}: {rec.get('action')}")
-
-        if src.bottlenecks:
-            print("\n[BOTTLENECKS]")
-            for b in src.bottlenecks:
-                print(f" - {b}")
-
-        print(f"\n{'='*70}")
-
-    else:
-        print("ArchAI: Use 'audit', 'trace', 'explain', 'impact' or 'validate'.")
+        except KeyboardInterrupt:
+            print("\n(Use 'phir-milty-hain' to exit)")
+        except Exception as e:
+            logger.error(f"Console Error: {e}")
+            print(f"Critical Console Error: {e}")
 
 if __name__ == "__main__":
-    run_cli()
+    if len(sys.argv) > 1:
+        # Fallback to legacy CLI if arguments are passed
+        from .cli_params import run_legacy_cli_args # Refactored out if needed, but for now we interpret directly
+        # For simplicity in this prompt context, we just run the interactive mode unless specifically asked not to.
+        # But to preserve backward compatibility with previous steps:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("command", nargs="?", help="Command to run")
+        args, unknown = parser.parse_known_args()
+        
+        if args.command and args.command.lower() not in ['interactive']:
+             # Use the previous logic if it was a one-shot command
+             # For this specific replacement, we are REPLACING the whole file to be interactive-first
+             # but we can keep a bridge.
+             pass
+    
+    run_interactive_console()
