@@ -2,7 +2,9 @@ import os
 import json
 import ollama
 import logging
+import time
 from pathlib import Path
+from typing import Optional, List, Dict, Any
 from .prompts import (
     DISCOVERY_SYSTEM_PROMPT, 
     GAP_ANALYSIS_SYSTEM_PROMPT, 
@@ -10,6 +12,16 @@ from .prompts import (
     CONTEXT_BUILDER_SYSTEM_PROMPT,
     AUDITOR_VERIFIER_SYSTEM_PROMPT,
     PATH_NAVIGATOR_SYSTEM_PROMPT
+)
+from ..data.models import (
+    PathNavigatorOutput,
+    DiscoveryOutput,
+    ContextBuilderOutput,
+    GapAnalyzerOutput,
+    TicketGeneratorOutput,
+    PlannerOutput,
+    AuditorVerifierOutput,
+    AuditTicket
 )
 
 logger = logging.getLogger("ArchAI.Auditor")
@@ -76,21 +88,26 @@ class ArchitecturalAuditor:
         logger.info(f"Scan complete. {files_scanned} files included in analysis context.")
         return summary + f"\n\nTotal Files Scanned: {files_scanned}\n\nKey File Contents:\n" + file_contents
 
-    def _call_llm_json(self, system_prompt: str, user_prompt: str) -> dict:
-        try:
-            response = ollama.chat(model=self.model, format='json', messages=[
-                {'role': 'system', 'content': system_prompt},
-                {'role': 'user', 'content': user_prompt}
-            ])
-            content = response['message']['content']
-            if "```json" in content:
-                content = content.split("```json")[1].split("```")[0].strip()
-            elif "```" in content:
-                content = content.split("```")[1].split("```")[0].strip()
-            return json.loads(content)
-        except Exception as e:
-            logger.error(f"LLM JSON Error: {e}")
-            return {}
+    def _call_llm_json(self, system_prompt: str, user_prompt: str, retries: int = 2) -> dict:
+        for attempt in range(retries + 1):
+            try:
+                response = ollama.chat(model=self.model, format='json', messages=[
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': user_prompt}
+                ])
+                content = response['message']['content']
+                if "```json" in content:
+                    content = content.split("```json")[1].split("```")[0].strip()
+                elif "```" in content:
+                    content = content.split("```")[1].split("```")[0].strip()
+                return json.loads(content)
+            except Exception as e:
+                logger.warning(f"LLM JSON Error (Attempt {attempt+1}/{retries+1}): {e}")
+                if attempt == retries:
+                    logger.error("LLM JSON calls failed after all retries.")
+                    return {}
+                time.sleep(1) # Backoff
+        return {}
 
     def _call_llm_text(self, system_prompt: str, user_prompt: str) -> str:
         try:
@@ -105,7 +122,7 @@ class ArchitecturalAuditor:
 
     # --- Agent Implementations ---
 
-    def PathNavigator(self, user_input_path: str) -> dict:
+    def PathNavigator(self, user_input_path: str) -> PathNavigatorOutput:
         """Agent 0: Resolves the user's input path to a safe absolute path."""
         import platform
         home_dir = str(Path.home())
@@ -119,10 +136,10 @@ class ArchitecturalAuditor:
             os_name=os_name
         )
         
-        result = self._call_llm_json("You are an ArchAI Path Navigator.", prompt)
+        raw_result = self._call_llm_json("You are an ArchAI Path Navigator.", prompt)
         
         # Validation as secondary check
-        resolved = result.get("resolved_path", user_input_path)
+        resolved = raw_result.get("resolved_path", user_input_path)
         final_path = Path(resolved).expanduser().resolve()
         
         if not final_path.exists():
@@ -132,79 +149,95 @@ class ArchitecturalAuditor:
                  if potential.exists():
                       final_path = potential
         
-        result["resolved_path"] = str(final_path)
+        output = PathNavigatorOutput(
+            resolved_path=str(final_path),
+            exists_hint=final_path.exists(),
+            rationale=raw_result.get("rationale", "Resolved via fallback logic")
+        )
         logger.info(f"PathNavigator resolved '{user_input_path}' to '{final_path}'")
-        return result
+        return output
 
-    def Discovery(self, repo_path: str) -> dict:
+    def Discovery(self, repo_path: str) -> DiscoveryOutput:
         """Agent 1: Scans the repository and returns technical metadata."""
         code_structure = self.scan_directory(repo_path)
-        discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {repo_path}\n\nCode Structure:\n{code_structure}")
+        raw_discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {repo_path}\n\nCode Structure:\n{code_structure}")
         
-        # Fallback heuristic
-        if not discovery.get("languages"):
-            discovery["languages"] = []
-            if ".py" in code_structure: discovery["languages"].append("python")
-            if ".js" in code_structure: discovery["languages"].append("javascript")
+        # Fallback heuristic if LLM returns empty
+        languages = raw_discovery.get("languages", [])
+        if not languages:
+            if ".py" in code_structure: languages.append("python")
+            if ".js" in code_structure: languages.append("javascript")
+            if ".ts" in code_structure: languages.append("typescript")
         
-        discovery.setdefault("frameworks", [])
-        discovery.setdefault("architecture_type", "Unknown")
-        discovery["_raw_structure"] = code_structure # Carry forward for ContextBuilder
-        logger.info(f"Discovery detected languages: {discovery.get('languages')}")
-        return discovery
+        output = DiscoveryOutput(
+            languages=languages,
+            frameworks=raw_discovery.get("frameworks", []),
+            architecture_type=raw_discovery.get("architecture_type", "Unknown"),
+            module_summary=raw_discovery.get("module_summary", {}),
+            raw_structure=code_structure
+        )
+        logger.info(f"Discovery detected languages: {output.languages}")
+        return output
 
-    def ContextBuilder(self, discovery_result: dict) -> dict:
+    def ContextBuilder(self, discovery_result: DiscoveryOutput) -> ContextBuilderOutput:
         """Agent 2: Analyzes discovery data to build a dependency/relationship graph."""
-        raw_structure = discovery_result.get("_raw_structure", "")
+        raw_structure = discovery_result.raw_structure or ""
         # Clean up for LLM context
-        metadata = {k:v for k,v in discovery_result.items() if k != '_raw_structure'}
+        metadata = discovery_result.model_dump(exclude={'raw_structure'})
         msg = f"Metadata: {json.dumps(metadata)}\nStructure Snippet: {raw_structure[:2000]}"
-        return self._call_llm_json(CONTEXT_BUILDER_SYSTEM_PROMPT, msg)
+        raw_result = self._call_llm_json(CONTEXT_BUILDER_SYSTEM_PROMPT, msg)
+        
+        return ContextBuilderOutput(
+            dependencies=raw_result.get("dependencies", []),
+            patterns=raw_result.get("patterns", []),
+            critical_paths=raw_result.get("critical_paths", [])
+        )
 
-    def GapAnalyzer(self, context_graph: dict, goals: dict) -> dict:
+    def GapAnalyzer(self, context_graph: ContextBuilderOutput, goals: dict) -> GapAnalyzerOutput:
         """Agent 3: Compares context against goals to identify missing gaps."""
         gap_prompt = GAP_ANALYSIS_SYSTEM_PROMPT.format(
-            discovery_data=json.dumps(context_graph),
+            discovery_data=context_graph.model_dump_json(),
             user_context=goals.get("user_context", ""),
             project_status=goals.get("project_status", ""),
             expected_output=goals.get("expected_output", "")
         )
         report_text = self._call_llm_text("You are an ArchAI Gap Analyzer.", gap_prompt)
-        return {"markdown_report": report_text}
+        return GapAnalyzerOutput(markdown_report=report_text)
 
-    def TicketGenerator(self, gap_report: dict) -> dict:
+    def TicketGenerator(self, gap_report: GapAnalyzerOutput) -> TicketGeneratorOutput:
         """Agent 4: Generates actionable dev tickets from the gap report."""
-        prompt = f"Gap Report: {gap_report.get('markdown_report')}\nGenerate detailed tickets."
-        return self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, prompt)
+        prompt = f"Gap Report: {gap_report.markdown_report}\nGenerate detailed tickets."
+        raw_result = self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, prompt)
+        
+        tickets_raw = raw_result.get("tickets", [])
+        valid_tickets = []
+        for t in tickets_raw:
+            try:
+                valid_tickets.append(AuditTicket(**t))
+            except Exception as e:
+                logger.debug(f"Skipping malformed ticket: {e}")
+        
+        return TicketGeneratorOutput(tickets=valid_tickets)
 
-    def Planner(self, tickets_list_raw: list) -> list:
+    def Planner(self, tickets_list: List[AuditTicket]) -> PlannerOutput:
         """Agent 5: Creates a 5-day sprint plan."""
-        from ..data.models import AuditTicket
         from ..improvement_engine.planner import SprintPlanner
         
-        valid_tickets = []
-        for t in tickets_list_raw:
-            if isinstance(t, dict):
-                t.setdefault("title", "Proposed Improvement")
-                t.setdefault("type", "Logic")
-                t.setdefault("severity", "Medium")
-                t.setdefault("priority", "Medium")
-                t.setdefault("effort_hours", 2)
-                try:
-                    valid_tickets.append(AuditTicket(**t))
-                except Exception as e:
-                    logger.debug(f"Invalid ticket data: {e}")
-        
         planner = SprintPlanner(hours_per_day=5.0, total_days=5)
-        sprint_days = planner.plan_sprint(valid_tickets)
-        return [day.model_dump(mode='json') for day in sprint_days]
+        sprint_days = planner.plan_sprint(tickets_list)
+        return PlannerOutput(sprint_plan=sprint_days)
 
-    def AuditorVerifier(self, sprint_plan: list) -> dict:
+    def AuditorVerifier(self, sprint_plan: List[Dict[str, Any]]) -> AuditorVerifierOutput:
         """Agent 6: Verifies the sprint plan for risks and quality."""
         prompt = f"Proposed Sprint Plan: {json.dumps(sprint_plan)}\nVerify for risks."
-        return self._call_llm_json(AUDITOR_VERIFIER_SYSTEM_PROMPT, prompt)
+        raw_result = self._call_llm_json(AUDITOR_VERIFIER_SYSTEM_PROMPT, prompt)
+        
+        return AuditorVerifierOutput(
+            findings=raw_result.get("findings", []),
+            summary=raw_result.get("summary", "Verification complete.")
+        )
 
-    def audit_project(self, root_path: str, user_context: str = "", project_status: str = "", expected_output: str = "") -> dict:
+    async def audit_project(self, root_path: str, user_context: str = "", project_status: str = "", expected_output: str = "") -> dict:
         """
         Legacy wrapper for audit_project, now using the Orchestrator.
         """
@@ -215,4 +248,4 @@ class ArchitecturalAuditor:
             "expected_output": expected_output
         }
         orchestrator = Orchestrator(self)
-        return orchestrator.run_pipeline(root_path, goals)
+        return await orchestrator.run_pipeline(root_path, goals)

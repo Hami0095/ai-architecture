@@ -35,7 +35,7 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     print(f"\nStarting ArchAI Analysis for: {path}")
     
     # Run the audit
-    report = auditor.audit_project(
+    report = await auditor.audit_project(
         root_path=path,
         user_context=context or "General software project",
         project_status=status or "Early Prototype",
@@ -52,48 +52,38 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     print(f"{'='*60}")
     
     # The new orchestrator uses keys like 'tasks' and 'sprintPlan'
-    tasks = report.get('tasks') or report.get('tickets', [])
-    sprint_plan = report.get('sprintPlan') or report.get('sprint_plan', [])
+    tasks = report.get('tasks', [])
+    sprint_plan = report.get('sprintPlan', [])
     
-    # Discovery may be nested in 'discovery' or summarized in 'notes'
-    if 'discovery' in report:
-        discovery = report['discovery']
-        print(f"\n[DISCOVERY]")
-        print(f" - Languages: {', '.join(discovery.get('languages', []))}")
-        print(f" - Frameworks: {', '.join(discovery.get('frameworks', []))}")
-        print(f" - Arch Type: {discovery.get('architecture_type', 'Unknown')}")
-    
-    print(f"\n[GAP ANALYSIS]")
-    gap_data = report.get('gap_analysis') or report.get('goal', 'Gaps identified by Orchestrator.')
-    print(gap_data)
+    if 'discoveryMetrics' in report.get('performance', {}):
+        metrics = report['performance']['discoveryMetrics']
+        print(f"\n[DISCOVERY METRICS]")
+        print(f" - Languages: {', '.join(metrics.get('languages', []))}")
+        print(f" - Frameworks: {', '.join(metrics.get('frameworks', []))}")
     
     print(f"\n[TASKS FOUND: {len(tasks)}]")
     for t in tasks:
-        # Resolve camelCase vs snake_case
         priority = t.get('priority', 'Medium')
         title = t.get('title', 'Unknown Task')
-        effort = t.get('effortHours') or t.get('effort_hours', 2)
+        effort = t.get('effortHours', 2)
         print(f" - [{priority}] {title} ({effort}h)")
 
     print(f"\n[5-DAY SPRINT PLAN]")
     for day in sprint_plan:
         day_name = day.get('day')
-        hours = day.get('totalHours') or day.get('total_hours', 0)
-        day_tasks = day.get('taskIds') or day.get('tickets', [])
+        hours = day.get('total_hours', 0)
+        day_tasks = day.get('tickets', [])
         
         if day_tasks:
             print(f" {day_name} ({hours}h):")
             for t in day_tasks:
-                if isinstance(t, str): # taskId
-                    print(f"   * {t}")
-                else: # Ticket object
-                    print(f"   * {t.get('title')} [{t.get('module') or 'General'}]")
+                print(f"   * {t.get('title')} [{t.get('module') or 'General'}]")
         else:
             print(f" {day_name}: No tasks assigned.")
 
     print(f"\n{'='*60}")
     print(f"Full report saved to archai_report.json")
-    print(f"Final Audit Notes: {report.get('notes', report.get('summary', 'Audit Complete'))}")
+    print(f"Final Summary: {report.get('summary', 'Audit Complete')}")
     print(f"{'='*60}")
 
 async def run_improvement_loop():

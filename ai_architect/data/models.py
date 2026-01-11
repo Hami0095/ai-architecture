@@ -73,3 +73,35 @@ class AgentState(BaseModel):
             if response.agent_name == agent_name and response.success:
                 return response.data
         return None
+
+# --- Specific Agent Protocols ---
+
+class PathNavigatorOutput(BaseModel):
+    resolved_path: str
+    exists_hint: bool
+    rationale: str
+
+class DiscoveryOutput(BaseModel):
+    languages: List[str]
+    frameworks: List[str]
+    architecture_type: str
+    module_summary: Dict[str, str]
+    raw_structure: Optional[str] = None
+
+class ContextBuilderOutput(BaseModel):
+    dependencies: List[Dict[str, str]]
+    patterns: List[str]
+    critical_paths: List[str]
+
+class GapAnalyzerOutput(BaseModel):
+    markdown_report: str
+
+class TicketGeneratorOutput(BaseModel):
+    tickets: List[AuditTicket]
+
+class PlannerOutput(BaseModel):
+    sprint_plan: List[SprintDay]
+
+class AuditorVerifierOutput(BaseModel):
+    findings: List[Dict[str, Any]]
+    summary: str

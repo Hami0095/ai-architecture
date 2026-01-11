@@ -1,10 +1,21 @@
 import json
 import logging
 import time
-import os
+import asyncio
 from pathlib import Path
-from typing import Dict, Any, List, Optional
-from ..data.models import AgentState, AgentResponse
+from typing import Dict, Any, List, Optional, Union
+from pydantic import BaseModel
+from ..data.models import (
+    AgentState, 
+    AgentResponse,
+    PathNavigatorOutput,
+    DiscoveryOutput,
+    ContextBuilderOutput,
+    GapAnalyzerOutput,
+    TicketGeneratorOutput,
+    PlannerOutput,
+    AuditorVerifierOutput
+)
 from ..improvement_engine.analyzer import ProactiveStabilityAnalyzer
 
 # Set up logger
@@ -18,25 +29,34 @@ class Orchestrator:
         self.state: Optional[AgentState] = None
         self.stability_analyzer = ProactiveStabilityAnalyzer(model=auditor_instance.model)
 
-    def _execute_agent(self, agent_name: str, func, *args, **kwargs) -> bool:
+    async def _execute_agent(self, agent_name: str, func, *args, **kwargs) -> bool:
         """
-        Executes a single agent with monitoring and state recording.
+        Executes a single agent with monitoring, state recording, and output validation.
+        Supports both sync and async functions.
         """
         start_time = time.time()
         self.logger.info(f"--- [Agent START] {agent_name} ---")
         
         try:
-            result = func(*args, **kwargs)
+            # Handle both sync and async agent functions
+            if asyncio.iscoroutinefunction(func):
+                result = await func(*args, **kwargs)
+            else:
+                result = func(*args, **kwargs)
+            
             latency = (time.time() - start_time) * 1000
             
-            # Check for null or empty results which might indicate an issue
-            if not result:
-                 self.logger.warning(f"Agent {agent_name} returned an empty or null result.")
+            # Validation: Result must not be None and must be a dict or Pydantic model
+            if result is None:
+                raise ValueError(f"Agent {agent_name} returned None.")
+            
+            # Convert Pydantic model to dict for storage in AgentResponse.data
+            data_dict = result.model_dump() if isinstance(result, BaseModel) else result
             
             response = AgentResponse(
                 agent_name=agent_name,
                 success=True,
-                data=result if isinstance(result, dict) else {"content": result},
+                data=data_dict,
                 latency_ms=latency
             )
             self.state.history.append(response)
@@ -55,84 +75,78 @@ class Orchestrator:
             self.state.history.append(response)
             return False
 
-    def run_pipeline(self, repo_path: str, goals: Dict[str, Any]) -> Dict[str, Any]:
+    async def run_pipeline(self, repo_path: str, goals: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Orchestrates the 7-agent workflow (PathNavigator + 6 standard agents) with detailed diagnostics.
+        Orchestrates the 7-agent workflow with strict validation and error recovery.
         """
         self.state = AgentState(repo_path=repo_path, goals=goals)
         self.logger.info(f"Starting Orchestration pipeline for: {repo_path}")
         
-        # 0. Path Navigator - Resolve the real directory before scanning
-        if not self._execute_agent("PathNavigator", self.auditor.PathNavigator, repo_path):
-            return {"error": "Path navigation failed."}
+        # 0. Path Navigator
+        if not await self._execute_agent("PathNavigator", self.auditor.PathNavigator, repo_path):
+            return {"error": "Path navigation failed. Orchestration stopped."}
         
-        nav_data = self.state.get_last_data("PathNavigator")
-        resolved_path = nav_data.get("resolved_path", repo_path)
-        self.logger.info(f"Resolved Path for analysis: {resolved_path}")
+        nav_data = PathNavigatorOutput(**self.state.get_last_data("PathNavigator"))
+        resolved_path = nav_data.resolved_path
         
-        # Verify path exists before proceeding to Discovery
-        if not Path(resolved_path).exists():
-             self.logger.error(f"Resolved path does not exist: {resolved_path}")
-             return {"error": f"Resolved path does not exist: {resolved_path}. Check permissions or input."}
+        if not nav_data.exists_hint:
+             return {"error": f"Resolved path does not exist: {resolved_path}. Analysis impossible."}
 
         # 1. Discovery
-        if not self._execute_agent("Discovery", self.auditor.Discovery, resolved_path):
-            return {"error": "Discovery phase failed."}
+        if not await self._execute_agent("Discovery", self.auditor.Discovery, resolved_path):
+            return {"error": "Discovery failed. Orchestration stopped."}
         
-        discovery_data = self.state.get_last_data("Discovery")
+        discovery_data = DiscoveryOutput(**self.state.get_last_data("Discovery"))
 
         # 2. Context Builder
-        if not self._execute_agent("ContextBuilder", self.auditor.ContextBuilder, discovery_data):
-            return {"error": "Context building failed."}
+        if not await self._execute_agent("ContextBuilder", self.auditor.ContextBuilder, discovery_data):
+            return {"error": "Context building failed. Orchestration stopped."}
         
-        context_data = self.state.get_last_data("ContextBuilder")
+        context_data = ContextBuilderOutput(**self.state.get_last_data("ContextBuilder"))
 
         # 3. Gap Analyzer
-        if not self._execute_agent("GapAnalyzer", self.auditor.GapAnalyzer, context_data, goals):
-            return {"error": "Gap analysis failed."}
+        if not await self._execute_agent("GapAnalyzer", self.auditor.GapAnalyzer, context_data, goals):
+            return {"error": "Gap analysis failed. Orchestration stopped."}
         
-        gap_data = self.state.get_last_data("GapAnalyzer")
+        gap_data = GapAnalyzerOutput(**self.state.get_last_data("GapAnalyzer"))
 
         # 4. Ticket Generator
-        if not self._execute_agent("TicketGenerator", self.auditor.TicketGenerator, gap_data):
-            return {"error": "Ticket generation failed."}
+        if not await self._execute_agent("TicketGenerator", self.auditor.TicketGenerator, gap_data):
+            return {"error": "Ticket generation failed. Orchestration stopped."}
         
-        tickets_full = self.state.get_last_data("TicketGenerator")
-        tickets = tickets_full.get("tickets", [])
+        tickets_full = TicketGeneratorOutput(**self.state.get_last_data("TicketGenerator"))
+        tickets = tickets_full.tickets
         self.logger.info(f"Generated {len(tickets)} development tickets.")
-        
-        if len(tickets) == 0:
-            self.logger.warning("Agent Chain reported 0 issues. verify if goals match current state.")
 
         # 5. Planner
-        if not self._execute_agent("Planner", self.auditor.Planner, tickets):
-            return {"error": "Sprint planning failed."}
+        if not await self._execute_agent("Planner", self.auditor.Planner, tickets):
+            return {"error": "Sprint planning failed. Orchestration stopped."}
         
-        sprint_plan_data = self.state.get_last_data("Planner")
-        sprint_plan = sprint_plan_data.get("content") or []
+        planner_data = PlannerOutput(**self.state.get_last_data("Planner"))
+        sprint_plan = [day.model_dump() for day in planner_data.sprint_plan]
 
         # 6. Auditor Verifier
-        if not self._execute_agent("AuditorVerifier", self.auditor.AuditorVerifier, sprint_plan):
-            return {"error": "Plan verification failed."}
+        # Note: We pass the raw sprint plan dicts for LLM processing
+        if not await self._execute_agent("AuditorVerifier", self.auditor.AuditorVerifier, sprint_plan):
+            return {"error": "Plan verification failed. Orchestration stopped."}
         
-        audit_report = self.state.get_last_data("AuditorVerifier")
+        audit_report = AuditorVerifierOutput(**self.state.get_last_data("AuditorVerifier"))
 
-        # Merge Audit Findings Logic
-        findings = audit_report.get("findings", [])
+        # --- Final Data Integration ---
+        findings = audit_report.findings
         notes_map = {note.get("title"): note.get("risk_note") for note in findings if isinstance(note, dict)}
         
         final_tasks = []
         for task in tickets:
-            tid = task.get("id") or task.get("title", "task").lower().replace(" ", "_")
             final_tasks.append({
-                "id": tid,
-                "title": task.get("title", "Proposed Improvement"),
-                "description": task.get("description", ""),
-                "effortHours": task.get("effort_hours", 2),
-                "priority": task.get("priority", "Medium"),
-                "tags": task.get("labels", []),
-                "dependencies": task.get("dependencies", []),
-                "notes": notes_map.get(task.get("title"), "")
+                "id": task.title.lower().replace(" ", "_"),
+                "title": task.title,
+                "description": task.description,
+                "effortHours": task.effort_hours,
+                "priority": task.priority,
+                "tags": task.labels,
+                "module": task.module,
+                "notes": notes_map.get(task.title, "")
             })
 
         # Calculate performance metrics
@@ -146,21 +160,24 @@ class Orchestrator:
             "goal": goals.get("expected_output", "General Improvement"),
             "tasks": final_tasks,
             "sprintPlan": sprint_plan,
-            "notes": audit_report.get("summary", "Final audit completed successfully."),
+            "summary": audit_report.summary,
             "performance": {
                 "totalLatencyMs": total_latency,
                 "agentCount": len(self.state.history),
                 "stabilityRecommendations": stability_recommendations,
-                "resolvedPath": resolved_path
+                "resolvedPath": resolved_path,
+                "discoveryMetrics": {
+                    "languages": discovery_data.languages,
+                    "frameworks": discovery_data.frameworks
+                }
             }
         }
         
         if len(tickets) == 0:
             result_report["diagnostics"] = {
-                "scan_summary": discovery_data.get("_raw_structure", "No scan data.")[:500] + "...",
-                "detected_languages": discovery_data.get("languages", []),
-                "issue": "0 tickets generated. Check if goals are already met.",
-                "resolved_path_used": resolved_path
+                "languages_found": discovery_data.languages,
+                "architecture": discovery_data.architecture_type,
+                "reason": "Check if goals are already met or if prompts need adjustment."
             }
 
         return result_report
