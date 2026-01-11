@@ -1,6 +1,8 @@
 import json
 import logging
 import time
+import os
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 from ..data.models import AgentState, AgentResponse
 from ..improvement_engine.analyzer import ProactiveStabilityAnalyzer
@@ -55,14 +57,26 @@ class Orchestrator:
 
     def run_pipeline(self, repo_path: str, goals: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Orchestrates the 6-agent workflow with detailed diagnostics.
+        Orchestrates the 7-agent workflow (PathNavigator + 6 standard agents) with detailed diagnostics.
         """
         self.state = AgentState(repo_path=repo_path, goals=goals)
-        self.logger.info(f"Target Repository: {repo_path}")
-        self.logger.info(f"Target Goal: {goals.get('expected_output')}")
+        self.logger.info(f"Starting Orchestration pipeline for: {repo_path}")
         
+        # 0. Path Navigator - Resolve the real directory before scanning
+        if not self._execute_agent("PathNavigator", self.auditor.PathNavigator, repo_path):
+            return {"error": "Path navigation failed."}
+        
+        nav_data = self.state.get_last_data("PathNavigator")
+        resolved_path = nav_data.get("resolved_path", repo_path)
+        self.logger.info(f"Resolved Path for analysis: {resolved_path}")
+        
+        # Verify path exists before proceeding to Discovery
+        if not Path(resolved_path).exists():
+             self.logger.error(f"Resolved path does not exist: {resolved_path}")
+             return {"error": f"Resolved path does not exist: {resolved_path}. Check permissions or input."}
+
         # 1. Discovery
-        if not self._execute_agent("Discovery", self.auditor.Discovery, repo_path):
+        if not self._execute_agent("Discovery", self.auditor.Discovery, resolved_path):
             return {"error": "Discovery phase failed."}
         
         discovery_data = self.state.get_last_data("Discovery")
@@ -136,7 +150,8 @@ class Orchestrator:
             "performance": {
                 "totalLatencyMs": total_latency,
                 "agentCount": len(self.state.history),
-                "stabilityRecommendations": stability_recommendations
+                "stabilityRecommendations": stability_recommendations,
+                "resolvedPath": resolved_path
             }
         }
         
@@ -144,7 +159,8 @@ class Orchestrator:
             result_report["diagnostics"] = {
                 "scan_summary": discovery_data.get("_raw_structure", "No scan data.")[:500] + "...",
                 "detected_languages": discovery_data.get("languages", []),
-                "issue": "0 tickets generated. Check if goals are already met."
+                "issue": "0 tickets generated. Check if goals are already met.",
+                "resolved_path_used": resolved_path
             }
 
         return result_report

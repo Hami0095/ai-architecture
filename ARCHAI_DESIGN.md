@@ -8,7 +8,9 @@ ArchAI operates as a pipeline of specialized AI-driven modules:
 
 ```mermaid
 graph TD
-    A[Input Project Path] --> B[Discovery Engine]
+    UserIn[User Input Path] --> PN[Path Navigator Agent]
+    PN --> A[Resolved Absolute Path]
+    A --> B[Discovery Engine]
     C[Goal Document] --> D[Gap Analyzer]
     B --> D
     B --> E[Risk Analyzer]
@@ -19,6 +21,11 @@ graph TD
 ```
 
 ## 2. Core Modules
+
+### 2.0 Path Navigator Agent
+- **Responsibility**: Resolve user-provided paths (relative, absolute, or home-based) into a valid absolute path across all OS.
+- **Inputs**: User input, Home Dir, CWD, OS Name.
+- **Outputs**: Validated Absolute Path.
 
 ### 2.1 Discovery Engine
 - **Responsibility**: Map the project structure and understand the tech stack.
@@ -58,8 +65,9 @@ graph TD
 - **Output Formats**: CLI, JSON, Markdown.
 
 ## 4. Cross-Platform Stability
-- **Path Handling**: Uses `pathlib` for all filesystem operations to ensure 100% compatibility across Windows, MacOS, and Ubuntu/Linux.
-- **Environment Agnostic**: The system detects OS-specific paths and normalizes them for the AI context, ensuring consistent audits regardless of the host environment.
+- **Agentic Path Resolution**: Uses a specialized **Path Navigator** agent to intelligently resolve filesystems across Windows, Mac, and Ubuntu.
+- **Pathlib Foundations**: Built on `pathlib` for all underlying filesystem operations.
+- **Home Dir Awareness**: Automatically starts discovery from `$HOME` if ambiguous paths are provided.
 
 ## 5. Scaling & Extensibility
 - **Plugins**: New analyzers (e.g., specialized Security scanners) can be added by implementing the `BaseAnalyzer` interface.

@@ -8,7 +8,8 @@ from .prompts import (
     GAP_ANALYSIS_SYSTEM_PROMPT, 
     TICKET_GENERATION_SYSTEM_PROMPT,
     CONTEXT_BUILDER_SYSTEM_PROMPT,
-    AUDITOR_VERIFIER_SYSTEM_PROMPT
+    AUDITOR_VERIFIER_SYSTEM_PROMPT,
+    PATH_NAVIGATOR_SYSTEM_PROMPT
 )
 
 logger = logging.getLogger("ArchAI.Auditor")
@@ -22,7 +23,8 @@ class ArchitecturalAuditor:
         Creates a text representation of the project structure and key file contents.
         Uses pathlib for cross-platform (Windows/Mac/Ubuntu) stability.
         """
-        root = Path(root_path).resolve()
+        # Expand user path (~) if present and resolve
+        root = Path(root_path).expanduser().resolve()
         if not root.exists():
             logger.error(f"Directory not found: {root}")
             return f"Error: Directory {root} does not exist."
@@ -102,6 +104,37 @@ class ArchitecturalAuditor:
             return "Analysis failed."
 
     # --- Agent Implementations ---
+
+    def PathNavigator(self, user_input_path: str) -> dict:
+        """Agent 0: Resolves the user's input path to a safe absolute path."""
+        import platform
+        home_dir = str(Path.home())
+        cwd = os.getcwd()
+        os_name = platform.system()
+        
+        prompt = PATH_NAVIGATOR_SYSTEM_PROMPT.format(
+            user_input=user_input_path,
+            home_dir=home_dir,
+            cwd=cwd,
+            os_name=os_name
+        )
+        
+        result = self._call_llm_json("You are an ArchAI Path Navigator.", prompt)
+        
+        # Validation as secondary check
+        resolved = result.get("resolved_path", user_input_path)
+        final_path = Path(resolved).expanduser().resolve()
+        
+        if not final_path.exists():
+            # If not exists, try to be smarter (e.g. check if it's in home)
+            if not Path(resolved).is_absolute():
+                 potential = Path.home() / resolved
+                 if potential.exists():
+                      final_path = potential
+        
+        result["resolved_path"] = str(final_path)
+        logger.info(f"PathNavigator resolved '{user_input_path}' to '{final_path}'")
+        return result
 
     def Discovery(self, repo_path: str) -> dict:
         """Agent 1: Scans the repository and returns technical metadata."""
