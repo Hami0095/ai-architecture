@@ -1,4 +1,4 @@
-# ArchAI: Autonomous Architect 🏗️
+# ArchAI: Autonomous Architect 
 
 **SaaS-Ready AI Agent Orchestration for Codebase Mapping & Sprint Planning**
 
@@ -8,21 +8,23 @@ ArchAI is a professional-grade architectural auditing system that transforms raw
 
 ---
 
-## 🚀 The 7-Agent Orchestration Pipeline
+## The 6-Agent Orchestration Pipeline
+
 
 ArchAI operates on a rigorous, sequential chain of seven specialized intelligence agents:
 
-1. **Path Navigator 🧭**: Resolves user input into safe, absolute filesystem paths across Windows, Mac, and Linux (starting from $HOME if needed).
-2. **Discovery Agent 🔍**: Maps project structure and detects tech-stack metadata (Languages, Frameworks, Architecture Patterns).
-3. **Context Builder 🧱**: Analyzes discovery data to build a dependency graph and identify critical execution paths.
-4. **Gap Analyzer 📋**: Compares the current codebase against your "Target State" goals to identify technical debt and missing features.
-5. **Ticket Generator 🎫**: Converts gaps into detailed, machine-parsable development tickets with severity and effort estimations.
-6. **Sprint Planner 📅**: Uses a balanced scheduling algorithm to build a prioritized 5-day sprint plan.
-7. **Auditor & Verifier ✅**: Performs a final risk assessment, ensuring task feasibility and merging quality notes into the roadmap.
+
+1. **Discovery Agent**: Maps project structure and detects tech-stack metadata (Languages, Frameworks, Architecture Patterns).
+2. **Context Builder**: Analyzes discovery data to build a dependency graph and identify critical execution paths.
+3. **Gap Analyzer**: Compares the current codebase against your "Target State" goals to identify technical debt and missing features.
+4. **Ticket Generator**: Converts gaps into detailed, machine-parsable development tickets with severity and effort estimations.
+5. **Sprint Planner**: Uses a balanced scheduling algorithm to build a prioritized 5-day sprint plan.
+6. **Auditor & Verifier**: Performs a final risk assessment, ensuring task feasibility and merging quality notes into the roadmap.
+
 
 ---
 
-## 🛠️ Usage (Professional CLI)
+## Usage (Professional CLI)
 
 ArchAI supports both a guided interactive wizard and a headless CLI for CI/CD integration.
 
@@ -48,15 +50,17 @@ ai-architect test
 
 ---
 
-## 💎 Premium Features
-- **Cross-Platform Stability**: Native support for Windows, Mac, and Ubuntu/Linux using specialized path navigation agents.
+
+## Premium Features
+- **Cross-Platform Stability**: Native support for Windows, Mac, and Ubuntu/Linux.
+
 - **Machine-Parsable Output**: Produces a `sprint-plan.json` ready for consumption by Web UIs or external APIs.
 - **Explainable AI (XAI)**: Context-aware reasoning for every architectural decision.
 - **Self-Monitoring**: The orchestrator tracks agent performance and latency for stability analysis.
 
 ---
 
-## 📦 Installation
+## Installation
 
 ```bash
 git clone https://github.com/Hami0095/ai-architecture.git
@@ -64,9 +68,9 @@ cd ai-architecture
 pip install -e .
 ```
 
-## 📋 Prerequisites
+## Prerequisites
 - **Python**: 3.10+
 - **Ollama**: [Installed and running](https://ollama.com/) (`ollama serve`).
 
-## 📄 License
+## License
 ArchAI is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. This license ensures that improvements to the core orchestration engine are shared back with the community, protecting the project's commercial viability while supporting open innovation.
