@@ -52,3 +52,4 @@ ai-architect impact GraphEngine --explain
 - [API Reference](api/endpoints.md): Integration guide for CI/CD and internal tools.
 - [Architecture Deep Dive](architecture/ciras.md): How the agents work under the hood.
 - [Tutorials](tutorials/getting_started.md): Step-by-step guides for common workflows.
+- [Proper Flow](tutorials/proper_flow.md): The analysis-to-action pipeline.

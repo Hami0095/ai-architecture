@@ -98,7 +98,8 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
             print(f"   * [{t.get('ticket_id')}] {t.get('title')}")
 
     print(f"\n{'='*70}")
-    print(f"Use 'trace <ID>' to see evidence for a finding.")
+    print(f"SUGGESTED NEXT STEP: Use 'trace <ID>' to see evidence for specific tickets.")
+    print(f"ALTERNATELY: Use 'impact <path> <symbol>' to analyze risks of identified areas.")
     print(f"Use 'explain' for a detailed summary.")
     
     useful = input("\nWas this sprint plan helpful? (y/n): ").lower().strip() == 'y'
@@ -321,20 +322,9 @@ def run_interactive_console():
             logger.error(f"Console Error: {e}")
             print(f"Critical Console Error: {e}")
 
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        # Fallback to legacy CLI if arguments are passed
-        from .cli_params import run_legacy_cli_args # Refactored out if needed, but for now we interpret directly
-        # For simplicity in this prompt context, we just run the interactive mode unless specifically asked not to.
-        # But to preserve backward compatibility with previous steps:
-        parser = argparse.ArgumentParser()
-        parser.add_argument("command", nargs="?", help="Command to run")
-        args, unknown = parser.parse_known_args()
-        
-        if args.command and args.command.lower() not in ['interactive']:
-             # Use the previous logic if it was a one-shot command
-             # For this specific replacement, we are REPLACING the whole file to be interactive-first
-             # but we can keep a bridge.
-             pass
-    
+def run_cli():
+    """Main entry point for the ai-architect command."""
     run_interactive_console()
+
+if __name__ == "__main__":
+    run_cli()
