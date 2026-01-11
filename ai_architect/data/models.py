@@ -40,6 +40,12 @@ class Evidence(BaseModel):
     confidence: float = 1.0 # 0.0 to 1.0
     uncertainty_drivers: List[str] = [] # e.g. "dynamic_dispatch", "missing_tests"
 
+class SubTask(BaseModel):
+    title: str
+    description: str
+    effort_hours: float = 1.0
+    risk_level: str = "LOW" # LOW, MEDIUM, HIGH
+
 class AuditTicket(BaseModel):
     ticket_id: str = Field(default_factory=lambda: datetime.now().strftime("%y%m%d%H%M%S"))
     title: str
@@ -55,6 +61,7 @@ class AuditTicket(BaseModel):
     evidence: Optional[Evidence] = None
     risk_flags: List[str] = [] # e.g. ["high-churn", "deep-dependency"]
     dependencies: List[str] = [] # IDs of other tickets
+    subtasks: List[SubTask] = []
 
 class SprintDay(BaseModel):
     day: str
@@ -122,3 +129,43 @@ class PlannerOutput(BaseModel):
 class AuditorVerifierOutput(BaseModel):
     findings: List[Dict[str, Any]]
     summary: str
+
+class ImpactAssessment(BaseModel):
+    target: str # path or symbol
+    risk_level: str # LOW, MEDIUM, HIGH, UNKNOWN
+    risk_score: float # 0-100
+    confidence_score: float # 0.0-1.0
+    affected_components: List[Dict[str, Any]] = [] # list of {name, depth, file}
+    primary_risk_factors: List[str] = []
+    recommendations: List[str] = []
+    insufficient_data: bool = False
+    rationale: Optional[str] = None
+
+class WDPOutput(BaseModel):
+    epics: List[Dict[str, Any]] # {name, description, tickets: [AuditTicket]}
+    sprint_feasibility: Dict[str, Any] # {status, rationale, bottlenecks}
+    overall_confidence: float
+    assumptions: List[str] = []
+
+class SprintPlanConfig(BaseModel):
+    team_size: int = 3
+    days: int = 10
+    velocity_factor: float = 0.8 # 0.0 to 1.0
+
+class TaskPrediction(BaseModel):
+    ticket_id: str
+    probability: float # 0.0 - 1.0
+    risk_level: str
+    rationale: str
+    completion_window: Optional[str] = None # e.g. "Early Sprint", "Late Sprint", "Risk of Spillover"
+
+class SRCOutput(BaseModel):
+    sprint_goal: str
+    confidence_score: float # 0.0 - 1.0
+    status: str # High Confidence, Medium Confidence, Low Confidence
+    task_predictions: List[TaskPrediction]
+    epic_forecasts: List[Dict[str, Any]] # {epic_name, completion_probability}
+    risk_summary: Dict[str, List[str]] # {critical, high, medium}
+    recommendations: List[Dict[str, str]] # {task, action}
+    bottlenecks: List[str]
+    confidence_rationale: str
