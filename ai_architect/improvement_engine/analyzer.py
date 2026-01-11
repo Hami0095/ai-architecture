@@ -1,5 +1,6 @@
 import ollama
 import json
+from typing import List, Any
 from ..core_ai.prompts import IMPROVEMENT_SYSTEM_PROMPT
 from ..data.models import ImprovementSuggestion
 from ..xai.explainer import XAI
@@ -60,3 +61,29 @@ class ImprovementEngine:
             print(f"Improvement Engine Error: {e}")
             # Ensure response is defined before access to avoid further errors
             return []
+class ProactiveStabilityAnalyzer:
+    def __init__(self, model="qwen3-coder:480b-cloud"):
+        self.model = model
+
+    def analyze_stability_risks(self, agent_history: List[Any]) -> List[str]:
+        """
+        Analyzes agent history (latency, errors) to predict potential stability failures.
+        """
+        history_summary = "\n".join([f"{r.agent_name}: {'Success' if r.success else 'Failed'} ({r.latency_ms}ms)" for r in agent_history])
+        
+        prompt = f"""
+        Recent Agent Execution History:
+        {history_summary}
+        
+        Identify potential cascading risks or performance bottlenecks.
+        Return a list of 3-5 stability recommendations.
+        """
+        
+        try:
+            response = ollama.chat(model=self.model, messages=[
+                {'role': 'system', 'content': "You are an AI Stability Monitor."},
+                {'role': 'user', 'content': prompt}
+            ])
+            return response['message']['content'].split('\n')
+        except:
+            return ["Maintain current resource limits.", "Monitor upstream latency."]

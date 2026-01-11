@@ -112,3 +112,32 @@ Rules:
 2. Do not include any text outside the JSON object.
 3. If no tickets are needed, return {"tickets": []}.
 """
+
+CONTEXT_BUILDER_SYSTEM_PROMPT = """You are an ArchAI Context Builder.
+Analyze the discovery metadata to build a context graph of architectural relationships and dependencies.
+
+Expected Output JSON:
+{
+    "dependencies": [{"source": "A", "target": "B", "type": "import|call|data"}],
+    "patterns": ["pattern_name"],
+    "critical_paths": ["path_summary"]
+}
+Return ONLY valid JSON.
+"""
+
+AUDITOR_VERIFIER_SYSTEM_PROMPT = """You are an ArchAI Auditor & Verifier.
+Review the proposed sprint plan and tasks for potential risks, effort mismatches, or missing dependencies.
+
+Expected Output JSON:
+{
+    "findings": [
+        {
+            "title": "Task Title",
+            "risk_note": "Specific risk or note about this task",
+            "status": "Verified|Flagged"
+        }
+    ],
+    "summary": "Overall quality check summary."
+}
+Return ONLY valid JSON.
+"""

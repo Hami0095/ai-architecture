@@ -57,12 +57,16 @@ graph TD
 - **Data Persistence**: SQLite (for logging/metrics)
 - **Output Formats**: CLI, JSON, Markdown.
 
-## 4. Scaling & Extensibility
+## 4. Cross-Platform Stability
+- **Path Handling**: Uses `pathlib` for all filesystem operations to ensure 100% compatibility across Windows, MacOS, and Ubuntu/Linux.
+- **Environment Agnostic**: The system detects OS-specific paths and normalizes them for the AI context, ensuring consistent audits regardless of the host environment.
+
+## 5. Scaling & Extensibility
 - **Plugins**: New analyzers (e.g., specialized Security scanners) can be added by implementing the `BaseAnalyzer` interface.
 - **Scaling UP**: Integrate with CI/CD pipelines to run audits on every PR.
 - **Scaling DOWN**: Skip deep code analysis for large projects and focus on structure-only discovery.
 
-## 5. Future Roadmap
+## 6. Future Roadmap
 - **ML/NLP Improvements**: Fine-tune models on large-scale architectural pattern datasets to improve detection accuracy.
 - **CI/CD Integration**: Develop GitHub Actions/GitLab CI plugins to surface risks directly in pull requests.
 - **Dynamic Effort Estimation**: Use historical developer data to adjust ticket hour estimates based on actual completion times.

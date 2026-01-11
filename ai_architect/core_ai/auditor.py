@@ -1,7 +1,17 @@
 import os
 import json
 import ollama
-from .prompts import DISCOVERY_SYSTEM_PROMPT, GAP_ANALYSIS_SYSTEM_PROMPT, TICKET_GENERATION_SYSTEM_PROMPT
+import logging
+from pathlib import Path
+from .prompts import (
+    DISCOVERY_SYSTEM_PROMPT, 
+    GAP_ANALYSIS_SYSTEM_PROMPT, 
+    TICKET_GENERATION_SYSTEM_PROMPT,
+    CONTEXT_BUILDER_SYSTEM_PROMPT,
+    AUDITOR_VERIFIER_SYSTEM_PROMPT
+)
+
+logger = logging.getLogger("ArchAI.Auditor")
 
 class ArchitecturalAuditor:
     def __init__(self, model="qwen3-coder:480b-cloud"):
@@ -10,41 +20,59 @@ class ArchitecturalAuditor:
     def scan_directory(self, root_path, max_depth=4) -> str:
         """
         Creates a text representation of the project structure and key file contents.
+        Uses pathlib for cross-platform (Windows/Mac/Ubuntu) stability.
         """
-        summary = f"Project Root: {root_path}\nStructure:\n"
+        root = Path(root_path).resolve()
+        if not root.exists():
+            logger.error(f"Directory not found: {root}")
+            return f"Error: Directory {root} does not exist."
+
+        summary = f"Project Root: {root}\nStructure:\n"
         ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build', '.idea', '.vscode'}
         relevant_extensions = {'.py', '.md', '.sql', '.yaml', '.yml', '.json', '.toml', '.env', 'Dockerfile', '.js', '.ts'}
         
         file_contents = ""
+        files_scanned = 0
         
-        for root, dirs, files in os.walk(root_path):
-            dirs[:] = [d for d in dirs if d not in ignore_dirs]
-            depth = root[len(root_path):].count(os.sep)
-            if depth > max_depth:
-                del dirs[:]
+        # Helper to get depth relative to root
+        def get_depth(p: Path):
+            try:
+                return len(p.relative_to(root).parts)
+            except:
+                return 0
+
+        for path in root.rglob('*'):
+            # Skip ignored directories
+            if any(part in ignore_dirs for part in path.parts):
                 continue
-                
-            level = root.replace(root_path, '').count(os.sep)
-            indent = ' ' * 4 * level
-            summary += f"{indent}{os.path.basename(root)}/\n"
-            subindent = ' ' * 4 * (level + 1)
             
-            for f in files:
-                ext = os.path.splitext(f)[1].lower()
-                if ext in relevant_extensions or f in relevant_extensions:
-                    summary += f"{subindent}{f}\n"
-                    path = os.path.join(root, f)
+            depth = get_depth(path)
+            if depth > max_depth:
+                continue
+
+            indent = ' ' * 4 * (depth - 1)
+            
+            if path.is_dir():
+                summary += f"{indent}{path.name}/\n"
+            else:
+                ext = path.suffix.lower()
+                if ext in relevant_extensions or path.name in relevant_extensions:
+                    summary += f"{indent}{path.name}\n"
+                    files_scanned += 1
                     try:
-                        if ext in {'.py', '.sql', '.yaml', '.yml', '.toml', '.env', '.js', '.ts'} or f == 'Dockerfile':
+                        # Only read specific text-based formats for context
+                        if ext in {'.py', '.sql', '.yaml', '.yml', '.toml', '.env', '.js', '.ts'} or path.name == 'Dockerfile':
                             with open(path, 'r', encoding='utf-8', errors='ignore') as file_obj:
                                 content = file_obj.read()
                                 if len(content) > 1500:
                                     content = content[:1000] + "\n...[TRUNCATED]...\n" + content[-500:]
-                                file_contents += f"--- FILE: {os.path.relpath(path, root_path)} ---\n{content}\n\n"
-                    except:
-                        pass
+                                rel_path = path.relative_to(root)
+                                file_contents += f"--- FILE: {rel_path} ---\n{content}\n\n"
+                    except Exception as e:
+                        logger.warning(f"Failed to read {path}: {e}")
 
-        return summary + "\n\nKey File Contents:\n" + file_contents
+        logger.info(f"Scan complete. {files_scanned} files included in analysis context.")
+        return summary + f"\n\nTotal Files Scanned: {files_scanned}\n\nKey File Contents:\n" + file_contents
 
     def _call_llm_json(self, system_prompt: str, user_prompt: str) -> dict:
         try:
@@ -59,7 +87,7 @@ class ArchitecturalAuditor:
                 content = content.split("```")[1].split("```")[0].strip()
             return json.loads(content)
         except Exception as e:
-            print(f"LLM JSON Error: {e}")
+            logger.error(f"LLM JSON Error: {e}")
             return {}
 
     def _call_llm_text(self, system_prompt: str, user_prompt: str) -> str:
@@ -70,86 +98,88 @@ class ArchitecturalAuditor:
             ])
             return response['message']['content']
         except Exception as e:
-            print(f"LLM Text Error: {e}")
+            logger.error(f"LLM Text Error: {e}")
             return "Analysis failed."
 
-    def audit_project(self, root_path: str, user_context: str = "", project_status: str = "", expected_output: str = "") -> dict:
-        """
-        Refactored multi-stage pipeline for ArchAI.
-        """
-        from ..data.models import AuditReport, AuditTicket
-        from ..improvement_engine.planner import SprintPlanner
-        
-        print("\n[Stage 1/4] Discovery: Mapping codebase structure...")
-        code_structure = self.scan_directory(root_path)
-        discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {root_path}\n\nCode Structure:\n{code_structure}")
-        
-        # Ensure discovery has required keys
-        discovery.setdefault("languages", [])
-        discovery.setdefault("frameworks", [])
-        discovery.setdefault("architecture_type", "Unknown")
+    # --- Agent Implementations ---
 
-        if not discovery["languages"]:
-            # Fallback heuristic if LLM misses it
+    def Discovery(self, repo_path: str) -> dict:
+        """Agent 1: Scans the repository and returns technical metadata."""
+        code_structure = self.scan_directory(repo_path)
+        discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {repo_path}\n\nCode Structure:\n{code_structure}")
+        
+        # Fallback heuristic
+        if not discovery.get("languages"):
+            discovery["languages"] = []
             if ".py" in code_structure: discovery["languages"].append("python")
             if ".js" in code_structure: discovery["languages"].append("javascript")
-
-        print(f"Found languages: {', '.join(discovery['languages'])}")
-
-        print("\n[Stage 2/4] Gap Analysis: Comparing vs target goal...")
-        gap_prompt = GAP_ANALYSIS_SYSTEM_PROMPT.format(
-            discovery_data=json.dumps(discovery),
-            user_context=user_context,
-            project_status=project_status,
-            expected_output=expected_output
-        )
-        gap_analysis = self._call_llm_text("You are an ArchAI Gap Analyzer.", gap_prompt)
-
-        print("\n[Stage 3/4] Ticket Generation: Synthesizing roadmap items...")
-        ticket_user_prompt = f"Discovery: {json.dumps(discovery)}\nGap Analysis: {gap_analysis}\nGenerate detailed tickets."
-        tickets_data = self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, ticket_user_prompt)
         
-        tickets = tickets_data.get("tickets", [])
-        if not tickets:
-             print("No tickets generated by LLM.")
+        discovery.setdefault("frameworks", [])
+        discovery.setdefault("architecture_type", "Unknown")
+        discovery["_raw_structure"] = code_structure # Carry forward for ContextBuilder
+        logger.info(f"Discovery detected languages: {discovery.get('languages')}")
+        return discovery
 
-        # Clean and validate tickets
+    def ContextBuilder(self, discovery_result: dict) -> dict:
+        """Agent 2: Analyzes discovery data to build a dependency/relationship graph."""
+        raw_structure = discovery_result.get("_raw_structure", "")
+        # Clean up for LLM context
+        metadata = {k:v for k,v in discovery_result.items() if k != '_raw_structure'}
+        msg = f"Metadata: {json.dumps(metadata)}\nStructure Snippet: {raw_structure[:2000]}"
+        return self._call_llm_json(CONTEXT_BUILDER_SYSTEM_PROMPT, msg)
+
+    def GapAnalyzer(self, context_graph: dict, goals: dict) -> dict:
+        """Agent 3: Compares context against goals to identify missing gaps."""
+        gap_prompt = GAP_ANALYSIS_SYSTEM_PROMPT.format(
+            discovery_data=json.dumps(context_graph),
+            user_context=goals.get("user_context", ""),
+            project_status=goals.get("project_status", ""),
+            expected_output=goals.get("expected_output", "")
+        )
+        report_text = self._call_llm_text("You are an ArchAI Gap Analyzer.", gap_prompt)
+        return {"markdown_report": report_text}
+
+    def TicketGenerator(self, gap_report: dict) -> dict:
+        """Agent 4: Generates actionable dev tickets from the gap report."""
+        prompt = f"Gap Report: {gap_report.get('markdown_report')}\nGenerate detailed tickets."
+        return self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, prompt)
+
+    def Planner(self, tickets_list_raw: list) -> list:
+        """Agent 5: Creates a 5-day sprint plan."""
+        from ..data.models import AuditTicket
+        from ..improvement_engine.planner import SprintPlanner
+        
         valid_tickets = []
-        for t in tickets:
+        for t in tickets_list_raw:
             if isinstance(t, dict):
-                # Ensure defaults before Pydantic validation
                 t.setdefault("title", "Proposed Improvement")
                 t.setdefault("type", "Logic")
                 t.setdefault("severity", "Medium")
                 t.setdefault("priority", "Medium")
-                t.setdefault("description", "No description provided.")
-                t.setdefault("suggested_fix", "Consult the description for instructions.")
                 t.setdefault("effort_hours", 2)
-                t.setdefault("labels", [])
-                
                 try:
-                    # Convert to Pydantic model for consistency and validation
-                    ticket_obj = AuditTicket(**t)
-                    valid_tickets.append(ticket_obj)
+                    valid_tickets.append(AuditTicket(**t))
                 except Exception as e:
-                    print(f"Skipping invalid ticket: {e}")
-
-        print(f"\n[Stage 4/4] Sprint Planning: Scheduling {len(valid_tickets)} tickets...")
+                    logger.debug(f"Invalid ticket data: {e}")
+        
         planner = SprintPlanner(hours_per_day=5.0, total_days=5)
         sprint_days = planner.plan_sprint(valid_tickets)
+        return [day.model_dump(mode='json') for day in sprint_days]
 
-        # Build Final Report
-        report_data = {
-            "discovery": discovery,
-            "gap_analysis": gap_analysis,
-            "tickets": [t.model_dump(mode='json') for t in valid_tickets],
-            "sprint_plan": [day.model_dump(mode='json') for day in sprint_days],
-            "summary": f"ArchAI analyzed {len(discovery['languages'])} language(s). Found {len(valid_tickets)} actionable item(s)."
+    def AuditorVerifier(self, sprint_plan: list) -> dict:
+        """Agent 6: Verifies the sprint plan for risks and quality."""
+        prompt = f"Proposed Sprint Plan: {json.dumps(sprint_plan)}\nVerify for risks."
+        return self._call_llm_json(AUDITOR_VERIFIER_SYSTEM_PROMPT, prompt)
+
+    def audit_project(self, root_path: str, user_context: str = "", project_status: str = "", expected_output: str = "") -> dict:
+        """
+        Legacy wrapper for audit_project, now using the Orchestrator.
+        """
+        from .orchestrator import Orchestrator
+        goals = {
+            "user_context": user_context,
+            "project_status": project_status,
+            "expected_output": expected_output
         }
-
-        try:
-            report = AuditReport(**report_data)
-            return report.model_dump(mode='json')
-        except Exception as e:
-            print(f"Final Report Error: {e}")
-            return report_data
+        orchestrator = Orchestrator(self)
+        return orchestrator.run_pipeline(root_path, goals)

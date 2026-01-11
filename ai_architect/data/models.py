@@ -55,3 +55,21 @@ class AuditReport(BaseModel):
     sprint_plan: List[SprintDay] = []
     summary: Optional[str] = None
     timestamp: datetime = Field(default_factory=datetime.now)
+class AgentResponse(BaseModel):
+    agent_name: str
+    success: bool
+    data: Dict[str, Any]
+    error: Optional[str] = None
+    latency_ms: Optional[float] = None
+
+class AgentState(BaseModel):
+    repo_path: str
+    goals: Dict[str, Any]
+    history: List[AgentResponse] = []
+    metadata: Dict[str, Any] = {}
+
+    def get_last_data(self, agent_name: str) -> Optional[Dict[str, Any]]:
+        for response in reversed(self.history):
+            if response.agent_name == agent_name and response.success:
+                return response.data
+        return None
