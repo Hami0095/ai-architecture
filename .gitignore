@@ -10,7 +10,9 @@ build/
 dist/
 *.egg-info/
 *.db
-archai_report.json
 target_calc.py
 .idea/
 .vscode/
+*.env
+*.json
+*.log

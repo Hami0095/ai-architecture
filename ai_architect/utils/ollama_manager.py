@@ -2,6 +2,7 @@ import subprocess
 import shutil
 import sys
 import time
+from ..infrastructure.globals import AI_MODEL
 
 def run_command(command):
     """Runs a shell command and returns formatted output and exit code."""
@@ -63,13 +64,11 @@ def pull_model(model_name):
     proc.wait()
     return proc.returncode == 0
 
-def initialize_ollama(preferred_model="qwen3-coder:480b-cloud"):
+def initialize_ollama(preferred_model=None):
     """
     Orchestrates the Ollama setup.
-    1. Checks installation.
-    2. Checks service status.
-    3. Selects or pulls model.
     """
+    preferred_model = preferred_model or AI_MODEL
     print("\n[Ollama Manager] Initializing AI Runtime...")
     
     status = check_ollama_status()
@@ -82,10 +81,7 @@ def initialize_ollama(preferred_model="qwen3-coder:480b-cloud"):
     if status == 'stopped':
         print("WARNING: Ollama service seems to be stopped.")
         print("Attempting to start 'ollama serve' in background...")
-        # Note: Starting serve from python script is tricky across OS. 
-        # Safest is to ask user.
         print("Please run 'ollama serve' in a separate terminal.")
-        # Optional: We could try Popen(['ollama', 'serve']) but it blocks.
         sys.exit(1)
 
     # Service is running, check models.
@@ -108,13 +104,11 @@ def initialize_ollama(preferred_model="qwen3-coder:480b-cloud"):
             sys.exit(1)
     # 3. If models exist but not preferred -> Ask user or fallback
     else:
-        # Simple Logic: Check if 'gemma' or 'llama' exists and pick it
-        # Otherwise Prompt user
         print(f"[Ollama Manager] Preferred model '{preferred_model}' not found.")
         
         # Try to find a close match
         for m in models:
-            if "qwen" in m or "coder" in m or "gemma" in m or "llama" in m:
+            if "qwen" in m or "coder" in m or "gemma" in m or "llama" in m or "glm" in m:
                 print(f"[Ollama Manager] Falling back to available model: {m}")
                 return m
                 

@@ -32,8 +32,18 @@ class ReconciliationResult(BaseModel):
     rationale: str
     timestamp: datetime = Field(default_factory=datetime.now)
 
+class Evidence(BaseModel):
+    file_path: str
+    symbol: Optional[str] = None # Function or class name
+    line_range: Optional[str] = None # e.g. "10-25"
+    call_chain: List[str] = []
+    confidence: float = 1.0 # 0.0 to 1.0
+    uncertainty_drivers: List[str] = [] # e.g. "dynamic_dispatch", "missing_tests"
+
 class AuditTicket(BaseModel):
+    ticket_id: str = Field(default_factory=lambda: datetime.now().strftime("%y%m%d%H%M%S"))
     title: str
+    epic: Optional[str] = None # Grouping for tasks
     type: str # Architecture, Database, Logic, Security, Performance
     severity: str # High, Medium, Low
     priority: str = "Medium" # Critical, High, Medium, Low
@@ -42,11 +52,15 @@ class AuditTicket(BaseModel):
     effort_hours: int = 2
     labels: List[str] = []
     module: Optional[str] = None
+    evidence: Optional[Evidence] = None
+    risk_flags: List[str] = [] # e.g. ["high-churn", "deep-dependency"]
+    dependencies: List[str] = [] # IDs of other tickets
 
 class SprintDay(BaseModel):
     day: str
     tickets: List[AuditTicket]
     total_hours: float
+    feasibility: str = "Likely fits" # "Likely fits", "High risk", "Will overflow"
 
 class AuditReport(BaseModel):
     discovery: Dict[str, Any] = {}
@@ -97,6 +111,7 @@ class ContextBuilderOutput(BaseModel):
 
 class GapAnalyzerOutput(BaseModel):
     markdown_report: str
+    evidence_trail: List[Evidence] = [] # Added for traceabilty
 
 class TicketGeneratorOutput(BaseModel):
     tickets: List[AuditTicket]
