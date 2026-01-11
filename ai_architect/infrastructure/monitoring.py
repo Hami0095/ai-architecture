@@ -1,6 +1,8 @@
 import time
 from typing import Dict, Any, List
+from sqlalchemy.sql import func
 from .persistence import PersistenceLayer
+from ..data.orm import DBSystemMetric
 from .logging_utils import logger
 
 class MonitoringSystem:
@@ -11,11 +13,6 @@ class MonitoringSystem:
 
     def get_system_health(self) -> Dict[str, Any]:
         """Calculates high-level health metrics from stored execution history."""
-        metrics = self.persistence.get_latest_reports(limit=100) # Using latest reports as a proxy for activity
-        
-        # In a real system, we'd query the system_metrics table specifically
-        # Let's add a method to persistence to get summary metrics
-        
         summary = self._get_metrics_summary()
         
         return {
@@ -25,26 +22,32 @@ class MonitoringSystem:
         }
 
     def _get_metrics_summary(self) -> Dict[str, Any]:
-        """Aggregates raw metrics into readable summaries."""
+        """Aggregates raw metrics into readable summaries using ORM."""
         try:
-            import sqlite3
-            with sqlite3.connect(self.persistence.db_path) as conn:
-                conn.row_factory = sqlite3.Row
-                cursor = conn.cursor()
+            with self.persistence.get_session() as session:
+                # Average latency and success rate per agent
+                stats_query = session.query(
+                    DBSystemMetric.agent_name,
+                    func.avg(DBSystemMetric.latency_ms).label('avg_latency'),
+                    (func.sum(func.case((DBSystemMetric.success.is_(True), 1), else_=0)) * 100.0 / func.count()).label('success_rate')
+                ).group_by(DBSystemMetric.agent_name).all()
                 
-                # Average latency per agent
-                cursor.execute("""
-                    SELECT agent_name, AVG(latency_ms) as avg_latency, 
-                           SUM(CASE WHEN success THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as success_rate
-                    FROM system_metrics
-                    GROUP BY agent_name
-                """)
-                agent_stats = [dict(row) for row in cursor.fetchall()]
-                
+                agent_stats = [
+                    {
+                        "agent_name": row.agent_name,
+                        "avg_latency": row.avg_latency,
+                        "success_rate": row.success_rate
+                    }
+                    for row in stats_query
+                ]
+
                 # Overall success rate
-                cursor.execute("SELECT SUM(CASE WHEN success THEN 1 ELSE 0 END) * 100.0 / COUNT(*) FROM system_metrics")
-                overall_success = cursor.fetchone()[0] or 0.0
+                overall_query = session.query(
+                    (func.sum(func.case((DBSystemMetric.success.is_(True), 1), else_=0)) * 100.0 / func.count())
+                ).scalar()
                 
+                overall_success = overall_query or 0.0
+
                 return {
                     "overall_success_rate": overall_success,
                     "agent_performance": agent_stats

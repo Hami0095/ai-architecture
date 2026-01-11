@@ -185,3 +185,108 @@
 2026-01-11 09:03:09,387 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 3537.00ms) ---
 2026-01-11 09:03:09,388 [INFO] ArchAI: Running Proactive Stability Analysis...
 2026-01-11 09:10:36,729 [INFO] ArchAI: Configuration profile/file loaded: config.testprofile.json
+2026-01-11 09:12:57,957 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 09:12:57,957 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 09:12:59,783 [WARNING] ArchAI.Auditor: LLM JSON Error (Attempt 1/3): Expecting value: line 1 column 1 (char 0)
+2026-01-11 09:13:01,603 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:13:01,654 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 3646.18ms) ---
+2026-01-11 09:13:01,655 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 09:13:01,694 [INFO] ArchAI.Auditor: Scan complete. 39 files included in analysis context.
+2026-01-11 09:13:06,466 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 09:13:06,519 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 4811.20ms) ---
+2026-01-11 09:13:06,520 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 09:13:10,668 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 4093.03ms) ---
+2026-01-11 09:13:10,668 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 09:13:14,373 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 3645.50ms) ---
+2026-01-11 09:13:14,374 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 09:13:28,444 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 14055.32ms) ---
+2026-01-11 09:13:28,445 [INFO] ArchAI: Generated 10 development tickets.
+2026-01-11 09:13:28,445 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 09:13:28,454 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.55ms) ---
+2026-01-11 09:13:28,455 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 09:13:34,466 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 5955.70ms) ---
+2026-01-11 09:13:34,467 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 09:35:04,639 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:35:04,680 [INFO] ArchAI.Auditor: Scan complete. 40 files included in analysis context.
+2026-01-11 09:35:09,960 [INFO] ArchAI.Auditor: Discovery detected languages: ['python', 'javascript']
+2026-01-11 09:35:22,036 [INFO] ArchAI: Database engine initialized at sqlite:///archai_data.db
+2026-01-11 09:35:22,036 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 09:35:22,037 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 09:35:23,577 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:35:23,581 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,582 [WARNING] ArchAI: Function save_metric failed with '(sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)'. Retrying in 0.1s... (2 left)
+2026-01-11 09:35:23,683 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,684 [WARNING] ArchAI: Function save_metric failed with '(sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)'. Retrying in 0.2s... (1 left)
+2026-01-11 09:35:23,886 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,887 [ERROR] ArchAI: Function save_metric failed after all retries. Final error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,887 [ERROR] ArchAI: Agent PathNavigator CRITICAL FAILURE: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1540.7118797302246, 1, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,888 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,888 [WARNING] ArchAI: Function save_metric failed with '(sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)'. Retrying in 0.1s... (2 left)
+2026-01-11 09:35:23,990 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:23,990 [WARNING] ArchAI: Function save_metric failed with '(sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)'. Retrying in 0.2s... (1 left)
+2026-01-11 09:35:24,192 [ERROR] ArchAI: Database session error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:24,193 [ERROR] ArchAI: Function save_metric failed after all retries. Final error: (sqlite3.OperationalError) table system_metrics has no column named error_type
+[SQL: INSERT INTO system_metrics (agent_name, latency_ms, success, error_type) VALUES (?, ?, ?, ?) RETURNING id, timestamp]
+[parameters: ('PathNavigator', 1850.3327369689941, 0, None)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-11 09:35:48,461 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:35:48,502 [INFO] ArchAI.Auditor: Scan complete. 40 files included in analysis context.
+2026-01-11 09:35:53,171 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 09:36:02,074 [INFO] ArchAI: Database engine initialized at sqlite:///archai_data.db
+2026-01-11 09:36:02,075 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 09:36:02,075 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 09:36:02,979 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:36:03,034 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 904.85ms) ---
+2026-01-11 09:36:03,034 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 09:36:03,065 [INFO] ArchAI.Auditor: Scan complete. 40 files included in analysis context.
+2026-01-11 09:36:14,368 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 09:36:14,419 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 11334.00ms) ---
+2026-01-11 09:36:14,419 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 09:36:17,286 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 2816.46ms) ---
+2026-01-11 09:36:17,287 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 09:36:21,425 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 4086.76ms) ---
+2026-01-11 09:36:21,426 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 09:36:28,070 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 6638.24ms) ---
+2026-01-11 09:36:28,070 [INFO] ArchAI: Generated 0 development tickets.
+2026-01-11 09:36:28,070 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 09:36:28,076 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 0.23ms) ---
+2026-01-11 09:36:28,076 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 09:36:30,918 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 2785.25ms) ---
+2026-01-11 09:36:30,919 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 09:36:35,121 [INFO] ArchAI: Report saved for C:\Development\python\system-designing
