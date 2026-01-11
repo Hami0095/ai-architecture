@@ -24,6 +24,7 @@ from ..data.models import (
 )
 from ..models.base import BaseAIModel
 from ..models.factory import get_model
+from ..infrastructure.caching import cache
 
 logger = logging.getLogger("ArchAI.Auditor")
 
@@ -34,9 +35,18 @@ class ArchitecturalAuditor:
     def scan_directory(self, root_path, max_depth=4) -> str:
         """
         Creates a text representation of the project structure and key file contents.
-        Uses pathlib for cross-platform (Windows/Mac/Ubuntu) stability.
+        Uses caching to avoid rescanning unchanged directories (simple path-based cache).
         """
         root = Path(root_path).expanduser().resolve()
+        cache_key = f"scan:{root}:{max_depth}"
+        cached_summary = cache.get("scanner", cache_key)
+        
+        # Note: In a real system, we'd check file mtimes or hashes to invalidate.
+        # For now, we assume if it's cached, it's valid for the TTL duration.
+        if cached_summary:
+            logger.info(f"Using cached file scan for {root}")
+            return cached_summary
+
         if not root.exists():
             logger.error(f"Directory not found: {root}")
             return f"Error: Directory {root} does not exist."
@@ -82,10 +92,20 @@ class ArchitecturalAuditor:
                     except Exception as e:
                         logger.warning(f"Failed to read {path}: {e}")
 
+        final_result = summary + f"\n\nTotal Files Scanned: {files_scanned}\n\nKey File Contents:\n" + file_contents
         logger.info(f"Scan complete. {files_scanned} files included in analysis context.")
-        return summary + f"\n\nTotal Files Scanned: {files_scanned}\n\nKey File Contents:\n" + file_contents
+        
+        # Cache the result
+        cache.set("scanner", cache_key, final_result, ttl=300) # 5 minutes cache for scans
+        return final_result
 
     def _call_llm_json(self, system_prompt: str, user_prompt: str, retries: int = 2) -> dict:
+        # Check cache for identical prompts (useful for repetitive development runs)
+        cache_key = {"sys": system_prompt, "usr": user_prompt, "model": getattr(self.model, "model_name", "unknown")}
+        cached_response = cache.get("llm_json", cache_key)
+        if cached_response:
+            return cached_response
+
         for attempt in range(retries + 1):
             try:
                 content = self.model.chat(
@@ -95,7 +115,9 @@ class ArchitecturalAuditor:
                     ],
                     format='json'
                 )
-                return json.loads(content)
+                result = json.loads(content)
+                cache.set("llm_json", cache_key, result, ttl=3600) # 1 hour cache
+                return result
             except Exception as e:
                 logger.warning(f"LLM JSON Error (Attempt {attempt+1}/{retries+1}): {e}")
                 if attempt == retries:
@@ -105,13 +127,20 @@ class ArchitecturalAuditor:
         return {}
 
     def _call_llm_text(self, system_prompt: str, user_prompt: str) -> str:
+        cache_key = {"sys": system_prompt, "usr": user_prompt, "model": getattr(self.model, "model_name", "unknown")}
+        cached_response = cache.get("llm_text", cache_key)
+        if cached_response:
+            return cached_response
+
         try:
-            return self.model.chat(
+            result = self.model.chat(
                 messages=[
                     {'role': 'system', 'content': system_prompt},
                     {'role': 'user', 'content': user_prompt}
                 ]
             )
+            cache.set("llm_text", cache_key, result, ttl=3600)
+            return result
         except Exception as e:
             logger.error(f"LLM Text Error: {e}")
             return "Analysis failed."
