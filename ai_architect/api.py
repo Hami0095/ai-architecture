@@ -6,6 +6,7 @@ from .core_ai.auditor import ArchitecturalAuditor
 from .infrastructure.logging_utils import logger
 from .infrastructure.config_manager import config
 from .infrastructure.monitoring import monitor
+from .infrastructure.caching import cached
 
 app = FastAPI(title="ArchAI API", description="REST API for Autonomous Architectural Audits")
 
@@ -22,16 +23,22 @@ class AuditRequest(BaseModel):
     context: Optional[str] = "General software project"
     goal: Optional[str] = "Production-ready system"
 
+    # Make hashable for caching key generation
+    def __hash__(self):
+        return hash((self.path, self.context, self.goal))
+
 @app.get("/health")
 def health_check():
     return {"status": "online", "model": config.get("model", "qwen3-coder:480b-cloud")}
 
 @app.get("/metrics")
-def get_metrics():
+@cached(prefix="metrics", ttl=10) # Cache metrics for 10 seconds to reduce DB load
+async def get_metrics():
     """Returns real-time performance and health metrics."""
     return monitor.get_system_health()
 
 @app.post("/audit")
+@cached(prefix="full_audit", ttl=300) # Cache identical audit requests for 5 minutes
 async def run_audit(request: AuditRequest):
     """Triggers an asynchronous architectural audit."""
     logger.info(f"API Request: Audit path {request.path}")
@@ -49,3 +56,4 @@ async def run_audit(request: AuditRequest):
 
 if __name__ == "__main__":
     import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

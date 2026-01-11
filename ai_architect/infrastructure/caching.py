@@ -1,6 +1,8 @@
 import json
 import hashlib
-from typing import Optional, Any
+import functools
+import asyncio
+from typing import Optional, Any, Callable
 import redis
 from .config_manager import config
 from .logging_utils import logger
@@ -36,9 +38,22 @@ class CacheLayer:
 
     def _generate_key(self, prefix: str, data: Any) -> str:
         """Generates a consistent hash key for the data."""
-        data_str = json.dumps(data, sort_keys=True)
-        hash_digest = hashlib.sha256(data_str.encode("utf-8")).hexdigest()
-        return f"archai:{prefix}:{hash_digest}"
+        try:
+            # Handle data that might not be directly serializable
+            if hasattr(data, "model_dump_json"): # Pydantic v2
+                 data_str = data.model_dump_json()
+            elif hasattr(data, "dict"): # Pydantic v1
+                 data_str = json.dumps(data.dict(), sort_keys=True)
+            elif isinstance(data, (dict, list, str, int, float, bool, type(None))):
+                 data_str = json.dumps(data, sort_keys=True)
+            else:
+                 data_str = str(data)
+
+            hash_digest = hashlib.sha256(data_str.encode("utf-8")).hexdigest()
+            return f"archai:{prefix}:{hash_digest}"
+        except Exception as e:
+            logger.warning(f"Cache key generation failed: {e}")
+            return f"archai:{prefix}:invalid_key"
 
     def get(self, prefix: str, key_data: Any) -> Optional[Any]:
         """Retrieves data from cache."""
@@ -74,7 +89,13 @@ class CacheLayer:
         ttl = ttl or self.ttl
         
         try:
-            val_str = json.dumps(value)
+            # Ensure value is serializable
+            if hasattr(value, "model_dump"):
+                 val_str = value.model_dump_json()
+            elif hasattr(value, "dict"):
+                 val_str = json.dumps(value.dict())
+            else:
+                 val_str = json.dumps(value)
             
             # 1. Save to Redis
             if self.redis_client:
@@ -82,7 +103,7 @@ class CacheLayer:
             
             # 2. Save to Local
             else:
-                self.local_cache[key] = value
+                self.local_cache[key] = json.loads(val_str) # Store as dict to simulate retrieval
                 # Note: Local cache does not implement TTL eviction in this simple version
                 
         except Exception as e:
@@ -90,3 +111,39 @@ class CacheLayer:
 
 # Singleton
 cache = CacheLayer()
+
+def cached(prefix: str, ttl: int = 300):
+    """
+    Decorator to cache function results.
+    Works for both sync and async functions.
+    """
+    def decorator(func: Callable):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Generate key from args/kwargs
+            key_data = {"args": args, "kwargs": kwargs}
+            cached_result = cache.get(prefix, key_data)
+            
+            if cached_result is not None:
+                return cached_result
+            
+            result = func(*args, **kwargs)
+            cache.set(prefix, key_data, result, ttl)
+            return result
+
+        @functools.wraps(func)
+        async def async_wrapper(*args, **kwargs):
+            key_data = {"args": args, "kwargs": kwargs}
+            cached_result = cache.get(prefix, key_data)
+            
+            if cached_result is not None:
+                return cached_result
+            
+            result = await func(*args, **kwargs)
+            cache.set(prefix, key_data, result, ttl)
+            return result
+
+        if asyncio.iscoroutinefunction(func):
+            return async_wrapper
+        return wrapper
+    return decorator
