@@ -1,11 +1,21 @@
-from fastapi import FastAPI, HTTPException, Depends
+import time
+from fastapi import FastAPI, HTTPException, Depends, Request
 from pydantic import BaseModel
 from typing import Dict, Any, Optional
 from .core_ai.auditor import ArchitecturalAuditor
 from .infrastructure.logging_utils import logger
 from .infrastructure.config_manager import config
+from .infrastructure.monitoring import monitor
 
 app = FastAPI(title="ArchAI API", description="REST API for Autonomous Architectural Audits")
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    duration = (time.time() - start_time) * 1000
+    logger.info(f"HTTP {request.method} {request.url.path} - {response.status_code} ({duration:.2f}ms)")
+    return response
 
 class AuditRequest(BaseModel):
     path: str
@@ -15,6 +25,11 @@ class AuditRequest(BaseModel):
 @app.get("/health")
 def health_check():
     return {"status": "online", "model": config.get("model", "qwen3-coder:480b-cloud")}
+
+@app.get("/metrics")
+def get_metrics():
+    """Returns real-time performance and health metrics."""
+    return monitor.get_system_health()
 
 @app.post("/audit")
 async def run_audit(request: AuditRequest):
@@ -34,4 +49,3 @@ async def run_audit(request: AuditRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,9 +1,11 @@
-import ollama
+from typing import Optional
 from ..core_ai.prompts import XAI_SYSTEM_PROMPT
+from ..models.base import BaseAIModel
+from ..models.factory import get_model
 
 class XAI:
-    def __init__(self, model="qwen3-coder:480b-cloud"):
-        self.model = model 
+    def __init__(self, model: Optional[BaseAIModel] = None):
+        self.model = model or get_model()
 
     def explain_suggestion(self, suggestion, failure_context):
         """
@@ -16,11 +18,13 @@ class XAI:
         
         Explain WHY this suggestion will fix the issue and estimate its impact.
         """
-        response = ollama.chat(model=self.model, messages=[
-            {'role': 'system', 'content': XAI_SYSTEM_PROMPT},
-            {'role': 'user', 'content': prompt}
-        ])
-        return response['message']['content']
+        content = self.model.chat(
+            messages=[
+                {'role': 'system', 'content': XAI_SYSTEM_PROMPT},
+                {'role': 'user', 'content': prompt}
+            ]
+        )
+        return content
 
     def explain_decision(self, chosen_strategy, alternatives):
         """
@@ -32,8 +36,10 @@ class XAI:
         
         Explain the reasoning for this choice, highlighting advantages over the alternatives.
         """
-        response = ollama.chat(model=self.model, messages=[
-            {'role': 'system', 'content': XAI_SYSTEM_PROMPT},
-            {'role': 'user', 'content': prompt}
-        ])
-        return response['message']['content']
+        content = self.model.chat(
+            messages=[
+                {'role': 'system', 'content': XAI_SYSTEM_PROMPT},
+                {'role': 'user', 'content': prompt}
+            ]
+        )
+        return content

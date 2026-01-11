@@ -1,6 +1,5 @@
 import os
 import json
-import ollama
 import logging
 import time
 from pathlib import Path
@@ -23,19 +22,20 @@ from ..data.models import (
     AuditorVerifierOutput,
     AuditTicket
 )
+from ..models.base import BaseAIModel
+from ..models.factory import get_model
 
 logger = logging.getLogger("ArchAI.Auditor")
 
 class ArchitecturalAuditor:
-    def __init__(self, model="qwen3-coder:480b-cloud"):
-        self.model = model
+    def __init__(self, model: Optional[BaseAIModel] = None):
+        self.model = model or get_model()
 
     def scan_directory(self, root_path, max_depth=4) -> str:
         """
         Creates a text representation of the project structure and key file contents.
         Uses pathlib for cross-platform (Windows/Mac/Ubuntu) stability.
         """
-        # Expand user path (~) if present and resolve
         root = Path(root_path).expanduser().resolve()
         if not root.exists():
             logger.error(f"Directory not found: {root}")
@@ -48,7 +48,6 @@ class ArchitecturalAuditor:
         file_contents = ""
         files_scanned = 0
         
-        # Helper to get depth relative to root
         def get_depth(p: Path):
             try:
                 return len(p.relative_to(root).parts)
@@ -56,7 +55,6 @@ class ArchitecturalAuditor:
                 return 0
 
         for path in root.rglob('*'):
-            # Skip ignored directories
             if any(part in ignore_dirs for part in path.parts):
                 continue
             
@@ -74,7 +72,6 @@ class ArchitecturalAuditor:
                     summary += f"{indent}{path.name}\n"
                     files_scanned += 1
                     try:
-                        # Only read specific text-based formats for context
                         if ext in {'.py', '.sql', '.yaml', '.yml', '.toml', '.env', '.js', '.ts'} or path.name == 'Dockerfile':
                             with open(path, 'r', encoding='utf-8', errors='ignore') as file_obj:
                                 content = file_obj.read()
@@ -91,31 +88,30 @@ class ArchitecturalAuditor:
     def _call_llm_json(self, system_prompt: str, user_prompt: str, retries: int = 2) -> dict:
         for attempt in range(retries + 1):
             try:
-                response = ollama.chat(model=self.model, format='json', messages=[
-                    {'role': 'system', 'content': system_prompt},
-                    {'role': 'user', 'content': user_prompt}
-                ])
-                content = response['message']['content']
-                if "```json" in content:
-                    content = content.split("```json")[1].split("```")[0].strip()
-                elif "```" in content:
-                    content = content.split("```")[1].split("```")[0].strip()
+                content = self.model.chat(
+                    messages=[
+                        {'role': 'system', 'content': system_prompt},
+                        {'role': 'user', 'content': user_prompt}
+                    ],
+                    format='json'
+                )
                 return json.loads(content)
             except Exception as e:
                 logger.warning(f"LLM JSON Error (Attempt {attempt+1}/{retries+1}): {e}")
                 if attempt == retries:
                     logger.error("LLM JSON calls failed after all retries.")
                     return {}
-                time.sleep(1) # Backoff
+                time.sleep(1)
         return {}
 
     def _call_llm_text(self, system_prompt: str, user_prompt: str) -> str:
         try:
-            response = ollama.chat(model=self.model, messages=[
-                {'role': 'system', 'content': system_prompt},
-                {'role': 'user', 'content': user_prompt}
-            ])
-            return response['message']['content']
+            return self.model.chat(
+                messages=[
+                    {'role': 'system', 'content': system_prompt},
+                    {'role': 'user', 'content': user_prompt}
+                ]
+            )
         except Exception as e:
             logger.error(f"LLM Text Error: {e}")
             return "Analysis failed."
@@ -123,7 +119,6 @@ class ArchitecturalAuditor:
     # --- Agent Implementations ---
 
     def PathNavigator(self, user_input_path: str) -> PathNavigatorOutput:
-        """Agent 0: Resolves the user's input path to a safe absolute path."""
         import platform
         home_dir = str(Path.home())
         cwd = os.getcwd()
@@ -137,13 +132,10 @@ class ArchitecturalAuditor:
         )
         
         raw_result = self._call_llm_json("You are an ArchAI Path Navigator.", prompt)
-        
-        # Validation as secondary check
         resolved = raw_result.get("resolved_path", user_input_path)
         final_path = Path(resolved).expanduser().resolve()
         
         if not final_path.exists():
-            # If not exists, try to be smarter (e.g. check if it's in home)
             if not Path(resolved).is_absolute():
                  potential = Path.home() / resolved
                  if potential.exists():
@@ -158,11 +150,9 @@ class ArchitecturalAuditor:
         return output
 
     def Discovery(self, repo_path: str) -> DiscoveryOutput:
-        """Agent 1: Scans the repository and returns technical metadata."""
         code_structure = self.scan_directory(repo_path)
         raw_discovery = self._call_llm_json(DISCOVERY_SYSTEM_PROMPT, f"Project Path: {repo_path}\n\nCode Structure:\n{code_structure}")
         
-        # Fallback heuristic if LLM returns empty
         languages = raw_discovery.get("languages", [])
         if not languages:
             if ".py" in code_structure: languages.append("python")
@@ -180,9 +170,7 @@ class ArchitecturalAuditor:
         return output
 
     def ContextBuilder(self, discovery_result: DiscoveryOutput) -> ContextBuilderOutput:
-        """Agent 2: Analyzes discovery data to build a dependency/relationship graph."""
         raw_structure = discovery_result.raw_structure or ""
-        # Clean up for LLM context
         metadata = discovery_result.model_dump(exclude={'raw_structure'})
         msg = f"Metadata: {json.dumps(metadata)}\nStructure Snippet: {raw_structure[:2000]}"
         raw_result = self._call_llm_json(CONTEXT_BUILDER_SYSTEM_PROMPT, msg)
@@ -194,7 +182,6 @@ class ArchitecturalAuditor:
         )
 
     def GapAnalyzer(self, context_graph: ContextBuilderOutput, goals: dict) -> GapAnalyzerOutput:
-        """Agent 3: Compares context against goals to identify missing gaps."""
         gap_prompt = GAP_ANALYSIS_SYSTEM_PROMPT.format(
             discovery_data=context_graph.model_dump_json(),
             user_context=goals.get("user_context", ""),
@@ -205,7 +192,6 @@ class ArchitecturalAuditor:
         return GapAnalyzerOutput(markdown_report=report_text)
 
     def TicketGenerator(self, gap_report: GapAnalyzerOutput) -> TicketGeneratorOutput:
-        """Agent 4: Generates actionable dev tickets from the gap report."""
         prompt = f"Gap Report: {gap_report.markdown_report}\nGenerate detailed tickets."
         raw_result = self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, prompt)
         
@@ -220,15 +206,12 @@ class ArchitecturalAuditor:
         return TicketGeneratorOutput(tickets=valid_tickets)
 
     def Planner(self, tickets_list: List[AuditTicket]) -> PlannerOutput:
-        """Agent 5: Creates a 5-day sprint plan."""
         from ..improvement_engine.planner import SprintPlanner
-        
         planner = SprintPlanner(hours_per_day=5.0, total_days=5)
         sprint_days = planner.plan_sprint(tickets_list)
         return PlannerOutput(sprint_plan=sprint_days)
 
     def AuditorVerifier(self, sprint_plan: List[Dict[str, Any]]) -> AuditorVerifierOutput:
-        """Agent 6: Verifies the sprint plan for risks and quality."""
         prompt = f"Proposed Sprint Plan: {json.dumps(sprint_plan)}\nVerify for risks."
         raw_result = self._call_llm_json(AUDITOR_VERIFIER_SYSTEM_PROMPT, prompt)
         
@@ -238,9 +221,6 @@ class ArchitecturalAuditor:
         )
 
     async def audit_project(self, root_path: str, user_context: str = "", project_status: str = "", expected_output: str = "") -> dict:
-        """
-        Legacy wrapper for audit_project, now using the Orchestrator.
-        """
         from .orchestrator import Orchestrator
         goals = {
             "user_context": user_context,

@@ -1,0 +1,166 @@
+2026-01-11 08:20:58,470 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 08:20:58,471 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:20:59,815 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:20:59,827 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 1344.50ms) ---
+2026-01-11 08:20:59,828 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:20:59,858 [INFO] ArchAI.Auditor: Scan complete. 33 files included in analysis context.
+2026-01-11 08:21:04,366 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:21:04,379 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 4539.59ms) ---
+2026-01-11 08:21:04,380 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:21:09,342 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 4956.02ms) ---
+2026-01-11 08:21:09,343 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:21:13,786 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 4435.74ms) ---
+2026-01-11 08:21:13,786 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:21:35,166 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 21371.54ms) ---
+2026-01-11 08:21:35,166 [INFO] ArchAI: Generated 20 development tickets.
+2026-01-11 08:21:35,166 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:21:35,173 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.18ms) ---
+2026-01-11 08:21:35,173 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:21:39,817 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 4627.98ms) ---
+2026-01-11 08:21:39,818 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:27:05,849 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 08:27:05,850 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:27:07,690 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:27:07,709 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 1840.45ms) ---
+2026-01-11 08:27:07,710 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:27:07,740 [INFO] ArchAI.Auditor: Scan complete. 33 files included in analysis context.
+2026-01-11 08:27:13,612 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:27:13,651 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 5902.58ms) ---
+2026-01-11 08:27:13,651 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:27:19,481 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 5815.49ms) ---
+2026-01-11 08:27:19,482 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:27:23,559 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 4065.96ms) ---
+2026-01-11 08:27:23,560 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:27:37,673 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 14095.85ms) ---
+2026-01-11 08:27:37,674 [INFO] ArchAI: Generated 15 development tickets.
+2026-01-11 08:27:37,674 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:27:37,681 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.55ms) ---
+2026-01-11 08:27:37,682 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:27:43,748 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 6037.25ms) ---
+2026-01-11 08:27:43,749 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:28:39,247 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 08:28:39,247 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:28:40,591 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:28:40,622 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 1344.12ms) ---
+2026-01-11 08:28:40,622 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:28:40,647 [INFO] ArchAI.Auditor: Scan complete. 33 files included in analysis context.
+2026-01-11 08:28:47,208 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:28:47,221 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 6586.35ms) ---
+2026-01-11 08:28:47,222 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:28:52,559 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 5319.68ms) ---
+2026-01-11 08:28:52,560 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:28:55,827 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 3243.32ms) ---
+2026-01-11 08:28:55,828 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:29:16,156 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 20310.93ms) ---
+2026-01-11 08:29:16,157 [INFO] ArchAI: Generated 16 development tickets.
+2026-01-11 08:29:16,157 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:29:16,184 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.32ms) ---
+2026-01-11 08:29:16,184 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:29:21,536 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 5338.08ms) ---
+2026-01-11 08:29:21,537 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:31:47,789 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 08:31:47,789 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:31:48,966 [WARNING] ArchAI.Auditor: LLM JSON Error (Attempt 1/3): Expecting value: line 1 column 1 (char 0)
+2026-01-11 08:31:51,418 [WARNING] ArchAI.Auditor: LLM JSON Error (Attempt 2/3): Expecting value: line 1 column 1 (char 0)
+2026-01-11 08:31:53,247 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:31:53,254 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 5457.83ms) ---
+2026-01-11 08:31:53,254 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:31:53,282 [INFO] ArchAI.Auditor: Scan complete. 33 files included in analysis context.
+2026-01-11 08:31:56,578 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:31:56,588 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 3324.42ms) ---
+2026-01-11 08:31:56,588 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:32:01,696 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 5075.68ms) ---
+2026-01-11 08:32:01,697 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:32:08,104 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 6370.54ms) ---
+2026-01-11 08:32:08,104 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:32:13,304 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 5147.59ms) ---
+2026-01-11 08:32:13,304 [INFO] ArchAI: Generated 5 development tickets.
+2026-01-11 08:32:13,305 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:32:13,311 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 0.29ms) ---
+2026-01-11 08:32:13,312 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:32:19,774 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 6453.94ms) ---
+2026-01-11 08:32:19,775 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:34:21,699 [INFO] ArchAI: API Request: Audit path c:\Development\python\system-designing\ai_architect
+2026-01-11 08:34:21,713 [INFO] ArchAI: Starting Orchestration pipeline for: c:\Development\python\system-designing\ai_architect
+2026-01-11 08:34:21,713 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:34:22,926 [WARNING] ArchAI.Auditor: LLM JSON Error (Attempt 1/3): Expecting value: line 1 column 1 (char 0)
+2026-01-11 08:34:24,857 [INFO] ArchAI.Auditor: PathNavigator resolved 'c:\Development\python\system-designing\ai_architect' to 'C:\Development\python\system-designing\ai_architect'
+2026-01-11 08:34:24,870 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 3144.08ms) ---
+2026-01-11 08:34:24,871 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:34:24,879 [INFO] ArchAI.Auditor: Scan complete. 27 files included in analysis context.
+2026-01-11 08:34:28,696 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:34:28,704 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 3826.03ms) ---
+2026-01-11 08:34:28,704 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:34:32,010 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 3299.30ms) ---
+2026-01-11 08:34:32,010 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:34:38,209 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 6189.58ms) ---
+2026-01-11 08:34:38,210 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:34:48,034 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 9815.65ms) ---
+2026-01-11 08:34:48,035 [INFO] ArchAI: Generated 10 development tickets.
+2026-01-11 08:34:48,035 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:34:48,042 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.29ms) ---
+2026-01-11 08:34:48,043 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:34:52,803 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 4741.34ms) ---
+2026-01-11 08:34:52,803 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:36:20,303 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 08:36:20,305 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 08:36:21,861 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:36:21,877 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 1557.23ms) ---
+2026-01-11 08:36:21,877 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 08:36:21,906 [INFO] ArchAI.Auditor: Scan complete. 33 files included in analysis context.
+2026-01-11 08:36:29,435 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 08:36:29,447 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 7558.72ms) ---
+2026-01-11 08:36:29,448 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 08:36:39,115 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 9621.62ms) ---
+2026-01-11 08:36:39,115 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 08:36:47,335 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 8207.20ms) ---
+2026-01-11 08:36:47,336 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 08:37:00,942 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 13598.47ms) ---
+2026-01-11 08:37:00,942 [INFO] ArchAI: Generated 14 development tickets.
+2026-01-11 08:37:00,942 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 08:37:00,950 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 1.46ms) ---
+2026-01-11 08:37:00,951 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 08:37:06,882 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 5905.44ms) ---
+2026-01-11 08:37:06,883 [INFO] ArchAI: Running Proactive Stability Analysis...
+2026-01-11 08:51:05,698 [INFO] ArchAI: HTTP GET /metrics - 200 (10.47ms)
+2026-01-11 08:52:19,214 [INFO] ArchAI: HTTP GET /docs - 200 (0.33ms)
+2026-01-11 08:52:19,378 [INFO] ArchAI: HTTP GET /openapi.json - 200 (8.48ms)
+2026-01-11 08:58:07,071 [INFO] ArchAI.Auditor: PathNavigator resolved '/some/relative/path' to 'C:\tmp\mock_repo'
+2026-01-11 08:58:07,098 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 08:58:07,099 [INFO] ArchAI.Auditor: Discovery detected languages: ['python', 'javascript']
+2026-01-11 08:58:08,897 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:58:46,833 [INFO] ArchAI.Auditor: PathNavigator resolved '/some/relative/path' to 'C:\tmp\mock_repo'
+2026-01-11 08:58:46,866 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 08:58:46,867 [INFO] ArchAI.Auditor: Discovery detected languages: ['python', 'javascript']
+2026-01-11 08:58:48,013 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:59:11,677 [INFO] ArchAI.Auditor: PathNavigator resolved '/some/relative/path' to 'C:\tmp\mock_repo'
+2026-01-11 08:59:11,707 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 08:59:11,708 [INFO] ArchAI.Auditor: Discovery detected languages: ['Python']
+2026-01-11 08:59:12,657 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 08:59:47,537 [INFO] ArchAI.Auditor: PathNavigator resolved '/some/relative/path' to 'C:\tmp\mock_repo'
+2026-01-11 08:59:47,566 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 08:59:47,566 [INFO] ArchAI.Auditor: Discovery detected languages: ['Python']
+2026-01-11 08:59:48,675 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:00:01,148 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:00:01,179 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 09:00:05,448 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 09:00:14,669 [INFO] ArchAI: Starting Orchestration pipeline for: .
+2026-01-11 09:00:14,669 [INFO] ArchAI: --- [Agent START] PathNavigator ---
+2026-01-11 09:00:15,999 [INFO] ArchAI.Auditor: PathNavigator resolved '.' to 'C:\Development\python\system-designing'
+2026-01-11 09:00:16,052 [INFO] ArchAI: --- [Agent DONE] PathNavigator (Success, Latency: 1330.75ms) ---
+2026-01-11 09:00:16,052 [INFO] ArchAI: --- [Agent START] Discovery ---
+2026-01-11 09:00:16,080 [INFO] ArchAI.Auditor: Scan complete. 38 files included in analysis context.
+2026-01-11 09:00:27,490 [INFO] ArchAI.Auditor: Discovery detected languages: ['python']
+2026-01-11 09:00:27,543 [INFO] ArchAI: --- [Agent DONE] Discovery (Success, Latency: 11437.94ms) ---
+2026-01-11 09:00:27,544 [INFO] ArchAI: --- [Agent START] ContextBuilder ---
+2026-01-11 09:00:29,645 [INFO] ArchAI: --- [Agent DONE] ContextBuilder (Success, Latency: 2048.57ms) ---
+2026-01-11 09:00:29,646 [INFO] ArchAI: --- [Agent START] GapAnalyzer ---
+2026-01-11 09:00:33,648 [INFO] ArchAI: --- [Agent DONE] GapAnalyzer (Success, Latency: 3941.23ms) ---
+2026-01-11 09:00:33,649 [INFO] ArchAI: --- [Agent START] TicketGenerator ---
+2026-01-11 09:00:47,231 [INFO] ArchAI: --- [Agent DONE] TicketGenerator (Success, Latency: 13572.93ms) ---
+2026-01-11 09:00:47,231 [INFO] ArchAI: Generated 10 development tickets.
+2026-01-11 09:00:47,232 [INFO] ArchAI: --- [Agent START] Planner ---
+2026-01-11 09:00:47,239 [INFO] ArchAI: --- [Agent DONE] Planner (Success, Latency: 0.44ms) ---
+2026-01-11 09:00:47,240 [INFO] ArchAI: --- [Agent START] AuditorVerifier ---
+2026-01-11 09:00:50,695 [INFO] ArchAI: --- [Agent DONE] AuditorVerifier (Success, Latency: 3401.09ms) ---
+2026-01-11 09:00:50,696 [INFO] ArchAI: Running Proactive Stability Analysis...

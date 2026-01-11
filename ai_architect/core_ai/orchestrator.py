@@ -16,15 +16,18 @@ from ..data.models import (
     AuditorVerifierOutput
 )
 from ..improvement_engine.analyzer import ProactiveStabilityAnalyzer
-from ..infrastructure.logging_utils import logger, setup_logger
+from ..infrastructure.logging_utils import logger
 from ..infrastructure.persistence import PersistenceLayer
+from ..models.factory import get_model
 
 class Orchestrator:
     def __init__(self, auditor_instance):
         self.auditor = auditor_instance
         self.logger = logger
         self.state: Optional[AgentState] = None
-        self.stability_analyzer = ProactiveStabilityAnalyzer(model=auditor_instance.model)
+        # Inherit model from auditor or get default
+        self.model = getattr(auditor_instance, 'model', get_model())
+        self.stability_analyzer = ProactiveStabilityAnalyzer(model=self.model)
         self.persistence = PersistenceLayer()
 
     async def _execute_agent(self, agent_name: str, func, *args, **kwargs) -> bool:
