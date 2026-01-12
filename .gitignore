@@ -23,3 +23,10 @@ adversarial_report.json
 adversarial_feedback.json
 adversarial_tests/
 adversarial_tests/*
+
+# Pilot Distribution Artifacts
+dist_pilot/
+dist/
+build/
+*.spec
+archai_pilot_*_dist.zip

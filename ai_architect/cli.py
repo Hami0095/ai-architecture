@@ -9,20 +9,22 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional, List, Dict, Any
 
-from .core_ai.generator import CoreAI
-from .evaluations.runner import EvaluationRunner
-from .improvement_engine.analyzer import ImprovementEngine
-from .reconciler.logic import Reconciler
-from .core_ai.auditor import ArchitecturalAuditor
-from .utils.ollama_manager import initialize_ollama
-from .analysis.validator import ArchValidator
-from .utils.console_utils import ConsoleUI
-from .infrastructure.config_manager import config
-from .connectors.github import GitHubConnector
-from .connectors.google_drive import GoogleDriveConnector
-from .connectors.pm import PMConnector
-from .infrastructure.usage_tracker import BackupManager, UsageTracker
-from .data.models import SprintPlanConfig, WDPOutput, AuditTicket
+from ai_architect.core_ai.generator import CoreAI
+from ai_architect.evaluations.runner import EvaluationRunner
+from ai_architect.improvement_engine.analyzer import ImprovementEngine
+from ai_architect.reconciler.logic import Reconciler
+from ai_architect.core_ai.auditor import ArchitecturalAuditor
+from ai_architect.utils.ollama_manager import initialize_ollama
+from ai_architect.analysis.validator import ArchValidator
+from ai_architect.utils.console_utils import ConsoleUI
+from ai_architect.infrastructure.config_manager import config
+from ai_architect.connectors.github import GitHubConnector
+from ai_architect.connectors.google_drive import GoogleDriveConnector
+from ai_architect.connectors.pm import PMConnector
+from ai_architect.infrastructure.usage_tracker import BackupManager, UsageTracker
+from ai_architect.data.models import SprintPlanConfig, WDPOutput, AuditTicket
+from ai_architect.version import ARCHAI_VERSION, get_graph_core_hash
+from ai_architect.utils.license import LicenseManager
 
 # Global logging config
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
@@ -574,10 +576,24 @@ def run_interactive_console():
     # 2. System Status
     user_id = config.get("user_id", "Anonymous-Engineer")
     auth_token = config.get_secret("google_drive_token")
+    
+    # Check License Status for Banner
+    license_token = os.environ.get("ARCHAI_LICENSE")
+    lic_status = "STRICT-LICENSE"
+    try:
+        if license_token:
+            payload = LicenseManager.validate_token(license_token)
+            lic_status = f"PILOT (Expires: {datetime.fromtimestamp(payload['e']).strftime('%Y-%m-%d')})"
+        else:
+            lic_status = "MISSING LICENSE"
+    except: lic_status = "EXPIRED/INVALID"
+
     mode = "AUTHENTICATED" if auth_token else "TEST-MODE"
+    core_hash = get_graph_core_hash()
     
     print(f"{'='*80}")
-    print(f" IDENTITY: {user_id} | MODE: {mode} | MODEL: {config.get('model','Default')}")
+    print(f" IDENTITY: {user_id} | MODE: {mode} | VERSION: {ARCHAI_VERSION}")
+    print(f" INTEGRITY: {core_hash} | LICENSE: {lic_status}")
     print(f"{'='*80}\n")
 
     # 3. Command Context
@@ -604,6 +620,43 @@ def run_interactive_console():
 
 def run_cli():
     """Main entry point for the ai-architect command."""
+    parser = argparse.ArgumentParser(prog="ai-architect", description="ArchAI Deterministic Adjudication CLI")
+    parser.add_argument("--license", type=str, help="Apply a pilot license token")
+    parser.add_argument("--check-token", type=str, help="Verify the status of a specific token")
+    parser.add_argument("--version", action="store_true", help="Display version and core hash")
+    parser.add_argument("--test-mode", action="store_true", help="Launch in preloaded test mode with mocks")
+    
+    args, unknown = parser.parse_known_args()
+    
+    if args.version:
+        print(f"ArchAI Version: {ARCHAI_VERSION}")
+        print(f"Graph Core Integrity: {get_graph_core_hash()}")
+        return
+
+    if args.check_token:
+        print(LicenseManager.get_token_info(args.check_token))
+        return
+
+    if args.license:
+        try:
+            LicenseManager.validate_token(args.license)
+            os.environ["ARCHAI_LICENSE"] = args.license
+            print("✅ License token accepted for this session.")
+        except ValueError as e:
+            print(f"❌ {str(e)}")
+            return
+
+    # Enforcement Gate: Only let them through if they have a valid token (or in local dev test mode)
+    if not os.environ.get("ARCHAI_LICENSE") and not os.environ.get("ARCHAI_DEV_MODE"):
+        print("\n[SECURITY ALERT] Your license token is missing or expired.")
+        print("Contact the pilot admin for a renewal token.")
+        print("Usage: ai-architect --license <TOKEN>\n")
+        return
+
+    if args.test_mode:
+        print("\n[DEMO MODE ACTIVATED] Preloading mock graphs and site surveys...")
+        os.environ["ARCHAI_TEST_MODE"] = "1"
+
     run_interactive_console()
 
 if __name__ == "__main__":
