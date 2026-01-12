@@ -14,7 +14,10 @@ from .prompts import (
     PATH_NAVIGATOR_SYSTEM_PROMPT,
     CIRAS_SYSTEM_PROMPT,
     WDP_SYSTEM_PROMPT,
-    SRC_SYSTEM_PROMPT
+    SRC_SYSTEM_PROMPT,
+    XAI_SYSTEM_PROMPT,
+    XAI_NARRATIVE_SYSTEM_PROMPT,
+    GRAPH_DET_CORE_PROMPT
 )
 from ..data.models import (
     PathNavigatorOutput,
@@ -30,7 +33,8 @@ from ..data.models import (
     WDPOutput,
     SprintPlanConfig,
     SRCOutput,
-    TaskPrediction
+    TaskPrediction,
+    XAIOutput
 )
 from ..models.base import BaseAIModel
 from ..models.factory import get_model
@@ -137,7 +141,10 @@ class ArchitecturalAuditor:
         raw = self._call_llm_json(GAP_ANALYSIS_SYSTEM_PROMPT, gap_prompt)
         evidence = []
         for e in raw.get("evidence_trail", []):
-            try: evidence.append(Evidence(**e))
+            try: 
+                ev = Evidence(**e)
+                ev.responsible_agent = "Risk Evaluation Agent"
+                evidence.append(ev)
             except: pass
         return GapAnalyzerOutput(markdown_report=raw.get("markdown_report", "Fail"), evidence_trail=evidence)
 
@@ -146,7 +153,11 @@ class ArchitecturalAuditor:
         raw = self._call_llm_json(TICKET_GENERATION_SYSTEM_PROMPT, prompt)
         tickets = []
         for t in raw.get("tickets", []):
-            try: tickets.append(AuditTicket(**t))
+            try: 
+                ticket = AuditTicket(**t)
+                if ticket.evidence:
+                    ticket.evidence.responsible_agent = "Work Decomposition Agent"
+                tickets.append(ticket)
             except: pass
         return TicketGeneratorOutput(tickets=tickets)
 
@@ -244,7 +255,6 @@ class ArchitecturalAuditor:
         arch_graph = engine.get_graph_summary()
         
         # 1. Get Impact Analysis for the Goal
-        # We fuzzy match the goal to a module if possible
         impact = self.ImpactAnalyzer(root_path, goal)
         
         # 2. Get Historical Context (Aggregated churn)
@@ -272,6 +282,16 @@ class ArchitecturalAuditor:
                 assumptions=["LLM failed to return valid JSON"]
             )
             
+        # Post-process for Traceability
+        if "epics" in raw:
+            for epic in raw["epics"]:
+                for t in epic.get("tickets", []):
+                    if "evidence" in t:
+                        t["evidence"]["responsible_agent"] = "Work Decomposition Agent"
+                    elif "uncertainty_drivers" in t and t.get("confidence_level") != "HIGH":
+                        # If no evidence but uncertain, still tag it
+                        pass
+
         return WDPOutput(**raw)
 
     def SRCEngine(self, root_path: str, goal: str, wdp_plan: WDPOutput, sprint_config: SprintPlanConfig = SprintPlanConfig(), strict: bool = False) -> SRCOutput:
@@ -318,3 +338,83 @@ class ArchitecturalAuditor:
             )
             
         return SRCOutput(**raw)
+
+    def ExplainabilityAgent(self, intent: str, target: str, artifact_paths: List[str], json_mode: bool = False) -> XAIOutput:
+        """Justifies architectural decisions using deterministic, dual-layer reasoning."""
+        # Layer 1: Canonical Evidence (JSON)
+        artifacts = {}
+        for path_str in artifact_paths:
+            p = Path(path_str)
+            if p.exists():
+                try:
+                    with open(p, "r", encoding="utf-8") as f:
+                        content = json.load(f)
+                        if isinstance(content, list): content = content[:20] 
+                        artifacts[p.name] = content
+                except:
+                    artifacts[p.name] = "Error: Invalid JSON"
+        
+        prompt = XAI_SYSTEM_PROMPT.format(
+            intent=intent,
+            target=target,
+            artifacts=json.dumps(artifacts, indent=2)[:6000] 
+        )
+        
+        system_msg = "You are ArchAI XAI v2 — Evidence-Expanded Explainability Engine."
+        raw_json = self._call_llm_json(system_msg, prompt)
+        
+        if not raw_json:
+            return XAIOutput(status="INSUFFICIENT_EVIDENCE", target=target, intent=intent)
+        
+        # Robust parsing for flat vs nested JSON
+        if "explanation" not in raw_json and "decision_summary" in raw_json:
+            # LLM flattened it
+            from ..data.models import XAIExplanationDetail
+            try:
+                explanation = XAIExplanationDetail(**raw_json)
+                result = XAIOutput(
+                    status=raw_json.get("status", "SUCCESS"),
+                    target=target,
+                    intent=intent,
+                    explanation=explanation
+                )
+            except Exception as e:
+                logger.warning(f"Failed to parse flattened XAI: {e}")
+                result = XAIOutput(status="EXPLANATION_PARTIAL", target=target, intent=intent)
+        else:
+            try:
+                result = XAIOutput(**raw_json)
+            except Exception as e:
+                logger.warning(f"Failed to parse nested XAI: {e}")
+                result = XAIOutput(status="EXPLANATION_PARTIAL", target=target, intent=intent)
+        
+        # Layer 2: Deterministic Narrative Rendering
+        narrative_prompt = XAI_NARRATIVE_SYSTEM_PROMPT.format(
+            json_input=result.model_dump_json(indent=2)
+        )
+        
+        narrative_renderer_msg = "You are the ArchAI Deterministic Narrative Renderer."
+        narrative = self.model.chat(messages=[
+            {'role': 'system', 'content': narrative_renderer_msg},
+            {'role': 'user', 'content': narrative_prompt}
+        ])
+        
+        result.raw_markdown = narrative
+        return result
+
+    def DeterministicGraphEngine(self, root_path: str, query: str) -> str:
+        """Core architectural intelligence for reasoning over deterministic system graphs."""
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(Path(root_path))
+        engine.analyze_project()
+        graph_summary = engine.get_graph_summary()
+        
+        prompt = f"Target Query: {query}\n\nSystem Graph Summary:\n{json.dumps(graph_summary, indent=2)}"
+        
+        # Use the new Core prompt as the system persona
+        content = self.model.chat(messages=[
+            {'role': 'system', 'content': GRAPH_DET_CORE_PROMPT},
+            {'role': 'user', 'content': prompt}
+        ])
+        
+        return content

@@ -19,3 +19,7 @@ target_calc.py
 archai_report.json
 archai_feedback.json
 site/
+adversarial_report.json
+adversarial_feedback.json
+adversarial_tests/
+adversarial_tests/*

@@ -43,7 +43,7 @@ class ConsoleUI:
         steps = 20
         for i in range(steps):
             time.sleep(duration / steps)
-            print("■", end="", flush=True)
+            print("A", end="", flush=True)
         print("] COMPLETE")
 
     @staticmethod
@@ -65,3 +65,35 @@ class ConsoleUI:
     def report_risk(issue: str, severity: str, confidence: float):
         colors = {"HIGH": "!", "MEDIUM": "*", "LOW": "-"}
         print(f"  [{colors.get(severity, '?')}] {severity:6} | {issue} (Conf: {confidence:.2f})")
+
+    @staticmethod
+    def spinner(message: str = "Thinking"):
+        """Context manager for a professional console spinner."""
+        import threading
+        import itertools
+        
+        class Spinner:
+            def __init__(self, msg):
+                self.msg = msg
+                self.spinner_cycle = itertools.cycle(['[/a\\]', '[|a|]', '[\\a/]', '[-a-]'])
+                self.stop_event = threading.Event()
+                self.thread = threading.Thread(target=self._animate)
+
+            def _animate(self):
+                while not self.stop_event.is_set():
+                    sys.stdout.write(f"\r  {next(self.spinner_cycle)} {self.msg}...")
+                    sys.stdout.flush()
+                    time.sleep(0.1)
+                # Clear the line on stop
+                sys.stdout.write("\r" + " " * (len(self.msg) + 10) + "\r")
+                sys.stdout.flush()
+
+            def __enter__(self):
+                self.thread.start()
+                return self
+
+            def __exit__(self, exc_type, exc_val, exc_tb):
+                self.stop_event.set()
+                self.thread.join()
+
+        return Spinner(message)

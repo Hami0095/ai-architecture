@@ -38,29 +38,35 @@ class Evidence(BaseModel):
     line_range: Optional[str] = None # e.g. "10-25"
     call_chain: List[str] = []
     confidence: float = 1.0 # 0.0 to 1.0
+    responsible_agent: str = "Unknown" # e.g. "Risk Evaluation Agent"
     uncertainty_drivers: List[str] = [] # e.g. "dynamic_dispatch", "missing_tests"
 
 class SubTask(BaseModel):
     title: str
     description: str
-    effort_hours: float = 1.0
+    effort_min: float = 0.5
+    effort_max: float = 2.0
     risk_level: str = "LOW" # LOW, MEDIUM, HIGH
 
 class AuditTicket(BaseModel):
     ticket_id: str = Field(default_factory=lambda: datetime.now().strftime("%y%m%d%H%M%S"))
     title: str
-    epic: Optional[str] = None # Grouping for tasks
-    type: str # Architecture, Database, Logic, Security, Performance
-    severity: str # High, Medium, Low
-    priority: str = "Medium" # Critical, High, Medium, Low
-    description: str
-    suggested_fix: str
-    effort_hours: int = 2
+    epic: Optional[str] = None
+    type: str = "Logic" # Architecture, Database, Logic, Security, Performance
+    severity: str = "Medium" # High, Medium, Low
+    priority: str = "Medium"
+    description: str = "No description provided."
+    suggested_fix: str = "No suggested fix provided."
+    effort_min: float = 1.0 # Phase 1: Range-based estimation
+    effort_max: float = 4.0 # Phase 1: Range-based estimation
+    confidence_score: float = 1.0 # 0.0 - 1.0
+    confidence_level: str = "HIGH" # HIGH, MEDIUM, LOW
+    uncertainty_drivers: List[str] = [] # Reasons for the confidence level
     labels: List[str] = []
     module: Optional[str] = None
     evidence: Optional[Evidence] = None
-    risk_flags: List[str] = [] # e.g. ["high-churn", "deep-dependency"]
-    dependencies: List[str] = [] # IDs of other tickets
+    risk_flags: List[str] = []
+    dependencies: List[str] = []
     subtasks: List[SubTask] = []
 
 class SprintDay(BaseModel):
@@ -135,6 +141,8 @@ class ImpactAssessment(BaseModel):
     risk_level: str # LOW, MEDIUM, HIGH, UNKNOWN
     risk_score: float # 0-100
     confidence_score: float # 0.0-1.0
+    confidence_level: str = "HIGH" # HIGH, MEDIUM, LOW
+    uncertainty_drivers: List[str] = [] # Why is confidence low?
     affected_components: List[Dict[str, Any]] = [] # list of {name, depth, file}
     primary_risk_factors: List[str] = []
     recommendations: List[str] = []
@@ -162,6 +170,8 @@ class TaskPrediction(BaseModel):
 class SRCOutput(BaseModel):
     sprint_goal: str
     confidence_score: float # 0.0 - 1.0
+    confidence_level: str = "HIGH" # HIGH, MEDIUM, LOW
+    uncertainty_drivers: List[str] = []
     status: str # High Confidence, Medium Confidence, Low Confidence
     task_predictions: List[TaskPrediction]
     epic_forecasts: List[Dict[str, Any]] # {epic_name, completion_probability}
@@ -169,6 +179,29 @@ class SRCOutput(BaseModel):
     recommendations: List[Dict[str, str]] # {task, action}
     bottlenecks: List[str]
     confidence_rationale: str
+
+# --- Explainability Agent (XAI) Models ---
+
+class XAIEvidence(BaseModel):
+    source: str = ""
+    value: str = ""
+
+class XAIExplanationDetail(BaseModel):
+    decision_summary: str
+    evidence_tiers: List[str] = []
+    primary_evidence: List[XAIEvidence] = []
+    secondary_contributors: List[str] = []
+    causal_chain: List[str] = []
+    confidence: Dict[str, Any] = {"score": 0.0, "level": "LOW", "uncertainty_drivers": []}
+    known_facts: List[str] = []
+    unknown_fringe: List[str] = []
+
+class XAIOutput(BaseModel):
+    status: str = "UNKNOWN"
+    target: str = ""
+    intent: str = ""
+    explanation: Optional[XAIExplanationDetail] = None
+    raw_markdown: Optional[str] = None
 
 # --- GitHub Integration Models ---
 

@@ -17,7 +17,7 @@ class SprintPlanner:
         # Sort tickets by priority (highest first) and then effort (smallest first to fit more)
         sorted_tickets = sorted(
             tickets, 
-            key=lambda x: (priority_map.get(x.priority, 2), x.effort_hours)
+            key=lambda x: (priority_map.get(x.priority, 2), x.effort_max)
         )
 
         sprint_days = []
@@ -32,9 +32,9 @@ class SprintPlanner:
             while ticket_index < total_tickets:
                 ticket = sorted_tickets[ticket_index]
                 # If the ticket fits OR the day is empty (prevents skipping large tasks)
-                if ticket.effort_hours <= remaining_hours or not day_tickets:
+                if ticket.effort_max <= remaining_hours or not day_tickets:
                     day_tickets.append(ticket)
-                    remaining_hours -= ticket.effort_hours
+                    remaining_hours -= ticket.effort_max
                     ticket_index += 1
                 else:
                     # Not enough time today

@@ -1,5 +1,8 @@
 import os
 import logging
+import subprocess
+import tempfile
+import shutil
 from typing import List, Optional, Dict, Any
 from github import Github, GithubException
 from pathlib import Path
@@ -13,7 +16,7 @@ class GitHubConnector:
     """Connects ArchAI to GitHub for automated project analysis and risk assessment."""
     
     def __init__(self, token: Optional[str] = None):
-        self.token = token or config.get_secret("github_token")
+        self.token = token or config.get_secret("github.token") or config.get_secret("github_token")
         if not self.token:
             logger.warning("No GitHub token provided. Some operations may fail due to rate limiting.")
         self.gh = Github(self.token) if self.token else Github()
@@ -125,3 +128,64 @@ class GitHubConnector:
             
         except Exception as e:
             logger.error(f"Failed to post comment on PR #{pr_number}: {e}")
+
+    def clone_repo(self, repo_full_name: str, target_dir: str):
+        """Clones a GitHub repository to a local directory."""
+        repo = self.get_repo(repo_full_name)
+        if not repo:
+            return False
+        
+        clone_url = repo.clone_url
+        if self.token:
+            # Inject token for private repos
+            clone_url = clone_url.replace("https://", f"https://{self.token}@")
+        
+        try:
+            logger.info(f"Cloning {repo_full_name} to {target_dir}...")
+            subprocess.run(["git", "clone", "--depth", "1", clone_url, target_dir], check=True, capture_output=True)
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to clone repo: {e.stderr.decode()}")
+            return False
+
+    async def audit_repo(self, repo_full_name: str, context: Optional[str] = None):
+        """Clones and audits a remote GitHub repository."""
+        temp_dir = tempfile.mkdtemp(prefix="archai_git_")
+        try:
+            if self.clone_repo(repo_full_name, temp_dir):
+                print(f"📡 Clone complete. Starting audit on {repo_full_name}...")
+                report = await self.auditor.audit_project(
+                    root_path=temp_dir,
+                    user_context=context or f"Audit of {repo_full_name}",
+                    project_status="Remote Source"
+                )
+                return report
+            return None
+        finally:
+            # Note: We keep the temp dir for now if the user wants to IMPACT/PLAN later, 
+            # but ideally we should manage its lifecycle.
+            pass
+
+    def validate_local_diff(self, repo_path: str, base_branch: str = "main"):
+        """Phase 2: Quiet validation on local diffs. Skips remote API entirely."""
+        try:
+            # 1. Get changed files vs base branch using git
+            result = subprocess.run(
+                ["git", "diff", "--name-only", base_branch],
+                cwd=repo_path, capture_output=True, text=True, check=True
+            )
+            files = [f for f in result.stdout.splitlines() if f.endswith(".py")]
+            
+            if not files:
+                return []
+
+            reports = []
+            for file in files:
+                # 2. Run high-fidelity Impact Analysis on each changed file
+                impact = self.auditor.ImpactAnalyzer(repo_path, file)
+                reports.append(impact)
+            
+            return reports
+        except Exception as e:
+            logger.error(f"Local diff validation failed: {e}")
+            return []

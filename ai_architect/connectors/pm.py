@@ -118,8 +118,8 @@ class PMConnector:
         desc = ticket.get('description', '') + "\n\n"
         if ticket.get('risk_flags'):
             desc += f"*Risk Flags:* {', '.join(ticket['risk_flags'])}\n"
-        if ticket.get('effort_hours'):
-            desc += f"*Estimated Effort:* {ticket['effort_hours']}h\n"
+        if ticket.get('effort_min') and ticket.get('effort_max'):
+            desc += f"*Estimated Effort:* {ticket['effort_min']}-{ticket['effort_max']}h\n"
         if ticket.get('suggested_fix'):
             desc += f"\n*Suggested Fix:*\n{ticket['suggested_fix']}"
         return desc

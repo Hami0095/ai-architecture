@@ -109,13 +109,21 @@ class Orchestrator:
                 "ticket_id": task.ticket_id,
                 "title": task.title,
                 "description": task.description,
-                "effortHours": task.effort_hours,
+                "effort_min": task.effort_min,
+                "effort_max": task.effort_max,
                 "priority": task.priority,
+                "type": task.type,
+                "severity": task.severity,
+                "confidence_score": task.confidence_score,
+                "confidence_level": task.confidence_level,
+                "uncertainty_drivers": task.uncertainty_drivers,
                 "tags": task.labels,
                 "module": task.module,
                 "evidence": task.evidence.model_dump() if task.evidence else None,
                 "risk_flags": task.risk_flags,
                 "suggested_fix": task.suggested_fix,
+                "dependencies": task.dependencies,
+                "subtasks": [st.model_dump() for st in task.subtasks] if task.subtasks else [],
                 "notes": notes_map.get(task.title, "")
             })
 

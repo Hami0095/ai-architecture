@@ -3,7 +3,8 @@ ai:
   provider: "ollama"
 
 # GitHub Integration
-github_token: "your_personal_access_token_here"
+github:
+  token: "your-github-token"
 
 # Jira Integration
 jira:
