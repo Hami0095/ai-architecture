@@ -1,6 +1,8 @@
 name: ArchAI Pilot Distribution
 
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
     inputs:
       user_id:

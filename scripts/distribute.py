@@ -8,8 +8,9 @@ def distribute():
     print("🛑 Starting ArchAI Pilot Distribution Sequence...")
 
     # 1. Generate a Test Token
-    user_id = os.environ.get("PILOT_USER_ID", "Pilot-Demo")
-    days = int(os.environ.get("PILOT_DAYS", 7))
+    user_id = os.environ.get("PILOT_USER_ID") or "Pilot-Demo"
+    days_env = os.environ.get("PILOT_DAYS")
+    days = int(days_env) if days_env else 7
     
     print(f"🎫 Generating {days}-day pilot token for {user_id}...")
     token = LicenseManager.generate_token(user_id, days)
