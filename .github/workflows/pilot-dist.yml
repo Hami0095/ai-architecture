@@ -32,7 +32,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller cryptography pydantic PyYAML python-dotenv PyGithub hmac hashlib
+          pip install pyinstaller cryptography pydantic PyYAML python-dotenv PyGithub setuptools
           pip install -e .
 
       - name: Generate Pilot Token & Build
