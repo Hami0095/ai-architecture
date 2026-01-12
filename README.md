@@ -24,11 +24,53 @@ ArchAI operates on a rigorous, sequential chain of seven specialized intelligenc
 
 ---
 
+## 🛰️ ArchAI Orientation
+
+Welcome to the bridge of your software project. ArchAI is a deterministic architectural intelligence system designed to help you navigate complex codebases with safety and precision.
+
+### 1. The Command Dictionary
+
+| Command | Summary | How to Use It |
+| :--- | :--- | :--- |
+| **AUDIT** | The "Satellite Scan". Scans the entire project to find every risk and build a full sprint plan. | Run it once at the start of a week to see your project's health. |
+| **PLAN** | The "Blueprint Maker". Takes a single goal and breaks it down into small, safe tasks. | Use it when you have a new feature request. Give it the path and your goal in quotes. |
+| **IMPACT** | The "Safety Check". Calculates if changing a specific file or class will break something else. | Use it before touching "scary" code. Just give it the class name like `BillingEngine`. |
+| **SIMULATE** | The "Time Traveler". Predicts the future to see if your team will actually finish the work on time. | Run it after a PLAN to check if your deadline is realistic before you start. |
+| **TRACE** | The "Evidence Finder". Shows exactly why the AI made a certain decision or created a task. | If you don't trust a ticket, TRACE its ID to see the file and line numbers the AI found. |
+| **CONFIG** | The "Dashboard". Shows who you are and which external tools (GitHub/Jira) are connected. | Check this when you first start to make sure your tokens are set correctly. |
+
+### 2. The Golden Workflow (Order of Operations)
+
+To get the most out of ArchAI, follow this "Detective to Architect" sequence:
+
+1.  **AUDIT**: Use this first to understand the current "mess" or status of the project.
+2.  **PLAN**: Once you know the project, tell ArchAI your goal. It will give you tickets.
+3.  **IMPACT**: For each ticket, run an impact check on the specific files mentioned.
+4.  **SIMULATE**: Before starting the sprint, check the confidence score to see if it's safe to proceed.
+5.  **TRACE**: If any task looks weird, trace it to see the evidence.
+
+### 3. Explaining to a "Newbie" (Junior Dev)
+
+> "Think of ArchAI as a **Static Analysis tool with a brain**. While a normal linter tells you about a missing semicolon, ArchAI tells you about a missing **future**. It looks at the calls and imports in your code to build a 'Dependency Graph'. Then, it uses an LLM to look at that graph and say: 'Hey, if you change this, you'll break the payment system' or 'This goal will take your team 3 weeks, not 1'."
+
+### 4. Explaining to a Kid (The Lego City)
+
+> "Imagine you have a **giant Lego City** that's so big you can't see the whole thing at once. ArchAI is like a **Magic Map** and a **Robot Helper**. **AUDIT** is like flying a drone over the city to find where the blocks are loose. **PLAN** is when you say 'I want to build a space station!', and the Robot tells you exactly which bricks you need. **IMPACT** is like checking if pulling out one brick will make the whole building fall down!"
+
+---
+
 ## Usage (Professional CLI)
 
-ArchAI supports both a guided interactive wizard and a headless CLI for CI/CD integration.
+ArchAI features a **Persistent Interactive Console** for session-based reasoning, as well as one-shot commands for CI/CD integration.
 
-### Orchestrated Audit Command
+### Interactive Mode
+Launch the persistent console for iterative planning:
+```bash
+ai-architect
+```
+*Note: Type `PHIR-MILTY-HAIN` to exit the session.*
+
+### One-Shot Audit Command
 Run a full 7-agent audit on any project:
 ```bash
 ai-architect audit /path/to/project --context "Modernizing legacy API" --goal "Production-ready REST API"
@@ -87,13 +129,6 @@ ArchAI features a futuristic, interactive dashboard that visualizes your codebas
 - **Load & Stress Simulator**: Predictive models for sprint success and release confidence.
 - **Dynamic Alert Towers**: Actionable notifications via Slack, Email, and the web UI.
 
-To view the dashboard locally:
-```bash
-# Navigate to the dashboard directory
-cd dashboard
-# Start a local server (example)
-python -m http.server 8080
-```
 
 ---
 
