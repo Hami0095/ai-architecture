@@ -57,7 +57,24 @@ def build():
     # Assembly logic...
 ```
 
-### Step D: Signing Protocol (Platform Specific)
+### Step D: Manual Build Execution (No CI)
+Since automated CI/CD is disabled, you must manually run the distribution script on each target OS (Windows, macOS, Ubuntu).
+
+**How to Build & Distribute:**
+1. Clone the repository on the target machine.
+2. Install dependencies: `pip install pyinstaller cryptography pydantic`
+3. Run the distribution script:
+```bash
+# Optional: Customize Pilot User and Duration
+export PILOT_USER_ID="Client-Name"
+export PILOT_DAYS="14"
+
+# Run the build
+python scripts/distribute.py
+```
+4. Collect the resulting `archai_pilot_<platform>_dist.zip`.
+
+### Step E: Signing Protocol (Platform Specific)
 - **Windows**: `signtool sign /f archai.pfx /p <pass> ai-architect.exe`
 - **macOS**: `codesign --force --sign "Developer ID: ArchAI" ai-architect`
 - **Linux**: `gpg --clearsign ai-architect`
