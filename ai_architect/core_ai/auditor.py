@@ -114,6 +114,27 @@ class ArchitecturalAuditor:
     def PathNavigator(self, user_input_path: str) -> PathNavigatorOutput:
         from pathlib import Path
         import platform
+        
+        # 1. Direct Resolution (Preserve spaces, exact interpretation)
+        path = Path(user_input_path)
+        if path.exists():
+            return PathNavigatorOutput(
+                resolved_path=str(path.resolve()), 
+                exists_hint=True, 
+                rationale="Direct filesystem match"
+            )
+
+        # 2. Regex-based Path Detection (Windows/Posix)
+        # Identify if input IS a path string (e.g. C:/... or /...) even if missing
+        # This prevents LLM hallucination on clear path inputs
+        if re.search(r'^[a-zA-Z]:[\\/]', user_input_path) or user_input_path.startswith(('/', '\\', './', '../')):
+            return PathNavigatorOutput(
+                resolved_path=str(path.resolve()),
+                exists_hint=False,
+                rationale="Directory not found"
+            )
+
+        # 3. Fallback: Semantic Resolution (for queries like "my documents")
         prompt = PATH_NAVIGATOR_SYSTEM_PROMPT.format(user_input=user_input_path, home_dir=str(Path.home()), cwd=os.getcwd(), os_name=platform.system())
         raw = self._call_llm_json(PATH_NAVIGATOR_SYSTEM_PROMPT, prompt)
         res_path = raw.get("resolved_path", user_input_path)

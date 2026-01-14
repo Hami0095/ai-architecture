@@ -62,6 +62,9 @@ class Orchestrator:
             return {"error": "Path navigation failed."}
         nav_data = PathNavigatorOutput(**self.state.get_last_data("PathNavigator"))
         resolved_path = nav_data.resolved_path
+
+        if not nav_data.exists_hint:
+            print("The specified directory does not exist. Please verify and re-enter the correct path.")
         
         # 1. Context Acquisition
         if not await self._execute_agent("ContextAcquisition", self.auditor.Discovery, resolved_path):
