@@ -1,10 +1,5 @@
 name: Build & Sign ai-architect
 
-on:
-  push:
-    tags:
-      - "v*"
-
 permissions:
   contents: write
 
