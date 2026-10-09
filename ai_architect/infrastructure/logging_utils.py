@@ -35,16 +35,21 @@ def setup_logger(name: str, log_file: Optional[str] = "archai.log", level: int =
 
     formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(name)s: %(message)s')
 
-    console_handler = logging.StreamHandler(sys.stdout)
+    # stderr keeps stdout clean for machine-readable output (e.g. --json).
+    console_handler = logging.StreamHandler(sys.stderr)
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)
 
     if log_file:
-        log_path = Path(log_file)
-        log_path.parent.mkdir(parents=True, exist_ok=True)
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setFormatter(formatter)
-        logger.addHandler(file_handler)
+        try:
+            log_path = Path(log_file)
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            file_handler = logging.FileHandler(log_file)
+        except OSError:
+            file_handler = None  # unwritable working directory: console logging only
+        if file_handler:
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
 
     return logger
 
