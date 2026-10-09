@@ -108,6 +108,7 @@ def export_bundle(report: Dict[str, Any], out_dir: str) -> Path:
         "archai_bundle_format": ARCHAI_BUNDLE_FORMAT,
         "archai_provenance": prov,
         "archai_rule_order": [r.id for r in config.rules],
+        "archai_limitations": report["limitations"],
         "archai_analysis": report["analysis"],
         "archai_graph": {
             "unresolved_internal": graph.unresolved_internal,

@@ -89,6 +89,33 @@ file), `--markdown FILE`, `--okf-out DIR`, `--from-okf DIR`, `--verbose`.
 The Markdown report answers, in order: what was checked, what was found, the
 evidence for each finding, what could not be verified, and what to investigate next.
 
+## Previewing an OKF bundle: OKF-VIEW
+
+`OKF-VIEW` browses any OKF v0.2 bundle in the terminal, whether ArchAI wrote it or not.
+Google's sample bundles in the OKF repository render too.
+
+```bash
+ai-architect CHECK-STANDARDS . --okf-out bundle --preview   # export, then show the overview
+
+ai-architect OKF-VIEW bundle                    # overview: conformance, trust tiers, types; for ArchAI
+                                                # bundles also provenance, rule outcomes, top findings
+ai-architect OKF-VIEW bundle findings --status violation   # VIOLATION | RISK | NO-EVIDENCE
+ai-architect OKF-VIEW bundle tree               # directory tree with concept types
+ai-architect OKF-VIEW bundle list --type Metric # concepts, filtered by type
+ai-architect OKF-VIEW bundle rules|results|modules|layers
+ai-architect OKF-VIEW bundle F-2b20e2df65e7     # one concept (by id, title, or unique substring)
+ai-architect OKF-VIEW bundle app.domain --raw   # ... with its full frontmatter
+```
+
+A concept page shows the title, type, trust tier (§5.3), lifecycle `status`,
+`generated`, and freshness against `stale_after` (§5.5). It also shows the body
+with every link resolved to a concept id (broken links are marked
+`[missing]`), sources grouped by what they point to, and backlinks
+("linked from", "imported by"). ArchAI findings add their status, rule and
+verification method; Attested Computations show `runtime`, `parameters`,
+`executor` and `attester` (§10). Output uses color on a terminal; pass
+`--no-color` or set `NO_COLOR` to turn it off. Exit code 2 means the bundle or concept was not found.
+
 ## Configuring standards
 
 Put `archai_standards.yaml` at the repository root (found automatically) or
