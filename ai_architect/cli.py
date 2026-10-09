@@ -143,12 +143,20 @@ def print_help_table():
     print(f"{'EXIT / PHIR-MILTY-HAIN':<25} | {'Terminate the ArchAI console session'}")
     print(f"{'='*80}\n")
 
-def process_command(cmd_line: str):
+def split_command(cmd_line: str) -> List[str]:
+    """POSIX shlex treats backslashes as escapes, which mangles Windows paths."""
+    if os.name != "nt":
+        return shlex.split(cmd_line)
+    parts = shlex.split(cmd_line, posix=False)
+    return [p[1:-1] if len(p) >= 2 and p[0] == p[-1] and p[0] in "\"'" else p for p in parts]
+
+def process_command(cmd_line) -> Optional[int]:
+    """Runs one console command. Accepts a command line string or a list of tokens."""
     try:
-        parts = shlex.split(cmd_line)
+        parts = list(cmd_line) if isinstance(cmd_line, (list, tuple)) else split_command(cmd_line)
     except ValueError:
         print("Error: Invalid command syntax.")
-        return
+        return 2
 
     if not parts:
         return
@@ -656,6 +664,10 @@ def run_cli():
     if args.test_mode:
         print("\n[DEMO MODE ACTIVATED] Preloading mock graphs and site surveys...")
         os.environ["ARCHAI_TEST_MODE"] = "1"
+
+    if unknown:
+        # One-shot mode: ai-architect CHECK-STANDARDS . --json report.json
+        sys.exit(process_command(unknown) or 0)
 
     run_interactive_console()
 
