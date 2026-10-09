@@ -729,6 +729,12 @@ def run_interactive_console():
 
 def run_cli():
     """Main entry point for the ai-architect command."""
+    # Banner box-drawing and emoji crash on legacy Windows code pages (e.g. when piped).
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")
+        except (AttributeError, ValueError):
+            pass
     parser = argparse.ArgumentParser(prog="ai-architect", description="ArchAI Deterministic Adjudication CLI")
     parser.add_argument("--license", type=str, help="Apply a pilot license token")
     parser.add_argument("--check-token", type=str, help="Verify the status of a specific token")
