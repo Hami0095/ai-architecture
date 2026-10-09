@@ -1,42 +1,70 @@
 # Tutorial: Chaining Workflows
 
-ArchAI agents are designed to flow into one another. This guide shows how to combine them for a full "Insight-to-Plan" automation.
-
-## The Standard Pipeline
-
-The most common workflow is the **Plan Validation** loop:
+Commands are designed to feed one another: deterministic checks produce
+facts and an OKF bundle; the bundle can be browsed, shared and re-checked;
+LLM-assisted commands help you decide which rules to write.
 
 ```mermaid
 graph LR
-  CIRAS[CIRAS: Risk Check] --> WDPTG[WDP-TG: Task Generation]
-  WDPTG --> SRCRS[SRC-RS: Success Simulation]
-  SRCRS --> Action[Engineering Action]
+  Q[G-REASON / AUDIT: explore] --> R[Write a rule in archai_standards.yaml]
+  R --> C[CHECK-STANDARDS: verify with evidence]
+  C --> B[OKF bundle]
+  B --> V[OKF-VIEW: investigate]
+  B --> X[CHECK-STANDARDS --from-okf: re-check elsewhere]
 ```
 
-### Automation Example (Bash)
-
-You can chain these in a single script for your PR reviews:
+## Explore, then verify
 
 ```bash
-#!/bin/bash
-# 1. Check if the change target is safe
-RISK=$(ai-architect impact $TARGET --strict --json)
-if [ $? -ne 0 ]; then
-  echo "HIGH RISK DETECTED: PR Blocked."
-  exit 1
-fi
-
-# 2. If safe, generate a plan
-ai-architect plan "$GOAL" --json > sprint_plan.json
-
-# 3. Simulate success and post to Slack
-ai-architect simulate-sprint "$GOAL" --json > confidence.json
+ai-architect G-REASON . "Which modules couple the API to the database?"
 ```
 
-## Advanced: Integration via API
+The answer is LLM output. Encode the question as a rule and get a verified answer:
 
-For custom internal tools, use the API endpoints to create dynamic dashboards:
+```yaml
+rules:
+  - id: api-not-db
+    kind: forbidden_dependency
+    from: ["myapp.api"]
+    to: ["myapp.db"]
+```
 
-1. Call `POST /impact` to get real-time risk scores for every active PR.
-2. Call `POST /plan` to automatically populate your team's backlog.
-3. Call `POST /release-confidence` on your `main` branch daily to track delivery health.
+```bash
+ai-architect CHECK-STANDARDS .
+```
+
+## Check, export, investigate
+
+```bash
+ai-architect CHECK-STANDARDS . --json report.json --okf-out ../bundle
+ai-architect OKF-VIEW ../bundle findings --status violation
+ai-architect OKF-VIEW ../bundle F-2b20e2df65e7
+```
+
+## Script it
+
+`CHECK-STANDARDS` exits `0` (no verified violations), `1` (violations) or
+`2` (configuration or usage error):
+
+```bash
+#!/usr/bin/env bash
+set -u
+ai-architect CHECK-STANDARDS . --json report.json --okf-out bundle
+case $? in
+  0) echo "Standards met." ;;
+  1) echo "Verified violations:"; ai-architect OKF-VIEW bundle findings --status violation --no-color; exit 1 ;;
+  *) echo "Check could not run; see the output above."; exit 2 ;;
+esac
+```
+
+## Re-check somewhere else
+
+A bundle carries the graph and the rules, so a reviewer can re-run the check
+without the source, or apply their own rules:
+
+```bash
+ai-architect CHECK-STANDARDS --from-okf bundle
+ai-architect CHECK-STANDARDS --from-okf bundle --config reviewer-rules.yaml
+```
+
+More in [Recipes](../cli/examples.md).
