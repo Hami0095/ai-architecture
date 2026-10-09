@@ -16,3 +16,10 @@ def test_windows_paths_keep_backslashes():
     assert split_command(r'CHECK-STANDARDS C:\repo\app --json "C:\out dir\r.json"') == \
         ["CHECK-STANDARDS", r"C:\repo\app", "--json", r"C:\out dir\r.json"]
 
+
+def test_sprint_planning_commands_are_deferred(monkeypatch, capsys):
+    monkeypatch.delenv("ARCHAI_ENABLE_LEGACY_PLANNING", raising=False)
+    for command in ("PLAN . goal", "SIMULATE T001", "RELEASE-CONFIDENCE . v2"):
+        assert process_command(command) == 2
+        assert "deferred" in capsys.readouterr().out
+
