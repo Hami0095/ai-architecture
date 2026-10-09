@@ -1,0 +1,62 @@
+# Example ArchAI standards configuration.
+# Copy to <your-repo>/archai_standards.yaml (picked up automatically) or pass --config.
+# Every rule here is an example: replace the patterns with your own module names.
+version: 1
+
+# Directories that are import roots (e.g. "src" for a src/ layout). Auto-detected
+# for src/ when omitted.
+source_roots: []
+
+# Repository-relative path globs removed from the analyzed system.
+exclude:
+  - "migrations/*"
+
+# Named groups of modules. A plain dotted name matches that module and all of its
+# submodules; patterns containing * ? [ ] use fnmatch on the full dotted name.
+layers:
+  domain: ["myapp.domain"]
+  application: ["myapp.services"]
+  infrastructure: ["myapp.db", "myapp.adapters"]
+  interface: ["myapp.api", "myapp.cli"]
+
+# defaults: auto   # auto (default): add ArchAI default rules only when no rules are configured
+
+rules:
+  # Rule 1: forbidden dependency between explicit module sets.
+  - id: api-not-db
+    kind: forbidden_dependency
+    from: ["myapp.api"]
+    to: ["myapp.db"]
+    description: HTTP handlers must not talk to the database directly.
+    rationale: Keeps persistence behind the service layer so handlers stay thin.
+
+  # Rule 2: layer boundary. Use forbidden_layers (deny list) or allowed_layers (allow list).
+  - id: domain-is-pure
+    kind: layer_boundary
+    layer: domain
+    allowed_layers: []          # domain may depend only on itself (and unlayered modules)
+    description: Domain modules must not import other layers.
+    rationale: The domain model should be testable without I/O.
+
+  # Rule 3: import cycles (module-level cycles are violations; cycles closed only by
+  # function-level or TYPE_CHECKING imports are reported as potential risks).
+  - id: no-import-cycles
+    kind: circular_dependency
+    scope: ["myapp"]
+
+  # Rule 4: coupling threshold. metric: fan_out (modules imported) or fan_in (importers).
+  - id: bounded-fan-out
+    kind: coupling_threshold
+    metric: fan_out
+    max: 12
+    scope: ["myapp"]
+    rationale: Team agreement; revisit modules that exceed it.
+
+  # Rule 5: required test files by naming convention (existence only, not coverage).
+  # Placeholders: {leaf} {module} {module_path} {parent_path}
+  - id: services-have-tests
+    kind: required_tests
+    scope: ["myapp.services"]
+    test_paths:
+      - "tests/test_{leaf}.py"
+      - "tests/{parent_path}/test_{leaf}.py"
