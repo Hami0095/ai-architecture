@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 import pytest
 from ai_architect.infrastructure.config_manager import ConfigManager, ConfigurationError
 
@@ -12,17 +14,19 @@ def test_env_loading(tmp_path):
     cm = ConfigManager()
     assert cm.get("unit.test.key") == "unit_test_value"
 
-def test_profile_loading(tmp_path):
-    # Mock config file
-    config_file = Path("config.testprofile.json")
-    with open(config_file, 'w') as f:
-        f.write('{"test_feature": {"enabled": true}}')
-    
+def test_profile_loading(tmp_path, monkeypatch):
+    # Profiles are read from the working directory as config.<profile>.json/yaml.
+    monkeypatch.chdir(tmp_path)
+    Path("config.testprofile.json").write_text('{"test_feature": {"enabled": true}}')
+
     cm = ConfigManager()
-    
-    # Cleanup
-    if config_file.exists():
-        os.remove(config_file)
+    try:
+        cm.load_config(profile="testprofile")
+        assert cm.get("test_feature.enabled") is True
+    finally:
+        # ConfigManager is a process-wide singleton; don't leak into other tests.
+        cm._config.pop("test_feature", None)
+        cm._loaded_files[:] = [f for f in cm._loaded_files if f.name != "config.testprofile.json"]
 
 def test_default_values():
     cm = ConfigManager()
