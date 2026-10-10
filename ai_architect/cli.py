@@ -67,12 +67,21 @@ def session_status() -> Dict[str, Any]:
         "profile": os.getenv("ARCHAI_ENV", "dev").lower(),
         "license": lic,
         "integrations": {
-            "github": bool(os.getenv("ARCHAI_GITHUB_TOKEN") or config.get("github.token") or config.get("github_token")),
-            "jira": bool(os.getenv("ARCHAI_JIRA_TOKEN") or config.get("jira.token")),
-            "google_drive": bool(config.get("google_drive_token")),
+            "github": _credential_state(os.getenv("ARCHAI_GITHUB_TOKEN") or config.get("github.token") or config.get("github_token")),
+            "jira": _credential_state(os.getenv("ARCHAI_JIRA_TOKEN") or config.get("jira.token")),
+            "trello": _credential_state(os.getenv("ARCHAI_TRELLO_TOKEN") or config.get("trello.token")),
+            "google_drive": _credential_state(config.get("google_drive_token")),
         },
         "llm": f"{config.get('ai.provider', 'ollama')}:{config.get('model', 'unknown')}",
     }
+
+def _credential_state(value: Any) -> str:
+    """Whether a credential is present. Nothing is contacted, so this is not a connection test."""
+    if not value:
+        return "not configured"
+    if str(value).lower().startswith(("your-", "your_", "<")):
+        return "placeholder value"
+    return "configured"
 
 def license_text(lic: Dict[str, Any]) -> str:
     if lic["state"] == "VALID":
@@ -341,14 +350,13 @@ def process_command(cmd_line) -> Optional[int]:
 
     if command == "CONFIG":
         st = session_status()
-        on = lambda flag: "connected" if flag else "not configured"
         print("\n[CURRENT CONFIGURATION]")
         print(f" Identity: {st['identity']} ({st['identity_source']})")
         print(f" Access mode: {st['access_mode']} | Flags: {', '.join(st['flags']) or 'none'} | Profile: {st['profile']}")
         print(f" License: {license_text(st['license'])}")
         print(f" LLM: {st['llm']}")
-        print(f" GitHub: {on(st['integrations']['github'])} | Jira: {on(st['integrations']['jira'])} | "
-              f"Google Drive: {on(st['integrations']['google_drive'])}")
+        print(" Credentials (presence only, not tested): " +
+              " | ".join(f"{k.replace('_', ' ').title()}: {v}" for k, v in st["integrations"].items()))
         print("")
         return
 

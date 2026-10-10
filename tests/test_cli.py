@@ -1,6 +1,7 @@
 """Console command dispatcher: tokenizing, return codes, and command routing."""
 import pytest
 
+from ai_architect import cli
 from ai_architect.cli import process_command, split_command
 
 
@@ -23,3 +24,13 @@ def test_sprint_planning_commands_are_deferred(monkeypatch, capsys):
         assert process_command(command) == 2
         assert "deferred" in capsys.readouterr().out
 
+
+@pytest.mark.parametrize("value, state", [
+    (None, "not configured"),
+    ("", "not configured"),
+    ("your-github-token", "placeholder value"),
+    ("<token>", "placeholder value"),
+    ("ghp_real", "configured"),
+])
+def test_credential_state_reports_presence_only(value, state):
+    assert cli._credential_state(value) == state
