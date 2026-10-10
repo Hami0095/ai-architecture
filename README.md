@@ -463,6 +463,20 @@ The same rules can be evaluated with facts read directly from source
 bundle is lossless for these rules; it does **not** show that OKF improves
 accuracy. No such comparison has been run yet.
 
+## Use ArchAI from Claude Code and Codex
+
+ArchAI's deterministic agents are available to AI coding agents through an MCP
+server and an agent skill (see [docs/cli/ai-agents.md](docs/cli/ai-agents.md)):
+
+```bash
+pip install -e ".[agents]"
+ai-architect AGENT-SETUP --install-skill --register   # needs ARCHAI_LICENSE or ARCHAI_DEV_MODE
+```
+
+The agent can then check standards, trace import paths, list what depends on a
+module, and map a branch's changes to affected modules, all with file:line
+receipts and without any LLM call on ArchAI's side.
+
 ## Running tests
 
 ```bash

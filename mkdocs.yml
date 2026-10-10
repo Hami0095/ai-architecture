@@ -35,6 +35,7 @@ nav:
       - Commands: cli/commands.md
       - Standards & Rules: cli/check-standards.md
       - Configuration & Environment: cli/configuration.md
+      - "AI Agents (Claude Code, Codex)": cli/ai-agents.md
       - Recipes: cli/examples.md
   - API Reference:
       - Endpoints: api/endpoints.md

@@ -274,6 +274,7 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
 HELP_ROWS = [
     ('CHECK-STANDARDS', 'Deterministic standards check with cited evidence (no LLM)'),
     ('OKF-VIEW', 'Preview an OKF knowledge bundle (overview, findings, concepts)'),
+    ('AGENT-SETUP', 'Connect ArchAI to Claude Code and Codex (MCP server + skill)'),
     ('IMPACT', 'Assess risk (CIRAS) for a file or symbol'),
     ('AUDIT', 'LLM-assisted architectural audit'),
     ('GITHUB', 'Interact with GitHub (CONNECT, PRS, ANALYZE)'),
@@ -318,6 +319,10 @@ def process_command(cmd_line) -> Optional[int]:
 
     if command == "CHECK-STANDARDS":
         return check_standards_command(args)
+
+    if command == "AGENT-SETUP":
+        from ai_architect.agents.setup import agent_setup
+        return agent_setup(args)
 
     if command == "OKF-VIEW":
         return okf_view_command(args)

@@ -25,6 +25,7 @@ today; where a command has a quirk or limitation, it is called out.
 | [`GITHUB …`](#github) | Repositories, PRs, remote audits, diff validation | mostly | GitHub (+LLM) | see below |
 | [`SET-GITHUB-TOKEN`](#set-github-token) | GitHub token for this session | no | no | no |
 | [`SET-PM-TOKEN`](#set-pm-token) | Jira/Trello credentials for this session | no | no | no |
+| [`AGENT-SETUP`](#agent-setup) | Connect ArchAI to Claude Code and Codex | no | no | only with `--install-skill` |
 | [`CONFIG`](#config) | Identity, mode, license, model, credentials | no | no | no |
 | [`HELP`](#help) | Command table | no | no | no |
 | [`EXIT`](#exit) | Leave the console | no | no | no |
@@ -433,6 +434,32 @@ ai-architect GITHUB VALIDATE-LOCAL . develop
     planning engine.
 
 ---
+
+## AGENT-SETUP
+
+Connects ArchAI to AI coding agents: prints the MCP registration commands for
+this machine, and optionally installs the ArchAI skill or registers the server.
+See [AI Agents](ai-agents.md).
+
+```text
+AGENT-SETUP [--agent claude|codex|both] [--install-skill [--scope user|project] [--project DIR] [--force]] [--register]
+```
+
+| Option | Effect |
+|---|---|
+| *(none)* | Print the server command, `claude mcp add` / `codex mcp add` lines and a `config.toml` snippet. Writes nothing. |
+| `--agent` | Limit output and actions to one agent (default: both). |
+| `--install-skill` | Copy the skill to `~/.claude/skills/archai` and `~/.agents/skills/archai` (or the project folders with `--scope project`). Refuses to overwrite an edited copy without `--force`. |
+| `--register` | Run `claude mcp add` / `codex mcp add` with your `ARCHAI_LICENSE` (or `ARCHAI_DEV_MODE`). |
+
+```bash
+ai-architect AGENT-SETUP
+ai-architect AGENT-SETUP --agent claude --install-skill --register
+ai-architect AGENT-SETUP --install-skill --scope project --project path/to/repo
+```
+
+Exit codes: `0` done; `2` usage error, an edited skill in the way, missing
+credentials for `--register`, or an agent CLI not found.
 
 ## SET-GITHUB-TOKEN
 

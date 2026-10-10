@@ -58,3 +58,6 @@ packages = [
     "ai_architect.utils", 
     "ai_architect.xai"
 ]
+
+[tool.setuptools.package-data]
+"ai_architect.agents" = ["skills/archai/*.md"]
