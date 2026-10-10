@@ -271,23 +271,28 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     save_feedback(useful, [])
     print("Feedback saved. Thank you!")
 
+HELP_ROWS = [
+    ('CHECK-STANDARDS', 'Deterministic standards check with cited evidence (no LLM)'),
+    ('OKF-VIEW', 'Preview an OKF knowledge bundle (overview, findings, concepts)'),
+    ('IMPACT', 'Assess risk (CIRAS) for a file or symbol'),
+    ('AUDIT', 'LLM-assisted architectural audit'),
+    ('GITHUB', 'Interact with GitHub (CONNECT, PRS, ANALYZE)'),
+    ('TRACE', 'Show evidence trail for a specific ticket ID'),
+    ('EXPLAIN', 'LLM explanation of a report item (PRIORITY, EFFORT, RISK, DEP)'),
+    ('G-REASON', 'LLM reasoning over the extracted dependency graph'),
+    ('SET-GITHUB-TOKEN', 'Securely register GitHub Personal Access Token'),
+    ('SET-PM-TOKEN', 'Securely register Jira/Trello credentials'),
+    ('CONFIG', 'View current configuration and integrations'),
+    ('HELP', 'Show this command context table'),
+    ('EXIT / PHIR-MILTY-HAIN', 'Terminate the ArchAI console session'),
+]
+
 def print_help_table():
     print(f"\n{'='*80}")
     print(f"{'COMMAND':<25} | {'DESCRIPTION':<50}")
     print(f"{'-'*25}-+-{'-'*50}")
-    print(f"{'CHECK-STANDARDS':<25} | {'Deterministic standards check with cited evidence (no LLM)'}")
-    print(f"{'OKF-VIEW':<25} | {'Preview an OKF knowledge bundle (overview, findings, concepts)'}")
-    print(f"{'IMPACT':<25} | {'Assess risk (CIRAS) for a file or symbol'}")
-    print(f"{'AUDIT':<25} | {'LLM-assisted architectural audit'}")
-    print(f"{'GITHUB':<25} | {'Interact with GitHub (CONNECT, PRS, ANALYZE)'}")
-    print(f"{'TRACE':<25} | {'Show evidence trail for a specific ticket ID'}")
-    print(f"{'EXPLAIN':<25} | {'LLM explanation of a report item (PRIORITY, EFFORT, RISK, DEP)'}")
-    print(f"{'G-REASON':<25} | {'LLM reasoning over the extracted dependency graph'}")
-    print(f"{'SET-GITHUB-TOKEN':<25} | {'Securely register GitHub Personal Access Token'}")
-    print(f"{'SET-PM-TOKEN':<25} | {'Securely register Jira/Trello credentials'}")
-    print(f"{'CONFIG':<25} | {'View current configuration and integrations'}")
-    print(f"{'HELP':<25} | {'Show this command context table'}")
-    print(f"{'EXIT / PHIR-MILTY-HAIN':<25} | {'Terminate the ArchAI console session'}")
+    for name, description in HELP_ROWS:
+        print(f"{ConsoleUI.accent(name.ljust(25))} | {description}")
     print(f"{'='*80}\n")
 
 def split_command(cmd_line: str) -> List[str]:
@@ -743,11 +748,12 @@ def run_interactive_console():
     # 2. System Status
     st = session_status()
     mode = st["access_mode"] + "".join(f" + {flag}" for flag in st["flags"])
+    key = lambda name: ConsoleUI.accent(name + ":")
     print(f"{'='*80}")
-    print(f" IDENTITY: {st['identity']} ({st['identity_source']})")
-    print(f" MODE: {mode} | PROFILE: {st['profile']} | VERSION: {ARCHAI_VERSION}")
-    print(f" LICENSE: {license_text(st['license'])}")
-    print(f" INTEGRITY: {get_graph_core_hash()}")
+    print(f" {key('IDENTITY')} {st['identity']} ({st['identity_source']})")
+    print(f" {key('MODE')} {mode} | PROFILE: {st['profile']} | VERSION: {ARCHAI_VERSION}")
+    print(f" {key('LICENSE')} {license_text(st['license'])}")
+    print(f" {key('INTEGRITY')} {get_graph_core_hash()}")
     print(f"{'='*80}\n")
 
     # 3. Command Context
@@ -756,7 +762,7 @@ def run_interactive_console():
     # 4. REPL Loop
     while True:
         try:
-            user_input = input("ArchAI> ").strip()
+            user_input = input(ConsoleUI.accent("ArchAI") + "> ").strip()
             if not user_input:
                 continue
             
