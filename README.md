@@ -183,21 +183,220 @@ Line numbers come from Python's `ast` and point at the import statement.
 Evidence about whole files (a module that needs a test, a missing test path,
 a parse failure) has no line number rather than a guessed one.
 
-## How the graph and the OKF layer interact
+## Architecture
 
-```
-Repository ──► GraphEngine (AST) ──► RepoGraph (typed facts) ──► rule evaluation ──► findings ──► report
-                                          │            ▲
-                                          ▼            │
-                                    OKF v0.2 bundle ───┘  (--okf-out / --from-okf)
+ArchAI combines five architectural styles. The diagrams below are drawn from
+the code; the package dependency graph in §5 was produced by ArchAI's own
+graph engine. (GitHub renders these Mermaid diagrams; in VS Code use a
+Mermaid-capable Markdown preview.)
+
+| Style | Where | Why |
+|---|---|---|
+| Command interpreter | `cli.py`, `api.py` | One dispatcher behind the console, one-shot CLI and REST API |
+| Layered | package structure | Interface → engines → analysis core → models/data → infrastructure |
+| Pipes and filters | `CHECK-STANDARDS` | Deterministic stages, each a pure transformation of the previous output |
+| Multi-agent pipeline | `AUDIT` | A fixed sequence of LLM agents sharing state through an orchestrator |
+| Knowledge graph | OKF bundle | Facts, rules and findings as linked documents that outlive the run |
+
+### 1. System context
+
+```mermaid
+flowchart LR
+    dev(["Developer / CI"]) --> cli["ai-architect CLI<br/>console + one-shot<br/>cli.py"]
+    tools(["Internal tools"]) --> api["REST API<br/>FastAPI, api.py"]
+    cli --> gate{{"License gate<br/>utils/license.py"}}
+    gate --> det["Deterministic engines<br/>CHECK-STANDARDS, OKF-VIEW"]
+    gate --> llm["LLM-assisted engines<br/>AUDIT, IMPACT, G-REASON,<br/>EXPLAIN, GITHUB"]
+    api --> llm
+
+    repo[("Repository<br/>Python source")] --> det
+    repo --> llm
+    git[("git<br/>commit, churn")] --> det
+    git --> llm
+    det <--> okf[("OKF v0.2 bundle<br/>markdown + YAML")]
+    llm <--> ollama["Ollama LLM<br/>local or cloud model"]
+    llm <--> gh["GitHub API"]
+    llm --> store[("SQLite archai_data.db<br/>archai_report.json")]
+    llm -.-> redis[("Redis cache<br/>optional")]
+    api -.-> oauth["OAuth login<br/>Google, GitHub"]
+
+    classDef safe fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef ai fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    class det safe
+    class llm ai
 ```
 
-- `ai_architect/analysis/graph_engine.py` extracts modules and every import
-  with its line and execution scope (module, function, type-checking, dynamic).
-- `ai_architect/standards/` turns that into a `RepoGraph`, evaluates rules as
-  pure functions of the graph, and renders reports.
-- `ai_architect/okf/` writes the graph, layers, rules, rule results and
-  findings as an OKF bundle, loads it back, and checks it against OKF §11.
+Green parts never call an LLM or the network. Orange parts send repository
+information to the configured model, which by default is a cloud model.
+
+### 2. Layers
+
+```mermaid
+flowchart TB
+    subgraph L1["Interface"]
+        cli["cli.py<br/>command dispatcher"]
+        api["api.py + api/auth.py<br/>REST endpoints, OAuth"]
+    end
+    subgraph L2["Engines"]
+        std["standards/<br/>config, rules, engine, report"]
+        okf["okf/<br/>bundle export/import,<br/>conformance, viewer"]
+        core["core_ai/<br/>auditor, orchestrator, prompts"]
+        conn["connectors/<br/>github, pm, google_drive"]
+        legacy["improvement_engine/, xai/,<br/>reconciler/, evaluations/<br/>legacy planning + LLM helpers"]
+    end
+    subgraph L3["Analysis core"]
+        ge["analysis/graph_engine.py<br/>AST: modules, imports, calls, metrics"]
+    end
+    subgraph L4["Models and data"]
+        models["models/<br/>LLM provider abstraction"]
+        data["data/<br/>pydantic models, ORM, sqlite"]
+    end
+    subgraph L5["Infrastructure"]
+        infra["infrastructure/<br/>config, logging, cache, persistence,<br/>security, encryption, monitoring"]
+        utils["utils/<br/>console, license, ollama manager"]
+    end
+    L1 --> L2 --> L3
+    L2 --> L4 --> L5
+    L3 --> L5
+```
+
+The layering is intended rather than enforced: §5 shows where the code
+crosses it.
+
+### 3. CHECK-STANDARDS: pipes and filters
+
+Each stage is deterministic and takes only the previous stage's output.
+Rules see the `RepoGraph`, never the files, so the same rules can run on a
+graph rebuilt from an OKF bundle.
+
+```mermaid
+flowchart LR
+    src[("Python files")] --> ge["GraphEngine<br/>analysis/graph_engine.py<br/>ast parse, import records<br/>with line and scope"]
+    ge --> ex["build_repo_graph<br/>standards/extract.py<br/>resolve imports to<br/>typed module edges"]
+    ex --> rg[["RepoGraph<br/>modules, edges, gaps,<br/>file inventory"]]
+    cfg[("archai_standards.yaml")] --> conf["load_config<br/>standards/config.py<br/>validate rules"]
+    rg --> ev["evaluate_rule x 5 kinds<br/>standards/rules.py<br/>pure functions"]
+    conf --> ev
+    ev --> res[["RuleResults + Findings<br/>status, evidence, limitations"]]
+    res --> rep["report.py<br/>Markdown / JSON"]
+    rg --> exp["export_bundle<br/>okf/bundle.py"]
+    conf --> exp
+    res --> exp
+    exp --> bundle[("OKF v0.2 bundle")]
+    bundle --> load["load_bundle<br/>(--from-okf)"]
+    load --> rg
+    bundle --> view["OKF-VIEW<br/>okf/viewer.py"]
+    bundle --> cc["check_conformance<br/>OKF section 11"]
+```
+
+### 4. AUDIT: multi-agent pipeline
+
+`Orchestrator.run_pipeline` (`core_ai/orchestrator.py`) runs the agents in
+order. Each agent's output is validated into a pydantic model and appended to
+a shared `AgentState`; a failed agent stops the run.
+
+```mermaid
+flowchart LR
+    p0["PathNavigator<br/>resolve path<br/>(LLM only for non-path text)"] --> p1["Discovery<br/>GraphEngine + file scan<br/>+ LLM"]
+    p1 --> p2["ContextBuilder<br/>LLM"]
+    p2 --> p3["GapAnalyzer<br/>LLM"]
+    p3 --> p4["TicketGenerator<br/>LLM"]
+    p4 --> p5["Planner<br/>deterministic<br/>SprintPlanner (legacy)"]
+    p5 --> p6["AuditorVerifier<br/>LLM"]
+    p6 --> out[("archai_report.json<br/>SQLite archai_data.db")]
+    out --> trace["TRACE"]
+    out --> explain["EXPLAIN<br/>LLM"]
+
+    classDef ai fill:#fff3e0,stroke:#ef6c00,color:#e65100
+    class p1,p2,p3,p4,p6,explain ai
+```
+
+The other LLM-assisted commands are single steps: `IMPACT` runs
+`GraphEngine.get_impact_scope` (name-based caller trace) and asks the LLM for
+a risk verdict; `G-REASON` sends `get_graph_summary()` and your question to
+the LLM; `GITHUB ANALYZE` combines `IMPACT` with the legacy planning engines.
+
+### 5. Package dependencies, as measured by ArchAI
+
+Generated from ArchAI's own import graph (tests and scripts excluded; an
+arrow means "imports"; dashed arrows are function-level imports only).
+
+```mermaid
+flowchart TB
+    cli[cli] --> standards
+    cli -.-> okf
+    cli --> core_ai
+    cli --> connectors
+    cli --> rest["analysis, data, evaluations,<br/>improvement_engine, infrastructure,<br/>reconciler, utils"]
+    api[api] --> core_ai
+    api --> infrastructure
+    api -.-> connectors
+    api -.-> data
+    okf[okf] --> standards
+    standards[standards] --> analysis
+    analysis[analysis] --> infrastructure
+    core_ai[core_ai] -.-> analysis
+    core_ai --> models
+    core_ai --> improvement_engine
+    core_ai --> infrastructure
+    core_ai --> data
+    improvement_engine[improvement_engine] --> core_ai
+    improvement_engine --> xai
+    improvement_engine --> models
+    improvement_engine --> data
+    xai[xai] --> core_ai
+    xai --> models
+    models[models] --> infrastructure
+    infrastructure[infrastructure] --> connectors
+    infrastructure --> data
+    connectors[connectors] --> core_ai
+    connectors --> infrastructure
+    connectors --> data
+    reconciler[reconciler] --> core_ai
+    evaluations[evaluations] --> data
+    utils[utils] --> infrastructure
+
+    classDef cycle fill:#ffebee,stroke:#c62828,color:#b71c1c
+    classDef clean fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    class core_ai,improvement_engine,xai,models,infrastructure,connectors cycle
+    class standards,okf clean
+```
+
+**Red: a package-level cycle.** `core_ai`, `improvement_engine`, `xai`,
+`models`, `infrastructure` and `connectors` can all reach each other through
+module-level imports. The import that closes the loop is
+`infrastructure/usage_tracker.py:6` importing `connectors.google_drive`: the
+infrastructure layer depends on an integration. There is no cycle between
+individual modules, which is why the `no-import-cycles` rule passes on this
+repository; the cycle exists only between packages.
+
+**Green:** the standards and OKF packages depend only downward (`okf` →
+`standards` → `analysis`) and are outside the cycle.
+
+This package view was computed by collapsing `RepoGraph` module edges to
+their top-level package. It is not yet a CLI command; the module-level graph
+behind it is in any exported bundle (`OKF-VIEW bundle modules`).
+
+### 6. Knowledge representation: the OKF bundle
+
+`--okf-out` writes the run as linked concepts. Arrows are markdown links
+between concept files; evidence links use OKF `sources` with per-claim
+footnotes.
+
+```mermaid
+flowchart LR
+    run["analysis/run<br/>ArchAI Analysis Run<br/>provenance, limitations"] --> rules
+    run --> results
+    run --> findings
+    run --> modules
+    rules["rules/rule-id<br/>ArchAI Standard Rule"] --> results["results/rule-id<br/>ArchAI Rule Result"]
+    results --> findings["findings/finding-id<br/>ArchAI Finding"]
+    findings --> rules
+    findings -- "sources: evidence" --> modules["modules/module-name<br/>Python Module<br/>imports with line + scope"]
+    modules -- "imports" --> modules
+    layers["layers/layer-name<br/>ArchAI Layer"]
+    run --> inv["analysis/file-inventory<br/>paths only"]
+```
 
 The OKF layer is a portable representation, not a replacement for the graph
 engine. Because rules evaluate a `RepoGraph` regardless of where it came from,
