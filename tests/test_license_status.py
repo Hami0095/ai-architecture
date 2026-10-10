@@ -9,7 +9,8 @@ from ai_architect.utils.license import LicenseManager
 
 @pytest.fixture
 def clean_env(monkeypatch):
-    for var in ("ARCHAI_LICENSE", "ARCHAI_DEV_MODE", "ARCHAI_TEST_MODE", "ARCHAI_ENABLE_LEGACY_PLANNING"):
+    for var in ("ARCHAI_LICENSE", "ARCHAI_DEV_MODE", "ARCHAI_TEST_MODE", "ARCHAI_ENABLE_LEGACY_PLANNING",
+                "ARCHAI_ENABLE_SPRINT_PLANNING"):
         monkeypatch.delenv(var, raising=False)
     return monkeypatch
 
@@ -46,10 +47,10 @@ def test_identity_comes_from_license_holder(clean_env):
 def test_dev_mode_and_flags(clean_env):
     clean_env.setenv("ARCHAI_DEV_MODE", "1")
     clean_env.setenv("ARCHAI_TEST_MODE", "1")
-    clean_env.setenv("ARCHAI_ENABLE_LEGACY_PLANNING", "1")
+    clean_env.setenv("ARCHAI_ENABLE_SPRINT_PLANNING", "1")
     st = cli.session_status()
     assert st["access_mode"] == "DEV"
-    assert st["flags"] == ["DEMO", "LEGACY-PLANNING"]
+    assert st["flags"] == ["DEMO", "SPRINT-PLANNING"]
     assert "unlicensed" in st["identity_source"]
 
 

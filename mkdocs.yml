@@ -44,7 +44,7 @@ nav:
       - CIRAS: architecture/ciras.md
       - GitHub Integration: architecture/github-integration.md
       - PM Integration: architecture/pm-integration.md
-  - Legacy (deferred):
+  - "Case Study: Sprint Planning":
       - WDP-TG: architecture/wdp-tg.md
       - SRC-RS: architecture/src-rs.md
   - Tutorials:

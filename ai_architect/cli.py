@@ -45,7 +45,7 @@ def session_status() -> Dict[str, Any]:
                DEV        ARCHAI_DEV_MODE set: license gate bypassed for local development
                BLOCKED    neither; the console refuses to start
       flags    DEMO       --test-mode (sets ARCHAI_TEST_MODE; nothing reads it yet, so no mock data)
-               LEGACY-PLANNING  ARCHAI_ENABLE_LEGACY_PLANNING=1 re-enables PLAN/SIMULATE
+               SPRINT-PLANNING  ARCHAI_ENABLE_SPRINT_PLANNING=1 enables the sprint-planning case study
       profile  ARCHAI_ENV (default "dev") selects config.<profile>.yaml
     """
     lic = LicenseManager.inspect_token(os.environ.get("ARCHAI_LICENSE"))
@@ -57,7 +57,7 @@ def session_status() -> Dict[str, Any]:
         identity, source = config.get("user_id", "Anonymous-Engineer"), "local config user_id, unlicensed"
     flags = [name for name, on in (
         ("DEMO", os.environ.get("ARCHAI_TEST_MODE") == "1"),
-        ("LEGACY-PLANNING", legacy_planning_enabled()),
+        ("SPRINT-PLANNING", sprint_planning_enabled()),
     ) if on]
     return {
         "identity": identity,
@@ -88,10 +88,11 @@ def license_text(lic: Dict[str, Any]) -> str:
         return f"VALID - {lic['user']}, expires {lic['expires']} ({lic['days_left']} days left)"
     return f"{lic['state']} - {lic['reason']}"
 
-def legacy_planning_enabled() -> bool:
-    """Sprint planning (PLAN, SIMULATE, RELEASE-CONFIDENCE) is deferred from the
-    product; its code is kept and can be re-enabled for existing users."""
-    return os.environ.get("ARCHAI_ENABLE_LEGACY_PLANNING") == "1"
+def sprint_planning_enabled() -> bool:
+    """PLAN, SIMULATE and RELEASE-CONFIDENCE come from ArchAI's sprint-planning case
+    study (WDP-TG and SRC-RS). They are off by default and can be switched on.
+    ARCHAI_ENABLE_LEGACY_PLANNING is the earlier name of the switch and still works."""
+    return "1" in (os.environ.get("ARCHAI_ENABLE_SPRINT_PLANNING"), os.environ.get("ARCHAI_ENABLE_LEGACY_PLANNING"))
 
 def check_standards_command(args: List[str]) -> int:
     """CHECK-STANDARDS: deterministic, evidence-backed standards check. No LLM, no network."""
@@ -250,9 +251,9 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
         
         print(f" - [{tid}] {prio} | EPIC: {epic} | [{emin}-{emax}h] | {title}{risk} (Conf: {clevel} {cscore*100:.0f}%){drivers}")
 
-    if legacy_planning_enabled():
-        print(f"\n[FEASIBILITY-DRIVEN SPRINT PLAN] (legacy)")
-    for day in (sprint_plan if legacy_planning_enabled() else []):
+    if sprint_planning_enabled():
+        print(f"\n[FEASIBILITY-DRIVEN SPRINT PLAN] (sprint-planning case study)")
+    for day in (sprint_plan if sprint_planning_enabled() else []):
         name = day.get('day')
         hrs = day.get('total_hours', 0)
         feas = day.get('feasibility', 'Unknown')
@@ -327,9 +328,9 @@ def process_command(cmd_line) -> Optional[int]:
     if command == "OKF-VIEW":
         return okf_view_command(args)
 
-    if command in ("PLAN", "SIMULATE", "RELEASE-CONFIDENCE") and not legacy_planning_enabled():
-        print(f"{command} is deferred: sprint planning and estimation are no longer part of ArchAI's "
-              "product direction. The code is kept; set ARCHAI_ENABLE_LEGACY_PLANNING=1 to use it.")
+    if command in ("PLAN", "SIMULATE", "RELEASE-CONFIDENCE") and not sprint_planning_enabled():
+        print(f"{command} is part of ArchAI's sprint-planning case study (WDP-TG / SRC-RS), "
+              "which is switched off by default. Set ARCHAI_ENABLE_SPRINT_PLANNING=1 to use it.")
         return 2
 
     # --- CONFIGURATION COMMANDS ---

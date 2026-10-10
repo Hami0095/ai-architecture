@@ -18,11 +18,21 @@ def test_windows_paths_keep_backslashes():
         ["CHECK-STANDARDS", r"C:\repo\app", "--json", r"C:\out dir\r.json"]
 
 
-def test_sprint_planning_commands_are_deferred(monkeypatch, capsys):
+def test_sprint_planning_commands_are_off_by_default(monkeypatch, capsys):
+    monkeypatch.delenv("ARCHAI_ENABLE_SPRINT_PLANNING", raising=False)
     monkeypatch.delenv("ARCHAI_ENABLE_LEGACY_PLANNING", raising=False)
     for command in ("PLAN . goal", "SIMULATE T001", "RELEASE-CONFIDENCE . v2"):
         assert process_command(command) == 2
-        assert "deferred" in capsys.readouterr().out
+        assert "sprint-planning case study" in capsys.readouterr().out
+
+
+@pytest.mark.parametrize("variable", ["ARCHAI_ENABLE_SPRINT_PLANNING", "ARCHAI_ENABLE_LEGACY_PLANNING"])
+def test_sprint_planning_switch_and_its_earlier_name(monkeypatch, variable):
+    monkeypatch.delenv("ARCHAI_ENABLE_SPRINT_PLANNING", raising=False)
+    monkeypatch.delenv("ARCHAI_ENABLE_LEGACY_PLANNING", raising=False)
+    assert not cli.sprint_planning_enabled()
+    monkeypatch.setenv(variable, "1")
+    assert cli.sprint_planning_enabled()
 
 
 @pytest.mark.parametrize("value, state", [

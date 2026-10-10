@@ -55,7 +55,7 @@ The startup banner and `CONFIG` show:
 | `DEV` | `ARCHAI_DEV_MODE` (any non-empty value) without a valid token | License check skipped for local development. IDENTITY is `user_id` from config, labelled unlicensed. |
 | `BLOCKED` | neither | The program stops before any command runs. |
 | `+ DEMO` | `--test-mode` | Sets `ARCHAI_TEST_MODE=1`. Nothing reads it yet; no mock data is loaded. |
-| `+ LEGACY-PLANNING` | `ARCHAI_ENABLE_LEGACY_PLANNING=1` | Re-enables `PLAN`, `SIMULATE`, `RELEASE-CONFIDENCE` and the sprint plan in `AUDIT` output. |
+| `+ SPRINT-PLANNING` | `ARCHAI_ENABLE_SPRINT_PLANNING=1` | Enables the sprint-planning case study: `PLAN`, `SIMULATE`, `RELEASE-CONFIDENCE` and the sprint plan in `AUDIT` output. |
 | `PROFILE` | `ARCHAI_ENV` (default `dev`) | Also loads `config.<profile>.yaml` / `.json`. |
 
 ## Configuration files
@@ -97,7 +97,7 @@ overrides `github.token`.
 | `ARCHAI_LICENSE` | License token. |
 | `ARCHAI_DEV_MODE` | Skip the license check (local development). |
 | `ARCHAI_ENV` | Config profile (default `dev`). |
-| `ARCHAI_ENABLE_LEGACY_PLANNING` | `1` re-enables the deferred planning commands. |
+| `ARCHAI_ENABLE_SPRINT_PLANNING` | `1` enables the sprint-planning case-study commands. The earlier name `ARCHAI_ENABLE_LEGACY_PLANNING` still works. |
 | `ARCHAI_TEST_MODE` | Set by `--test-mode`; currently unused. |
 | `ARCHAI_MODEL`, `ARCHAI_AI_PROVIDER` | Override the LLM model / provider. |
 | `ARCHAI_GITHUB_TOKEN` | GitHub token (also set by `SET-GITHUB-TOKEN`). |
@@ -111,7 +111,7 @@ overrides `github.token`.
 ## LLM runtime
 
 Commands that use an LLM (`AUDIT`, `IMPACT`, `G-REASON`, `EXPLAIN`, `GITHUB
-ANALYZE/AUDIT/VALIDATE-LOCAL`, legacy planning) first check Ollama:
+ANALYZE/AUDIT/VALIDATE-LOCAL`, the sprint-planning case study) first check Ollama:
 
 - Ollama not installed → exits with installation instructions.
 - Ollama not running → exits asking you to run `ollama serve`.

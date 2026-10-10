@@ -49,9 +49,9 @@ your machine). Treat their output as assistance, not verified fact.
   Only static `import` statements and literal `importlib.import_module(...)` calls are facts.
 - Measure test coverage. The required-tests rule checks file existence by
   naming convention only.
-- Sprint planning and estimation. `PLAN`, `SIMULATE` and `RELEASE-CONFIDENCE`
-  are deferred; their code is kept and can be re-enabled with
-  `ARCHAI_ENABLE_LEGACY_PLANNING=1`.
+- Sprint planning and estimation as part of the default workflow. `PLAN`,
+  `SIMULATE` and `RELEASE-CONFIDENCE` come from ArchAI's sprint-planning case
+  study (WDP-TG and SRC-RS); switch them on with `ARCHAI_ENABLE_SPRINT_PLANNING=1`.
 
 ---
 
@@ -242,7 +242,7 @@ flowchart TB
         okf["okf/<br/>bundle export/import,<br/>conformance, viewer"]
         core["core_ai/<br/>auditor, orchestrator, prompts"]
         conn["connectors/<br/>github, pm, google_drive"]
-        legacy["improvement_engine/, xai/,<br/>reconciler/, evaluations/<br/>legacy planning + LLM helpers"]
+        legacy["improvement_engine/, xai/,<br/>reconciler/, evaluations/<br/>sprint-planning case study + LLM helpers"]
     end
     subgraph L3["Analysis core"]
         ge["analysis/graph_engine.py<br/>AST: modules, imports, calls, metrics"]
@@ -301,7 +301,7 @@ flowchart LR
     p1 --> p2["ContextBuilder<br/>LLM"]
     p2 --> p3["GapAnalyzer<br/>LLM"]
     p3 --> p4["TicketGenerator<br/>LLM"]
-    p4 --> p5["Planner<br/>deterministic<br/>SprintPlanner (legacy)"]
+    p4 --> p5["Planner<br/>deterministic<br/>SprintPlanner (case study)"]
     p5 --> p6["AuditorVerifier<br/>LLM"]
     p6 --> out[("archai_report.json<br/>SQLite archai_data.db")]
     out --> trace["TRACE"]
@@ -314,7 +314,7 @@ flowchart LR
 The other LLM-assisted commands are single steps: `IMPACT` runs
 `GraphEngine.get_impact_scope` (name-based caller trace) and asks the LLM for
 a risk verdict; `G-REASON` sends `get_graph_summary()` and your question to
-the LLM; `GITHUB ANALYZE` combines `IMPACT` with the legacy planning engines.
+the LLM; `GITHUB ANALYZE` combines `IMPACT` with the sprint-planning case-study engines.
 
 ### 5. Package dependencies, as measured by ArchAI
 
