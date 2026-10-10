@@ -41,6 +41,9 @@ ai-architect = "ai_architect.cli:run_cli"
 [tool.setuptools]
 packages = [
     "ai_architect", 
+    "ai_architect.analysis",
+    "ai_architect.standards",
+    "ai_architect.okf",
     "ai_architect.core_ai", 
     "ai_architect.data", 
     "ai_architect.evaluations", 

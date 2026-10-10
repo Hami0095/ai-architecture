@@ -25,6 +25,9 @@ from ai_architect.infrastructure.usage_tracker import BackupManager, UsageTracke
 from ai_architect.data.models import SprintPlanConfig, WDPOutput, AuditTicket
 from ai_architect.version import ARCHAI_VERSION, get_graph_core_hash
 from ai_architect.utils.license import LicenseManager
+from ai_architect.standards import StandardsConfigError, exit_code, run_check
+from ai_architect.standards.config import load_config
+from ai_architect.standards.report import to_json, to_markdown
 
 # Global logging config
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s [%(levelname)s] %(name)s: %(message)s')
@@ -38,6 +41,58 @@ def legacy_planning_enabled() -> bool:
     """Sprint planning (PLAN, SIMULATE, RELEASE-CONFIDENCE) is deferred from the
     product; its code is kept and can be re-enabled for existing users."""
     return os.environ.get("ARCHAI_ENABLE_LEGACY_PLANNING") == "1"
+
+def check_standards_command(args: List[str]) -> int:
+    """CHECK-STANDARDS: deterministic, evidence-backed standards check. No LLM, no network."""
+    parser = SafeArgumentParser(prog="CHECK-STANDARDS", add_help=False)
+    parser.add_argument("path", nargs="?", default=os.getcwd())
+    parser.add_argument("--config", help="Standards YAML (default: <path>/archai_standards.yaml)")
+    parser.add_argument("--no-defaults", action="store_true", help="Do not add ArchAI default rules")
+    parser.add_argument("--json", nargs="?", const="-", help="Write JSON report to a file, or stdout if no file")
+    parser.add_argument("--markdown", help="Write the Markdown report to a file")
+    parser.add_argument("--okf-out", help="Export the OKF v0.2 knowledge bundle to this directory")
+    parser.add_argument("--from-okf", help="Adjudicate facts loaded from an existing OKF bundle instead of source")
+    parser.add_argument("--verbose", action="store_true", help="Show full evidence and observed facts")
+    try:
+        parsed = parser.parse_args(args)
+    except ValueError as e:
+        print(f"CHECK-STANDARDS usage error: {e}")
+        print("Usage: CHECK-STANDARDS <path> [--config FILE] [--json [FILE]] [--markdown FILE] "
+              "[--okf-out DIR] [--from-okf DIR] [--no-defaults] [--verbose]")
+        return 2
+
+    from ai_architect.okf import check_conformance, export_bundle, load_bundle
+    try:
+        if parsed.from_okf:
+            loaded = load_bundle(parsed.from_okf)
+            config = load_config(Path(parsed.path), Path(parsed.config), not parsed.no_defaults) \
+                if parsed.config else loaded["config"]
+            report = run_check(None, graph=loaded["graph"], config=config, fact_source="okf-bundle")
+        else:
+            report = run_check(parsed.path, parsed.config, include_defaults=not parsed.no_defaults)
+        if parsed.okf_out:
+            bundle = export_bundle(report, parsed.okf_out)
+    except (StandardsConfigError, OSError, ValueError) as e:
+        print(f"CHECK-STANDARDS failed: {e}")
+        return 2
+
+    if parsed.okf_out:
+        conformance = check_conformance(str(bundle))
+        state = "conformant with OKF v0.2 section 11" if conformance["conformant"] else "NOT conformant"
+        print(f"OKF bundle written to {bundle} ({conformance['concepts']} concepts, {state})", file=sys.stderr)
+        for err in conformance["errors"]:
+            print(f"   ! {err}", file=sys.stderr)
+    if parsed.markdown:
+        Path(parsed.markdown).write_text(to_markdown(report, parsed.verbose), encoding="utf-8")
+        print(f"Markdown report written to {parsed.markdown}", file=sys.stderr)
+    if parsed.json == "-":
+        print(to_json(report))
+    else:
+        if parsed.json:
+            Path(parsed.json).write_text(to_json(report), encoding="utf-8")
+            print(f"JSON report written to {parsed.json}", file=sys.stderr)
+        print(to_markdown(report, parsed.verbose))
+    return exit_code(report)
 
 def save_feedback(useful: bool, rejected_ids: List[str]):
     feedback_file = "archai_feedback.json"
@@ -136,6 +191,7 @@ def print_help_table():
     print(f"\n{'='*80}")
     print(f"{'COMMAND':<25} | {'DESCRIPTION':<50}")
     print(f"{'-'*25}-+-{'-'*50}")
+    print(f"{'CHECK-STANDARDS':<25} | {'Deterministic standards check with cited evidence (no LLM)'}")
     print(f"{'IMPACT':<25} | {'Assess risk (CIRAS) for a file or symbol'}")
     print(f"{'AUDIT':<25} | {'LLM-assisted architectural audit'}")
     print(f"{'GITHUB':<25} | {'Interact with GitHub (CONNECT, PRS, ANALYZE)'}")
@@ -169,6 +225,9 @@ def process_command(cmd_line) -> Optional[int]:
 
     command = parts[0].upper()
     args = parts[1:]
+
+    if command == "CHECK-STANDARDS":
+        return check_standards_command(args)
 
     if command in ("PLAN", "SIMULATE", "RELEASE-CONFIDENCE") and not legacy_planning_enabled():
         print(f"{command} is deferred: sprint planning and estimation are no longer part of ArchAI's "
