@@ -45,6 +45,9 @@ window.ARCHAI = {
         { cmd: "ai-architect CHECK-STANDARDS . --okf-out bundle --preview", note: "export the knowledge map" },
       ],
       demo: { transcript: "check" },
+      gives: ["A list of rule violations, each with the file, line and import statement that proves it", "An exit code your CI can fail on (1 = verified violation)", "Markdown and JSON reports, and an optional knowledge bundle to share"],
+      needs: ["A Python repository", "Your rules in archai_standards.yaml (optional: without it, ArchAI checks for import cycles only)", "A license token (or ARCHAI_DEV_MODE=1 for local use). No AI, no network, nothing uploaded"],
+      mcp: ["plumb_check_standards", "plumb_validate_config", "plumb_rule_reference"],
       docs: "/docs/cli/commands/#check-standards",
     },
     {
@@ -63,6 +66,9 @@ window.ARCHAI = {
         { cmd: "ai-architect OKF-VIEW bundle app.domain.order", note: "one module and who imports it" },
       ],
       demo: { transcript: "findings" },
+      gives: ["A browsable map of findings, rules and modules, with every link and receipt resolved", "Answers to 'what imports this?' and 'how are these two modules connected?'"],
+      needs: ["A bundle exported by Plumb (--okf-out), or any Open Knowledge Format v0.2 bundle", "For the code-map tools: just the repository. No AI, no network"],
+      mcp: ["atlas_graph_overview", "atlas_module", "atlas_import_path", "atlas_export_bundle", "atlas_view", "atlas_concept"],
       docs: "/docs/cli/commands/#okf-view",
     },
     {
@@ -79,6 +85,9 @@ window.ARCHAI = {
       ],
       demo: { transcript: "trace",
               note: "Real output in a fresh folder: Ledger needs a Surveyor (AUDIT) report to read." },
+      gives: ["The evidence a Surveyor run recorded for a suggested work item"],
+      needs: ["An archai_report.json from an earlier Surveyor (AUDIT) run in the same folder"],
+      mcp: ["ledger_trace"],
       docs: "/docs/cli/commands/#trace",
     },
     {
@@ -106,6 +115,9 @@ window.ARCHAI = {
                       " - [T002] Medium | EPIC: Persistence | [2.0-4.0h] | Introduce a repository interface (Conf: MEDIUM 58%)",
                       " - [T003] Low | EPIC: Testing | [1.0-3.0h] | Add tests around the order service (Conf: LOW 41%)",
                       "", "SUGGESTED NEXT STEP: Use 'trace <ID>' to see evidence for specific tickets."] },
+      gives: ["A first walkthrough of an unfamiliar codebase, with suggested work items"],
+      needs: ["Ollama running with a model. The default model (glm-4.6:cloud) runs in the cloud, so code summaries leave your machine", "Time to check its suggestions: they are AI output, not verified"],
+      mcp: [],
       docs: "/docs/cli/commands/#audit",
     },
     {
@@ -130,6 +142,9 @@ window.ARCHAI = {
                       "   -> app.checkout.handler.submit [Depth: 1] in app/checkout/handler.py (Edge: Direct)",
                       "   -> app.billing.invoices.settle [Depth: 1] in app/billing/invoices.py (Edge: Direct)",
                       "   -> app.api.routes.pay [Depth: 2] in app/api/routes.py (Edge: Direct)"] },
+      gives: ["Who calls or imports a symbol, and an AI risk verdict before you change it"],
+      needs: ["Ollama for the verdict. For the facts alone, use the seismograph_dependents tool: no AI needed"],
+      mcp: ["seismograph_dependents"],
       docs: "/docs/cli/commands/#impact",
     },
     {
@@ -154,6 +169,9 @@ window.ARCHAI = {
                       "reach the database through app.services. Suggested rule to verify this:",
                       "  kind: forbidden_dependency  from: [app.api]  to: [app.db]",
                       "================================================================================"] },
+      gives: ["Plain-language answers to architecture questions about your code map"],
+      needs: ["Ollama with a model; the dependency graph is sent to it"],
+      mcp: [],
       docs: "/docs/cli/commands/#g-reason",
     },
     {
@@ -178,6 +196,9 @@ window.ARCHAI = {
                       "app.db.session from the domain layer. The evidence recorded for T001 points to",
                       "app/domain/orders.py lines 4-9.",
                       "================================================================================"] },
+      gives: ["A plain-language explanation of why a Surveyor item was rated as it was"],
+      needs: ["An archai_report.json from a Surveyor run, and Ollama"],
+      mcp: [],
       docs: "/docs/cli/commands/#explain",
     },
     {
@@ -200,6 +221,9 @@ window.ARCHAI = {
               lines: ["", "[ANALYSIS REPORT PR #42]", " Impact: MEDIUM (Score: 41.0)", " Confidence: MEDIUM (62.0%)",
                       " Rationale: The PR changes app/billing/invoices.py, which two services import.",
                       "ℹ️ Quiet Mode: Use --publish to post this as a PR comment."] },
+      gives: ["Your open pull requests, an impact assessment per PR, and the modules your branch's changes affect"],
+      needs: ["A GitHub token for private repositories and PR comments (posting needs --publish)", "Ollama for the PR assessment; git only for VALIDATE-LOCAL and the changed-modules tool"],
+      mcp: ["foreman_changed_modules"],
       docs: "/docs/cli/commands/#github",
     },
     {
@@ -222,8 +246,88 @@ window.ARCHAI = {
                       "  - [T001] Add OAuth2 provider configuration [2-4h]",
                       "  - [T002] Implement token exchange endpoint [4-8h]",
                       "  - [T003] Add login flow tests [2-5h]"] },
+      gives: ["Task breakdowns with effort ranges and a sprint confidence estimate (case study)"],
+      needs: ["ARCHAI_ENABLE_SPRINT_PLANNING=1 and Ollama. Not part of the current product"],
+      mcp: [],
       docs: "/docs/cli/commands/#sprint-planning-commands-case-study",
     },
+  ],
+
+  // "What can it do for me?": each outcome names what you get and what you provide.
+  outcomes: [
+    { title: "Catch architecture rule breaks before they merge",
+      agents: ["plumb", "foreman"],
+      gives: "Every broken rule with the file, line and import that proves it, and a CI exit code to block the merge.",
+      needs: "Your rules in archai_standards.yaml, and one command in CI.",
+      cmd: "ai-architect CHECK-STANDARDS . --json report.json" },
+    { title: "Know what a change will touch",
+      agents: ["seismograph", "atlas"],
+      gives: "The modules that import the one you're changing, each link cited: direct importers in Atlas, the full chain through your AI agent's seismograph_dependents tool.",
+      needs: "The repository and the module name. No AI needed for the facts.",
+      cmd: "ai-architect OKF-VIEW bundle payments.service" },
+    { title: "Find your way around an unfamiliar codebase",
+      agents: ["atlas", "surveyor"],
+      gives: "The most-coupled modules, the import path between any two modules, and an AI walkthrough if you want one.",
+      needs: "The repository. Ollama only for Surveyor's AI walkthrough.",
+      cmd: "ai-architect CHECK-STANDARDS . --okf-out bundle --preview" },
+    { title: "Give your AI coding agent facts, not guesses",
+      agents: ["plumb", "atlas"],
+      gives: "Claude Code or Codex can check rules and trace dependencies itself, and must quote the receipts.",
+      needs: "One setup command and your license token.",
+      cmd: "ai-architect AGENT-SETUP --install-skill --register" },
+    { title: "Share architecture knowledge without sharing code",
+      agents: ["atlas"],
+      gives: "A portable Open Knowledge Format bundle that someone else can browse or re-check with their own rules.",
+      needs: "One export. File contents are never copied, only paths and import statements.",
+      cmd: "ai-architect CHECK-STANDARDS . --okf-out bundle" },
+  ],
+
+  requirements: {
+    needs: [
+      { what: "A Python repository", why: "ArchAI reads Python import statements. Other languages are reported as not covered, never as clean." },
+      { what: "Python 3.10+ and the ArchAI CLI", why: "Install from GitHub with pip install -e ." },
+      { what: "A license token", why: "Or ARCHAI_DEV_MODE=1 for local development." },
+    ],
+    optional: [
+      { what: "Your rules", why: "An archai_standards.yaml file. Without it, ArchAI checks for import cycles only, and says so." },
+      { what: "Ollama", why: "Only for the AI-assisted Insight agents (Surveyor, Draftsman, Interpreter, Seismograph's verdict)." },
+      { what: "A GitHub token", why: "Only for Foreman's pull-request features." },
+      { what: "Claude Code or Codex", why: "Only to let your AI coding agent use ArchAI (pip install -e \".[agents]\")." },
+    ],
+    notNeeded: [
+      "No account and no upload: the Proof agents run on your machine, with no AI and no network.",
+      "No changes to your code, and no build or test run.",
+      "No rules to start with: try it first, then write rules for what you care about.",
+    ],
+  },
+
+  quickstart: [
+    { step: "Install", cmd: "git clone https://github.com/Hami0095/ai-architecture && cd ai-architecture && pip install -e ." },
+    { step: "Unlock", cmd: "export ARCHAI_LICENSE=YOUR_TOKEN   # or ARCHAI_DEV_MODE=1 to try it locally" },
+    { step: "Check a repository", cmd: "ai-architect CHECK-STANDARDS path/to/your/repo --okf-out bundle --preview" },
+    { step: "Add your rules", cmd: "cp examples/archai_standards.example.yaml path/to/your/repo/archai_standards.yaml" },
+  ],
+
+  aiAgents: {
+    clients: ["Claude Code", "Codex", "any MCP client"],
+    setup: "ai-architect AGENT-SETUP --install-skill --register",
+    toolCount: 12,
+    points: [
+      "Twelve tools: check standards, validate rules, trace import paths, list what depends on a module, map a branch's changes.",
+      "Every tool is deterministic. ArchAI never calls an AI model on your agent's behalf.",
+      "A skill teaches the agent to quote file:line receipts and never to overstate a PASS.",
+    ],
+    docs: "/docs/cli/ai-agents/",
+  },
+
+  // Newest first. Add an entry for each feature you ship.
+  whatsNew: [
+    { date: "Oct 2026", title: "Use ArchAI from Claude Code and Codex", text: "An MCP server with twelve deterministic tools, a skill for both agents, and AGENT-SETUP to connect them in one command.", link: "/docs/cli/ai-agents/" },
+    { date: "Oct 2026", title: "Research preprint", text: "Receipts, Not Similarity: grounding security explanations in a sourced knowledge library.", link: "research.html" },
+    { date: "Oct 2026", title: "The agent family and this website", text: "Nine agents in four families, each a real command, with real terminal output.", link: "agents.html" },
+    { date: "Oct 2026", title: "A new-look console", text: "Orange ArchAI branding, a thinking animation, and plain text when output is piped.", link: "/docs/cli/commands/" },
+    { date: "Oct 2026", title: "Atlas (OKF-VIEW)", text: "Browse any Open Knowledge Format bundle in the terminal: findings, rules, modules, links and trust.", link: "agents.html#agent-atlas" },
+    { date: "Oct 2026", title: "Plumb (CHECK-STANDARDS)", text: "Check your own architecture rules with file:line receipts, and export the results as an OKF bundle.", link: "agents.html#agent-plumb" },
   ],
 
   storyArc: [

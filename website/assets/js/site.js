@@ -256,6 +256,61 @@
 
   /* ---- Renderers -------------------------------------------------------- */
   const renderers = {
+    outcomes(el) {
+      el.innerHTML = D.outcomes.map((o, i) => `
+        <article class="card outcome reveal d${i % 4}">
+          <div class="win-title"><span class="name">0${i + 1}</span><span class="outcome-icons">${o.agents.map((id) => icon(id, 18)).join("")}</span></div>
+          <div class="win-body">
+            <h3>${esc(o.title)}</h3>
+            <dl>
+              <dt>You get</dt><dd>${esc(o.gives)}</dd>
+              <dt>You provide</dt><dd>${esc(o.needs)}</dd>
+            </dl>
+            <code class="outcome-cmd" tabindex="0" data-copy="${esc(o.cmd)}" title="Click to copy">${esc(o.cmd)}</code>
+          </div>
+        </article>`).join("");
+    },
+
+    requirements(el) {
+      const R = D.requirements;
+      const list = (items) => items.map((r) => `<li><b>${esc(r.what)}</b><span>${esc(r.why)}</span></li>`).join("");
+      el.innerHTML = `
+        <div class="win req reveal"><div class="win-title"><span class="name">REQUIRED</span><span class="ctrl"></span></div>
+          <div class="win-body"><ul class="req-list">${list(R.needs)}</ul></div></div>
+        <div class="win req reveal d1"><div class="win-title"><span class="name">ONLY IF YOU WANT IT</span><span class="ctrl"></span></div>
+          <div class="win-body"><ul class="req-list">${list(R.optional)}</ul></div></div>
+        <div class="win req req-not reveal d2"><div class="win-title"><span class="name">NOT NEEDED</span><span class="ctrl"></span></div>
+          <div class="win-body"><ul class="req-list">${R.notNeeded.map((t) => `<li><span>${esc(t)}</span></li>`).join("")}</ul></div></div>`;
+    },
+
+    quickstart(el) {
+      el.innerHTML = D.quickstart.map((q, i) => `
+        <li class="reveal d${i % 4}"><span class="qs-n">${i + 1}</span><div><b>${esc(q.step)}</b>
+          <code tabindex="0" data-copy="${esc(q.cmd)}" title="Click to copy">${esc(q.cmd)}</code></div></li>`).join("");
+    },
+
+    "ai-agents"(el) {
+      const A = D.aiAgents;
+      el.innerHTML = `
+        <div class="ai-copy reveal">
+          <p class="label">Works with ${A.clients.map(esc).join(" · ")}</p>
+          <h2 class="big">Your AI Agent, With Receipts.</h2>
+          <ul class="ai-points">${A.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+          <p class="ai-setup"><code tabindex="0" data-copy="${esc(A.setup)}" title="Click to copy">${esc(A.setup)}</code></p>
+          <p class="doclink"><a href="${esc(A.docs)}">Set up Claude Code or Codex →</a></p>
+        </div>
+        <div class="win ai-tools reveal d1"><div class="win-title"><span class="name">MCP · ${A.toolCount} TOOLS</span><span class="ctrl"></span></div>
+          <div class="win-body">${D.agents.filter((a) => a.mcp && a.mcp.length).map((a) => `
+            <div class="tool-row">${icon(a.id, 20)}<b>${esc(a.name)}</b><span>${a.mcp.map((t) => `<code>${esc(t)}</code>`).join(" ")}</span></div>`).join("")}
+          </div></div>`;
+    },
+
+    "whats-new"(el) {
+      el.innerHTML = D.whatsNew.map((n, i) => `
+        <li class="reveal d${i % 4}"><span class="new-date">${esc(n.date)}</span>
+          <div><a href="${esc(n.link)}"><b>${esc(n.title)}</b></a><p>${esc(n.text)}</p></div></li>`).join("");
+    },
+
     marquee(el) {
       const items = D.agents.map((a) => `<span>${esc(a.name.toUpperCase())} <b>${esc(a.command.split(" ")[0])}</b></span>`).join("");
       el.innerHTML = `<div class="track" aria-hidden="true">${items}${items}</div><span class="sr-only">ArchAI agents: ${D.agents.map((a) => a.name).join(", ")}</span>`;
@@ -406,11 +461,16 @@
           <h2>${esc(a.name)}${a.hero ? ' <em class="hero-tag">hero</em>' : ""}</h2>
           <span class="role">${esc(a.role)} · <code>${esc(a.command)}</code></span></div></div>
           <p>${esc(a.summary)}</p>
+          ${a.gives ? `<div class="give-need">
+            <div><h3>You get</h3><ul>${a.gives.map((g) => `<li>${esc(g)}</li>`).join("")}</ul></div>
+            <div><h3>It needs</h3><ul>${a.needs.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></div>
+          </div>` : ""}
           <h3>When to use it</h3>
           <ul>${a.when.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>
           <h3>How to use it</h3>
           <pre class="syntax">${esc(a.syntax)}</pre>
           <ul class="examples">${a.examples.map((x) => `<li><code tabindex="0" data-copy="${esc(x.cmd)}" title="Click to copy">${esc(x.cmd)}</code>${x.note ? `<small>${esc(x.note)}</small>` : ""}</li>`).join("")}</ul>
+          ${a.mcp && a.mcp.length ? `<h3>For AI agents (MCP)</h3><p class="mcp-tools">${a.mcp.map((t) => `<code>${esc(t)}</code>`).join(" ")}</p>` : ""}
           <p class="doclink"><a href="${esc(a.docs)}">Full reference in the docs →</a></p>
         </div>
         <div class="sticky"><div data-agent="${a.id}"></div></div>
