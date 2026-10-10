@@ -37,6 +37,48 @@ class SafeArgumentParser(argparse.ArgumentParser):
     def error(self, message):
         raise ValueError(message)
 
+def session_status() -> Dict[str, Any]:
+    """Identity, mode and license state shown in the banner and by CONFIG.
+
+    Modes that exist in the code:
+      access   LICENSED   valid signed token in ARCHAI_LICENSE (or --license)
+               DEV        ARCHAI_DEV_MODE set: license gate bypassed for local development
+               BLOCKED    neither; the console refuses to start
+      flags    DEMO       --test-mode (sets ARCHAI_TEST_MODE; nothing reads it yet, so no mock data)
+               LEGACY-PLANNING  ARCHAI_ENABLE_LEGACY_PLANNING=1 re-enables PLAN/SIMULATE
+      profile  ARCHAI_ENV (default "dev") selects config.<profile>.yaml
+    """
+    lic = LicenseManager.inspect_token(os.environ.get("ARCHAI_LICENSE"))
+    dev = bool(os.environ.get("ARCHAI_DEV_MODE"))
+    if lic["state"] == "VALID":
+        access, identity, source = "LICENSED", lic["user"], "license holder"
+    else:
+        access = "DEV" if dev else "BLOCKED"
+        identity, source = config.get("user_id", "Anonymous-Engineer"), "local config user_id, unlicensed"
+    flags = [name for name, on in (
+        ("DEMO", os.environ.get("ARCHAI_TEST_MODE") == "1"),
+        ("LEGACY-PLANNING", legacy_planning_enabled()),
+    ) if on]
+    return {
+        "identity": identity,
+        "identity_source": source,
+        "access_mode": access,
+        "flags": flags,
+        "profile": os.getenv("ARCHAI_ENV", "dev").lower(),
+        "license": lic,
+        "integrations": {
+            "github": bool(os.getenv("ARCHAI_GITHUB_TOKEN") or config.get("github.token") or config.get("github_token")),
+            "jira": bool(os.getenv("ARCHAI_JIRA_TOKEN") or config.get("jira.token")),
+            "google_drive": bool(config.get("google_drive_token")),
+        },
+        "llm": f"{config.get('ai.provider', 'ollama')}:{config.get('model', 'unknown')}",
+    }
+
+def license_text(lic: Dict[str, Any]) -> str:
+    if lic["state"] == "VALID":
+        return f"VALID - {lic['user']}, expires {lic['expires']} ({lic['days_left']} days left)"
+    return f"{lic['state']} - {lic['reason']}"
+
 def legacy_planning_enabled() -> bool:
     """Sprint planning (PLAN, SIMULATE, RELEASE-CONFIDENCE) is deferred from the
     product; its code is kept and can be re-enabled for existing users."""
@@ -261,13 +303,15 @@ def process_command(cmd_line) -> Optional[int]:
         return
 
     if command == "CONFIG":
-        gh_status = '✅ Connected' if os.getenv('ARCHAI_GITHUB_TOKEN') or config.get_secret('github.token') or config.get_secret('github_token') else '❌ Missing'
-        pm_status = '✅ Connected' if os.getenv('ARCHAI_JIRA_TOKEN') or config.get_secret('jira.token') else '❌ Missing'
+        st = session_status()
+        on = lambda flag: "connected" if flag else "not configured"
         print("\n[CURRENT CONFIGURATION]")
-        print(f" User Identity: {config.get('user_id', 'Anonymous')}")
-        print(f" Model: {config.get('model', 'Unknown')}")
-        print(f" GitHub Integration: {gh_status}")
-        print(f" Jira Integration: {pm_status}")
+        print(f" Identity: {st['identity']} ({st['identity_source']})")
+        print(f" Access mode: {st['access_mode']} | Flags: {', '.join(st['flags']) or 'none'} | Profile: {st['profile']}")
+        print(f" License: {license_text(st['license'])}")
+        print(f" LLM: {st['llm']}")
+        print(f" GitHub: {on(st['integrations']['github'])} | Jira: {on(st['integrations']['jira'])} | "
+              f"Google Drive: {on(st['integrations']['google_drive'])}")
         print("")
         return
 
@@ -652,26 +696,13 @@ def run_interactive_console():
     ConsoleUI.banner()
     
     # 2. System Status
-    user_id = config.get("user_id", "Anonymous-Engineer")
-    auth_token = config.get_secret("google_drive_token")
-    
-    # Check License Status for Banner
-    license_token = os.environ.get("ARCHAI_LICENSE")
-    lic_status = "STRICT-LICENSE"
-    try:
-        if license_token:
-            payload = LicenseManager.validate_token(license_token)
-            lic_status = f"PILOT (Expires: {datetime.fromtimestamp(payload['e']).strftime('%Y-%m-%d')})"
-        else:
-            lic_status = "MISSING LICENSE"
-    except: lic_status = "EXPIRED/INVALID"
-
-    mode = "AUTHENTICATED" if auth_token else "TEST-MODE"
-    core_hash = get_graph_core_hash()
-    
+    st = session_status()
+    mode = st["access_mode"] + "".join(f" + {flag}" for flag in st["flags"])
     print(f"{'='*80}")
-    print(f" IDENTITY: {user_id} | MODE: {mode} | VERSION: {ARCHAI_VERSION}")
-    print(f" INTEGRITY: {core_hash} | LICENSE: {lic_status}")
+    print(f" IDENTITY: {st['identity']} ({st['identity_source']})")
+    print(f" MODE: {mode} | PROFILE: {st['profile']} | VERSION: {ARCHAI_VERSION}")
+    print(f" LICENSE: {license_text(st['license'])}")
+    print(f" INTEGRITY: {get_graph_core_hash()}")
     print(f"{'='*80}\n")
 
     # 3. Command Context
@@ -702,7 +733,7 @@ def run_cli():
     parser.add_argument("--license", type=str, help="Apply a pilot license token")
     parser.add_argument("--check-token", type=str, help="Verify the status of a specific token")
     parser.add_argument("--version", action="store_true", help="Display version and core hash")
-    parser.add_argument("--test-mode", action="store_true", help="Launch in preloaded test mode with mocks")
+    parser.add_argument("--test-mode", action="store_true", help="Set the DEMO flag (ARCHAI_TEST_MODE=1)")
     
     args, unknown = parser.parse_known_args()
     
@@ -724,15 +755,17 @@ def run_cli():
             print(f"❌ {str(e)}")
             return
 
-    # Enforcement Gate: Only let them through if they have a valid token (or in local dev test mode)
-    if not os.environ.get("ARCHAI_LICENSE") and not os.environ.get("ARCHAI_DEV_MODE"):
-        print("\n[SECURITY ALERT] Your license token is missing or expired.")
+    # Enforcement Gate: a token must actually validate, not merely be present
+    # (or ARCHAI_DEV_MODE must be set for local development).
+    lic = LicenseManager.inspect_token(os.environ.get("ARCHAI_LICENSE"))
+    if lic["state"] != "VALID" and not os.environ.get("ARCHAI_DEV_MODE"):
+        print(f"\n[SECURITY ALERT] License {lic['state']}: {lic['reason']}")
         print("Contact the pilot admin for a renewal token.")
         print("Usage: ai-architect --license <TOKEN>\n")
-        return
+        sys.exit(3)
 
     if args.test_mode:
-        print("\n[DEMO MODE ACTIVATED] Preloading mock graphs and site surveys...")
+        print("\n[DEMO FLAG SET] ARCHAI_TEST_MODE=1 (no mock data is loaded yet).")
         os.environ["ARCHAI_TEST_MODE"] = "1"
 
     if unknown:

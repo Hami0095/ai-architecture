@@ -3,7 +3,7 @@ import hashlib
 import json
 import base64
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional, Dict
 
 class LicenseManager:
@@ -67,8 +67,7 @@ class LicenseManager:
             # Check Expiry
             now = int(time.time())
             if now > payload["e"]:
-                expiry_date = datetime.fromtimestamp(payload["e"]).strftime('%Y-%m-%d %H:%M:%S')
-                raise ValueError(f"License expired on {expiry_date}")
+                raise ValueError(f"License expired on {LicenseManager.expiry_text(payload['e'])}")
             
             return payload
             
@@ -76,11 +75,34 @@ class LicenseManager:
             raise ValueError(f"License Validation Failed: {str(e)}")
 
     @staticmethod
-    def get_token_info(token: str) -> str:
-        """Returns a human-readable string of token status."""
+    def expiry_text(expiry_ts) -> str:
+        """UTC expiry date. datetime.fromtimestamp raises OSError on Windows for
+        dates past year 3000, so long-lived tokens must not go through it."""
+        try:
+            moment = datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=int(expiry_ts))
+            return moment.strftime('%Y-%m-%d')
+        except (OverflowError, ValueError, TypeError):
+            return "never (beyond year 9999)"
+
+    @staticmethod
+    def inspect_token(token: Optional[str]) -> Dict:
+        """Non-raising status: state is VALID, EXPIRED, INVALID or MISSING."""
+        if not token:
+            return {"state": "MISSING", "user": None, "expires": None, "days_left": None,
+                    "reason": "No license token supplied (ARCHAI_LICENSE or --license)."}
         try:
             payload = LicenseManager.validate_token(token)
-            expiry = datetime.fromtimestamp(payload["e"]).strftime('%Y-%m-%d')
-            return f"Valid pilot license for {payload['u']} (Expires: {expiry})"
         except ValueError as e:
-            return f"EXPIRED/INVALID: {str(e)}"
+            state = "EXPIRED" if "expired on" in str(e) else "INVALID"
+            return {"state": state, "user": None, "expires": None, "days_left": None, "reason": str(e)}
+        return {"state": "VALID", "user": payload.get("u"),
+                "expires": LicenseManager.expiry_text(payload["e"]),
+                "days_left": max(0, (int(payload["e"]) - int(time.time())) // 86400), "reason": None}
+
+    @staticmethod
+    def get_token_info(token: str) -> str:
+        """Returns a human-readable string of token status."""
+        info = LicenseManager.inspect_token(token)
+        if info["state"] == "VALID":
+            return f"Valid pilot license for {info['user']} (Expires: {info['expires']})"
+        return f"{info['state']}: {info['reason']}"
