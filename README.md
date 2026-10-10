@@ -25,6 +25,57 @@ v0.2 bundle and re-checked from that bundle alone.
 
 ---
 
+## The ArchAI agent family
+
+ArchAI is the firm; its capabilities are a family of agents, grouped like
+practice areas. Every agent is a real command in the `ai-architect` CLI.
+**Plumb**, the proof engine, is the hero.
+
+> **Surveyor explores, Plumb proves, Foreman enforces in pull requests, and Atlas keeps the knowledge portable.**
+
+| Family | Promise | Nature |
+|---|---|---|
+| <img src="website/assets/icons/family-proof.svg" height="20" alt=""> **Proof** | Proven, not guessed | No AI, reproducible |
+| <img src="website/assets/icons/family-insight.svg" height="20" alt=""> **Insight** | Explore fast, verify after | AI-assisted, labelled |
+| <img src="website/assets/icons/family-workflow.svg" height="20" alt=""> **Workflow** | Inside your review flow | Mixed |
+| <img src="website/assets/icons/family-labs.svg" height="20" alt=""> **Labs** | Where we came from | Case study |
+
+| | Agent | Family | What it does | Command |
+|---|---|---|---|---|
+| <img src="website/assets/icons/plumb.svg" width="28" alt=""> | **Plumb** (hero) | Proof | Checks a codebase against your rules; every finding has file:line evidence | `CHECK-STANDARDS` |
+| <img src="website/assets/icons/atlas.svg" width="28" alt=""> | **Atlas** | Proof | Browses and explains the exported knowledge map (OKF bundles) | `OKF-VIEW` |
+| <img src="website/assets/icons/ledger.svg" width="28" alt=""> | **Ledger** | Proof | Shows the recorded evidence trail behind an item | `TRACE` |
+| <img src="website/assets/icons/surveyor.svg" width="28" alt=""> | **Surveyor** | Insight | AI-assisted whole-codebase walkthrough | `AUDIT` |
+| <img src="website/assets/icons/seismograph.svg" width="28" alt=""> | **Seismograph** | Insight | What's affected if you change something | `IMPACT` |
+| <img src="website/assets/icons/draftsman.svg" width="28" alt=""> | **Draftsman** | Insight | Answers architecture questions about the code map | `G-REASON` |
+| <img src="website/assets/icons/interpreter.svg" width="28" alt=""> | **Interpreter** | Insight | Explains why something was flagged | `EXPLAIN` |
+| <img src="website/assets/icons/foreman.svg" width="28" alt=""> | **Foreman** | Workflow | Brings checks into GitHub pull requests | `GITHUB` |
+| <img src="website/assets/icons/almanac.svg" width="28" alt=""> | **Almanac** | Labs | Sprint-planning case study (task breakdown, sprint confidence); off by default | `PLAN` / `SIMULATE` / `RELEASE-CONFIDENCE` |
+
+**Which agent?** Before merging: Plumb. New to a codebase: Surveyor, then
+Plumb. Changing a core module: Seismograph, then Plumb. Reviewing a pull
+request: Foreman, then Plumb. A finding needs explaining: Atlas, then
+Interpreter.
+
+<details>
+<summary>Slide version (one line per agent)</summary>
+
+- **ArchAI.** Understand the code. Check the rules. Prove the findings.
+- **Plumb** (Proof): proves architecture findings with file-and-line receipts. No AI.
+- **Atlas** (Proof): the portable knowledge map of your codebase. No AI.
+- **Ledger** (Proof): the evidence trail behind every suggestion. No AI.
+- **Surveyor** (Insight): an AI-assisted first walkthrough of any codebase.
+- **Seismograph** (Insight): see what a change might affect, before you make it.
+- **Draftsman** (Insight): ask architecture questions in plain language.
+- **Interpreter** (Insight): explains why something was flagged.
+- **Foreman** (Workflow): brings the checks into your pull requests.
+- **Almanac** (Labs): our sprint-planning case study, and what it taught us.
+
+</details>
+
+The website (`website/`, published at `/` with the docs at `/docs/`) is built
+around this family; see [website/README.md](website/README.md).
+
 ## What ArchAI does today
 
 | Command | What it does | How it decides |
