@@ -95,12 +95,19 @@ def check_standards_command(args: List[str]) -> int:
     parser.add_argument("--okf-out", help="Export the OKF v0.2 knowledge bundle to this directory")
     parser.add_argument("--from-okf", help="Adjudicate facts loaded from an existing OKF bundle instead of source")
     parser.add_argument("--verbose", action="store_true", help="Show full evidence and observed facts")
+    parser.add_argument("--preview", action="store_true", help="Show the OKF-VIEW overview of the exported bundle")
     try:
         parsed = parser.parse_args(args)
     except ValueError as e:
         print(f"CHECK-STANDARDS usage error: {e}")
         print("Usage: CHECK-STANDARDS <path> [--config FILE] [--json [FILE]] [--markdown FILE] "
-              "[--okf-out DIR] [--from-okf DIR] [--no-defaults] [--verbose]")
+              "[--okf-out DIR [--preview]] [--from-okf DIR] [--no-defaults] [--verbose]")
+        return 2
+    if parsed.preview and not parsed.okf_out:
+        print("CHECK-STANDARDS usage error: --preview needs --okf-out DIR")
+        return 2
+    if parsed.preview and parsed.json == "-":
+        print("CHECK-STANDARDS usage error: --preview and JSON on stdout would mix; use --json FILE")
         return 2
 
     from ai_architect.okf import check_conformance, export_bundle, load_bundle
@@ -133,8 +140,34 @@ def check_standards_command(args: List[str]) -> int:
         if parsed.json:
             Path(parsed.json).write_text(to_json(report), encoding="utf-8")
             print(f"JSON report written to {parsed.json}", file=sys.stderr)
-        print(to_markdown(report, parsed.verbose))
+        if not parsed.preview:
+            print(to_markdown(report, parsed.verbose))
+    if parsed.preview:
+        from ai_architect.okf.viewer import render
+        print(render(str(bundle))[1])
     return exit_code(report)
+
+def okf_view_command(args: List[str]) -> int:
+    """OKF-VIEW: browse an OKF bundle in the terminal (any OKF v0.2 bundle)."""
+    from ai_architect.okf.viewer import VIEWS, render
+    parser = SafeArgumentParser(prog="OKF-VIEW", add_help=False)
+    parser.add_argument("bundle")
+    parser.add_argument("target", nargs="?", default=None)
+    parser.add_argument("--status", help="findings: VIOLATION | RISK | NO-EVIDENCE (or full status name)")
+    parser.add_argument("--type", dest="type_filter", help="list: filter by concept type (substring)")
+    parser.add_argument("--raw", action="store_true", help="concept: also print the full frontmatter")
+    parser.add_argument("--no-color", action="store_true")
+    try:
+        parsed = parser.parse_args(args)
+    except ValueError as e:
+        print(f"OKF-VIEW usage error: {e}")
+        print("Usage: OKF-VIEW <bundle-dir> [" + " | ".join(VIEWS) + " | <concept>] "
+              "[--status S] [--type T] [--raw] [--no-color]")
+        return 2
+    code, text = render(parsed.bundle, parsed.target, status=parsed.status, type_filter=parsed.type_filter,
+                        raw=parsed.raw, color=False if parsed.no_color else None)
+    print(text)
+    return code
 
 def save_feedback(useful: bool, rejected_ids: List[str]):
     feedback_file = "archai_feedback.json"
@@ -234,6 +267,7 @@ def print_help_table():
     print(f"{'COMMAND':<25} | {'DESCRIPTION':<50}")
     print(f"{'-'*25}-+-{'-'*50}")
     print(f"{'CHECK-STANDARDS':<25} | {'Deterministic standards check with cited evidence (no LLM)'}")
+    print(f"{'OKF-VIEW':<25} | {'Preview an OKF knowledge bundle (overview, findings, concepts)'}")
     print(f"{'IMPACT':<25} | {'Assess risk (CIRAS) for a file or symbol'}")
     print(f"{'AUDIT':<25} | {'LLM-assisted architectural audit'}")
     print(f"{'GITHUB':<25} | {'Interact with GitHub (CONNECT, PRS, ANALYZE)'}")
@@ -270,6 +304,9 @@ def process_command(cmd_line) -> Optional[int]:
 
     if command == "CHECK-STANDARDS":
         return check_standards_command(args)
+
+    if command == "OKF-VIEW":
+        return okf_view_command(args)
 
     if command in ("PLAN", "SIMULATE", "RELEASE-CONFIDENCE") and not legacy_planning_enabled():
         print(f"{command} is deferred: sprint planning and estimation are no longer part of ArchAI's "
