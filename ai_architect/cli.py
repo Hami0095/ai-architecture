@@ -34,6 +34,11 @@ class SafeArgumentParser(argparse.ArgumentParser):
     def error(self, message):
         raise ValueError(message)
 
+def legacy_planning_enabled() -> bool:
+    """Sprint planning (PLAN, SIMULATE, RELEASE-CONFIDENCE) is deferred from the
+    product; its code is kept and can be re-enabled for existing users."""
+    return os.environ.get("ARCHAI_ENABLE_LEGACY_PLANNING") == "1"
+
 def save_feedback(useful: bool, rejected_ids: List[str]):
     feedback_file = "archai_feedback.json"
     data = []
@@ -73,14 +78,15 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     with ConsoleUI.spinner("Executing 7-agent architectural adjudication pipeline"):
         report = await auditor.audit_project(
             root_path=path,
-            user_context=context or "Improve reliability and sprint planning",
+            user_context=context or "Improve reliability and architectural integrity",
             project_status=status or "Stable"
         )
     
     with open("archai_report.json", "w") as f:
         json.dump(report, f, indent=4)
         
-    ConsoleUI.step_header("Execution Forecast", f"Deterministic plan for {os.path.basename(path)}")
+    ConsoleUI.step_header("Audit Findings", f"LLM-assisted audit of {os.path.basename(path)}")
+    print("Note: AUDIT findings are generated with an LLM. For deterministic, evidence-backed checks use CHECK-STANDARDS.")
     
     tasks = report.get('tasks', [])
     sprint_plan = report.get('sprintPlan', [])
@@ -105,8 +111,9 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
         
         print(f" - [{tid}] {prio} | EPIC: {epic} | [{emin}-{emax}h] | {title}{risk} (Conf: {clevel} {cscore*100:.0f}%){drivers}")
 
-    print(f"\n[FEASIBILITY-DRIVEN SPRINT PLAN]")
-    for day in sprint_plan:
+    if legacy_planning_enabled():
+        print(f"\n[FEASIBILITY-DRIVEN SPRINT PLAN] (legacy)")
+    for day in (sprint_plan if legacy_planning_enabled() else []):
         name = day.get('day')
         hrs = day.get('total_hours', 0)
         feas = day.get('feasibility', 'Unknown')
@@ -119,7 +126,9 @@ async def run_archai_flow(path: str, context: Optional[str] = None, status: Opti
     print(f"ALTERNATELY: Use 'impact <path> <symbol>' to analyze risks of identified areas.")
     print(f"Use 'explain' for a detailed summary.")
     
-    useful = input("\nWas this sprint plan helpful? (y/n): ").lower().strip() == 'y'
+    if not sys.stdin.isatty():
+        return
+    useful = input("\nWas this audit helpful? (y/n): ").lower().strip() == 'y'
     save_feedback(useful, [])
     print("Feedback saved. Thank you!")
 
@@ -127,15 +136,12 @@ def print_help_table():
     print(f"\n{'='*80}")
     print(f"{'COMMAND':<25} | {'DESCRIPTION':<50}")
     print(f"{'-'*25}-+-{'-'*50}")
-    print(f"{'PLAN':<25} | {'Generate actionable tasks (WDP-TG) for a goal'}")
     print(f"{'IMPACT':<25} | {'Assess risk (CIRAS) for a file or symbol'}")
-    print(f"{'AUDIT':<25} | {'Full architectural audit and sprint planning'}")
+    print(f"{'AUDIT':<25} | {'LLM-assisted architectural audit'}")
     print(f"{'GITHUB':<25} | {'Interact with GitHub (CONNECT, PRS, ANALYZE)'}")
     print(f"{'TRACE':<25} | {'Show evidence trail for a specific ticket ID'}")
-    print(f"{'SIMULATE':<25} | {'Simulate success for a goal or specific ticket ID'}")
-    print(f"{'EXPLAIN':<25} | {'Justify decisions (PRIORITY, EFFORT, RISK, DEP)'}")
-    print(f"{'RELEASE-CONFIDENCE':<25} | {'Evaluate integrity of a release target'}")
-    print(f"{'G-REASON':<25} | {'Deterministic graph-based architectural reasoning'}")
+    print(f"{'EXPLAIN':<25} | {'LLM explanation of a report item (PRIORITY, EFFORT, RISK, DEP)'}")
+    print(f"{'G-REASON':<25} | {'LLM reasoning over the extracted dependency graph'}")
     print(f"{'SET-GITHUB-TOKEN':<25} | {'Securely register GitHub Personal Access Token'}")
     print(f"{'SET-PM-TOKEN':<25} | {'Securely register Jira/Trello credentials'}")
     print(f"{'CONFIG':<25} | {'View current configuration and integrations'}")
@@ -163,6 +169,11 @@ def process_command(cmd_line) -> Optional[int]:
 
     command = parts[0].upper()
     args = parts[1:]
+
+    if command in ("PLAN", "SIMULATE", "RELEASE-CONFIDENCE") and not legacy_planning_enabled():
+        print(f"{command} is deferred: sprint planning and estimation are no longer part of ArchAI's "
+              "product direction. The code is kept; set ARCHAI_ENABLE_LEGACY_PLANNING=1 to use it.")
+        return 2
 
     # --- CONFIGURATION COMMANDS ---
     if command == "SET-GITHUB-TOKEN":
