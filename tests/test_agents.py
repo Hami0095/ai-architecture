@@ -14,6 +14,9 @@ from ai_architect.data.models import (
     AuditTicket
 )
 
+# These tests call the configured model provider (see archai_config.yaml).
+pytestmark = pytest.mark.llm
+
 @pytest.fixture
 def auditor():
     return ArchitecturalAuditor()
