@@ -1,6 +1,6 @@
 site_name: ArchAI Documentation
 site_description: Evidence-backed standards checking for Python codebases
-site_url: https://system-designing.vercel.app
+site_url: https://system-designing.vercel.app/docs/
 
 theme:
   name: material

@@ -1,0 +1,21 @@
+# Standards used for the "ArchAI on ArchAI" case study on the website.
+# Reproduce: ai-architect CHECK-STANDARDS . --config website/demo/archai_self_standards.yaml
+version: 1
+exclude: ["tests/*", "scripts/*", "examples/*"]
+layers:
+  core: ["ai_architect.analysis", "ai_architect.standards", "ai_architect.okf"]
+  interface: ["ai_architect.cli", "ai_architect.api"]
+rules:
+  - id: no-import-cycles
+    kind: circular_dependency
+  - id: core-not-interface
+    kind: layer_boundary
+    layer: core
+    forbidden_layers: [interface]
+  - id: bounded-fan-out
+    kind: coupling_threshold
+    max: 10
+  - id: standards-have-tests
+    kind: required_tests
+    scope: ["ai_architect.standards", "ai_architect.okf"]
+    test_paths: ["tests/test_{leaf}.py"]

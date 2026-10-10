@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArchAI: architecture findings with receipts</title>
+  <meta name="description" content="ArchAI checks a Python codebase against your team's engineering rules and proves every finding with a file-and-line receipt.">
+  <link rel="icon" href="assets/icons/plumb.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Silkscreen&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/data.js" defer></script>
+  <script src="assets/js/transcripts.js" defer></script>
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body data-page="home">
+  <header class="nav"><div class="wrap">
+    <a class="brand" href="index.html"><span class="brand-mark">A</span>ArchAI</a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links">menu</button>
+    <nav class="nav-links" id="nav-links" aria-label="Main">
+      <a href="agents.html" data-page="agents">Agents</a>
+      <a href="case-studies.html" data-page="cases">Case studies</a>
+      <a href="research.html" data-page="research">Research</a>
+      <a href="/docs/">Docs</a>
+      <a class="btn" href="https://github.com/Hami0095/ai-architecture">GitHub</a>
+    </nav>
+  </div></header>
+
+  <main>
+    <section class="hero">
+      <div class="vertical-ticker" data-render="ticker" aria-hidden="true"></div>
+      <div class="wrap">
+        <a class="news" href="research.html#receipts-not-similarity">
+          <div class="tab">10 Oct 2026 · ArchAI Research</div>
+          <div class="body">New preprint: <i>Receipts, Not Similarity</i><br><u>Read about the paper</u></div>
+        </a>
+        <p class="kicker label"><span>Introducing Plumb</span><span class="dots"></span><span>The proof engine</span></p>
+        <h1 class="display" data-split>Architecture Findings With <span class="accent">Receipts.</span></h1>
+        <p class="lede">ArchAI checks a codebase against your team's engineering rules and proves every finding with a file-and-line receipt. If something can't be proven from the code, it says so instead of guessing.</p>
+        <div class="cta"><a href="/docs/">Read the Docs</a><a href="https://github.com/Hami0095/ai-architecture">View on GitHub</a></div>
+      </div>
+    </section>
+
+    <section class="band" aria-label="Plumb producing a receipt">
+      <canvas class="halftone" aria-hidden="true"></canvas>
+      <div class="band-edge" aria-hidden="true"><span>ARCHAI.OS</span><span>PLUMB 1.0 · NO AI</span></div>
+      <div class="wrap desk" data-render="desk">
+        <div class="win float w1 reveal" aria-hidden="true"><div class="win-title"><span class="name">GRAPH 1.0</span><span class="ctrl"></span></div><div class="win-body"></div></div>
+        <div class="win float w2 reveal d1" aria-hidden="true"><div class="win-title"><span class="name">RULES</span><span class="ctrl"></span></div><div class="win-body"></div></div>
+        <div class="main-term"><div data-agent="plumb" data-title="PLUMB · CHECK-STANDARDS"></div></div>
+        <div class="win float w3 reveal d2" aria-hidden="true"><div class="win-title"><span class="name">RECEIPT</span><span class="ctrl"></span></div><div class="win-body"></div></div>
+        <div class="win float w4 reveal d3" aria-hidden="true"><div class="win-title"><span class="name">CLOCK 1.1</span><span class="ctrl"></span></div><div class="win-body"></div></div>
+      </div>
+    </section>
+
+    <div class="marquee" data-render="marquee"></div>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="framed">
+          <h2 class="big center reveal">Receipts, Or Silence.</h2>
+        </div>
+        <div class="cols">
+          <div class="col reveal"><span class="label">Proven, not guessed</span><p>A verified violation needs evidence: the rule, the file and the line. Every finding carries its receipt, and the same input gives the same result.</p></div>
+          <div class="col reveal d1"><span class="label">Explore fast, verify after</span><p>AI-assisted agents help you explore and explain. They are labelled as such, and anything they suggest can be turned into a rule and proven.</p></div>
+          <div class="col reveal d2"><span class="label">Portable knowledge</span><p>Findings, rules and the dependency map export as an Open Knowledge Format bundle, readable without the source code.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="section-label"><span class="label">Four finding statuses</span></div>
+        <div class="grid g4" data-render="statuses"></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <canvas class="halftone" aria-hidden="true"></canvas>
+      <div class="wrap section">
+        <div class="framed"><h2 class="big reveal">One Firm. A Family Of Agents.</h2></div>
+        <p class="lede reveal" style="margin:18px 0 0;color:var(--ink)">Each agent is a real command. Proof agents never use AI. Insight agents do, and say so.</p>
+        <div class="grid g4" style="margin-top:40px" data-render="families"></div>
+        <div class="arc" data-render="arc" aria-label="How the agents work together"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <h2 class="big reveal">How Plumb Works.</h2>
+        <div class="pipeline" data-render="pipeline"></div>
+      </div>
+    </section>
+
+    <section class="band">
+      <canvas class="halftone" aria-hidden="true"></canvas>
+      <div class="wrap section">
+        <div class="framed">
+          <p class="numbers reveal" data-render="numbers"></p>
+          <p class="footnote">Measured by Plumb on ArchAI's own repository. Read <a href="case-studies.html#archai-on-archai">the case study</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="section-label"><span class="label">Research</span></div>
+        <div data-render="research-teaser"></div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap center">
+        <h2 class="big reveal">Prove Your Next Merge.</h2>
+        <div class="cta"><a href="/docs/tutorials/getting_started/">Get started</a><a href="agents.html">Meet the agents</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">
+    <p class="big">Receipts or Silence.</p>
+    <div class="row">
+      <div class="links"><a href="agents.html">Agents</a><a href="case-studies.html">Case studies</a><a href="research.html">Research</a><a href="/docs/">Docs</a><a href="https://github.com/Hami0095/ai-architecture">GitHub</a></div>
+      <p class="small">ArchAI analyzes Python repositories and is licensed AGPL-3.0. The Open Knowledge Format is an open standard © Google LLC, Apache-2.0; ArchAI uses it and is not affiliated with Google or Anthropic.</p>
+    </div>
+    <div class="row"><span>© <span data-year></span> ArchAI</span><span>Understand the code. Check the rules. Prove the findings.</span></div>
+  </div></footer>
+</body>
+</html>
