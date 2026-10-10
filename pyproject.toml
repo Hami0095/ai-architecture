@@ -35,8 +35,13 @@ dependencies = [
     "cryptography"
 ]
 
+[project.optional-dependencies]
+# MCP server for AI coding agents (Claude Code, Codex): pip install -e ".[agents]"
+agents = ["mcp>=2.3,<3"]
+
 [project.scripts]
 ai-architect = "ai_architect.cli:run_cli"
+ai-architect-mcp = "ai_architect.agents.mcp_server:main"
 
 [tool.setuptools]
 packages = [
@@ -44,6 +49,7 @@ packages = [
     "ai_architect.analysis",
     "ai_architect.standards",
     "ai_architect.okf",
+    "ai_architect.agents",
     "ai_architect.core_ai", 
     "ai_architect.data", 
     "ai_architect.evaluations", 
