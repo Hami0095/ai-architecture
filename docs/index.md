@@ -41,8 +41,8 @@ ai-architect OKF-VIEW bundle findings
 | **Integrations** | [`GITHUB`](cli/commands.md#github) | Repositories, pull requests, diff validation |
 | **Session** | [`CONFIG`](cli/commands.md#config), [`SET-GITHUB-TOKEN`](cli/commands.md#set-github-token), [`SET-PM-TOKEN`](cli/commands.md#set-pm-token), [`TRACE`](cli/commands.md#trace), [`HELP`](cli/commands.md#help) | |
 
-Sprint planning (`PLAN`, `SIMULATE`, `RELEASE-CONFIDENCE`) is deferred; see
-[Legacy planning commands](cli/commands.md#legacy-planning-commands).
+Sprint planning (`PLAN`, `SIMULATE`, `RELEASE-CONFIDENCE`) comes from ArchAI's
+sprint-planning case study; see [Sprint-planning commands](cli/commands.md#sprint-planning-commands-case-study).
 
 ## Documentation
 

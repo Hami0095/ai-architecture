@@ -28,7 +28,7 @@ today; where a command has a quirk or limitation, it is called out.
 | [`CONFIG`](#config) | Identity, mode, license, model, credentials | no | no | no |
 | [`HELP`](#help) | Command table | no | no | no |
 | [`EXIT`](#exit) | Leave the console | no | no | no |
-| [`PLAN` / `SIMULATE` / `RELEASE-CONFIDENCE`](#legacy-planning-commands) | Deferred sprint planning | yes | via LLM | no |
+| [`PLAN` / `SIMULATE` / `RELEASE-CONFIDENCE`](#sprint-planning-commands-case-study) | Sprint-planning case study (off by default) | yes | via LLM | no |
 
 ## Ways to run a command
 
@@ -293,7 +293,7 @@ ai-architect AUDIT . --diagnostics      # what would be read, without running ag
 - Findings, ticket evidence and line references are written by the LLM and are
   not verified. For verified findings, use `CHECK-STANDARDS`.
 - The pipeline still builds a sprint plan internally; it is only printed when
-  `ARCHAI_ENABLE_LEGACY_PLANNING=1`.
+  `ARCHAI_ENABLE_SPRINT_PLANNING=1`.
 
 ---
 
@@ -412,7 +412,7 @@ repositories and higher rate limits.
 |---|---|---|---|
 | `CONNECT` | Fetch repository metadata (name, stars, forks, description). | no | none |
 | `PRS` | List open pull requests. | no | none |
-| `ANALYZE` | For the PR's first added/modified file, run `IMPACT` against your local checkout, plus legacy task generation and a sprint-confidence estimate. | yes | `--publish` **posts a comment on the PR** |
+| `ANALYZE` | For the PR's first added/modified file, run `IMPACT` against your local checkout, plus task generation and a sprint-confidence estimate from the sprint-planning case study. | yes | `--publish` **posts a comment on the PR** |
 | `AUDIT` | Shallow-clone the repository into a temp folder and run `AUDIT` on it. | yes | clone is left in the temp folder; writes `archai_report.json` |
 | `VALIDATE-LOCAL` | For each `.py` file changed versus `base_branch` (default `main`), run `IMPACT`. GitHub is not contacted. | yes | none |
 
@@ -429,8 +429,8 @@ ai-architect GITHUB VALIDATE-LOCAL . develop
 !!! warning
     `GITHUB ANALYZE --publish` writes to the pull request on GitHub as the
     token's owner. Run without `--publish` first to see what would be posted.
-    The comment includes a "Sprint Confidence" section from the deferred
-    planning engine.
+    The comment includes a "Sprint Confidence" section from the
+    sprint-planning case-study engine.
 
 ---
 
@@ -487,11 +487,13 @@ Leaves the interactive console. Case-insensitive.
 
 ---
 
-## Legacy planning commands
+## Sprint-planning commands (case study)
 
-Sprint planning and estimation are no longer part of ArchAI's product direction.
-These commands print a deferral notice and return exit code `2`, unless
-`ARCHAI_ENABLE_LEGACY_PLANNING=1` is set. Their code is unchanged and LLM-based.
+These commands come from ArchAI's sprint-planning case study: WDP-TG decomposes
+a goal into tasks and SRC-RS estimates sprint and release confidence. They are
+LLM-based and switched off by default; without the switch they print a notice
+and return exit code `2`. Turn them on with `ARCHAI_ENABLE_SPRINT_PLANNING=1`
+(the earlier name `ARCHAI_ENABLE_LEGACY_PLANNING=1` also works).
 
 ```text
 PLAN <path> <goal> [--team-size N] [--days N] [--velocity F]
@@ -507,6 +509,6 @@ RELEASE-CONFIDENCE <path> <goal> [--team-size N] [--days N] [--velocity F]
 | `--velocity` | 0.8 |
 
 ```bash
-ARCHAI_ENABLE_LEGACY_PLANNING=1 ai-architect PLAN . "Add OAuth2 support" --team-size 4 --days 10
-ARCHAI_ENABLE_LEGACY_PLANNING=1 ai-architect SIMULATE T001 --team-size 2
+ARCHAI_ENABLE_SPRINT_PLANNING=1 ai-architect PLAN . "Add OAuth2 support" --team-size 4 --days 10
+ARCHAI_ENABLE_SPRINT_PLANNING=1 ai-architect SIMULATE T001 --team-size 2
 ```
