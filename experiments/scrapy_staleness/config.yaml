@@ -1,0 +1,37 @@
+# ArchAI staleness study on Scrapy 2.10.0 .. 2.19.0
+subject:
+  name: scrapy
+  url: https://github.com/scrapy/scrapy
+  license: BSD-3-Clause
+  package: scrapy            # only the scrapy/ package is analyzed (git archive <tag> scrapy)
+  # Commits the release tags point to (git rev-parse <tag>^{commit}), verified against GitHub.
+  tags:
+    "2.10.0": 88327c7c58928b5e1e07921ca055c8579c197234
+    "2.11.0": f2fb4760d2e98cc92ab00a84bcf20cd8a6de3799
+    "2.12.0": b1f9e56693cd2000ddcea922306f726f3e9339af
+    "2.13.0": 82a32451583967a828c2e80a31930f64dbc136ac
+    "2.14.0": 3ac1192f35fc32d01c69c929eed85601fb0405e8
+    "2.15.0": 47e25fbbb5ac3012c3cc6e88bd9ff79f3a61c2a5
+    "2.16.0": abe9c638414e4a39a338763c85a3a0d84696b9b3
+    "2.17.0": feb692f552e3ed4533cf4e3af4809908d84cd763
+    "2.18.0": 2216063c063027d541eafbf5e098557ce732528f
+    "2.19.0": 8026deeaac371a5d9a3edbe4886d58f61139d464
+
+ground_truth:
+  edge: unique (source, target) pair of scrapy.* modules linked by a module-scope import
+  module: scrapy.* module name (file path mapped to a dotted name; packages via __init__.py)
+  rename_detection: git diff --find-renames (git default similarity threshold, 50%)
+
+verifier:
+  module: ai_architect.standards.staleness
+  window_lines: 5            # pre-registered default: cited line +/- 5
+  sensitivity_windows: [0, 5, 20, whole-file]
+  timing_repeats: 3          # median of 3 runs for verify and rebuild times
+
+phase2:                      # PENDING: filled in after the Phase 1 review
+  primary_targets: ["2.13.0", "2.16.0", "2.19.0"]
+  seed: 42
+  temperature: 0
+  runs_per_question: 3
+  questions_per_target: 40
+  models: PENDING

@@ -82,6 +82,67 @@ class _Resolver:
         return dotted.split(".")[0] in self.top_levels
 
 
+def resolve_import_targets(module: str, is_package: bool, rec: dict, resolver: "_Resolver",
+                           known_elsewhere=lambda dotted: False) -> Tuple[List[str], List[Optional[str]]]:
+    """Internal modules a static import record (kind 'import' or 'from') points at.
+
+    Returns (targets, unresolved). This is the single definition of import
+    resolution, shared by build_repo_graph and the staleness verifier.
+    """
+    targets: List[str] = []
+    unresolved: List[Optional[str]] = []
+    if rec["kind"] == "import":
+        # `import a.b.c` must name a module; it also imports a and a.b.
+        for imported in rec["names"]:
+            target = resolver.resolve(imported)
+            if target:
+                targets.append(target)
+            elif resolver.looks_internal(imported) and not known_elsewhere(imported):
+                unresolved.append(imported)
+        return targets, unresolved
+    base = _absolute_base(module, is_package, rec["level"], rec["module"])
+    if base is None:
+        return targets, [None]
+    if rec["level"] == 0 and not resolver.looks_internal(base):
+        return targets, unresolved  # third-party or standard library
+    base_module = resolver.resolve(base)
+    for imported in rec["names"]:
+        submodule = f"{base}.{imported}"
+        if imported != "*" and submodule in resolver.modules:
+            targets.append(submodule)
+        elif base_module:
+            targets.append(base_module)
+        elif not (known_elsewhere(base) or known_elsewhere(submodule)):
+            unresolved.append(submodule if imported != "*" else base)
+    return targets, unresolved
+
+
+def index_modules(root: Path, source_roots: Optional[List[str]] = None,
+                  exclude: Optional[List[str]] = None) -> Dict[str, Tuple[str, bool]]:
+    """Module name -> (repo-relative path, is_package) without parsing any file.
+
+    Applies the same ignore rules, naming, exclusion and collision handling as
+    build_repo_graph, so names agree between the two.
+    """
+    root = Path(root).resolve()
+    source_roots = list(source_roots or [])
+    exclude = list(exclude or [])
+    src_dir = root / "src"
+    if not source_roots and src_dir.is_dir() and not (src_dir / "__init__.py").exists():
+        source_roots = ["src"]
+    engine = GraphEngine(root, compute_churn=False)
+    index: Dict[str, Tuple[str, bool]] = {}
+    for path in sorted(root.rglob("*.py"), key=lambda p: _posix(p.relative_to(root))):
+        if engine.is_ignored(path):
+            continue
+        rel = _posix(path.relative_to(root))
+        name, is_package = _canonical_name(rel, source_roots)
+        if not name or _matches_any(rel, exclude) or name in index:
+            continue
+        index[name] = (rel, is_package)
+    return index
+
+
 def _inventory(root: Path, engine: GraphEngine) -> Tuple[List[str], Dict[str, int]]:
     files: List[str] = []
     unsupported: Dict[str, int] = {}
@@ -158,30 +219,11 @@ def build_repo_graph(root: Path, source_roots: Optional[List[str]] = None,
     for name, node in raw_by_name.items():
         fact = graph.modules[name]
         for rec in node.import_records:
-            if rec["kind"] == "import":
-                # `import a.b.c` must name a module; it also imports a and a.b.
-                for imported in rec["names"]:
-                    target = resolver.resolve(imported)
-                    if target:
-                        add_edge(name, target, rec, rec["scope"])
-                    elif resolver.looks_internal(imported) and not is_known_elsewhere(imported):
-                        unresolved(name, rec, imported)
-                continue
-            base = _absolute_base(name, fact.is_package, rec["level"], rec["module"])
-            if base is None:
-                unresolved(name, rec, None)
-                continue
-            if rec["level"] == 0 and not resolver.looks_internal(base):
-                continue  # third-party or standard library
-            base_module = resolver.resolve(base)
-            for imported in rec["names"]:
-                submodule = f"{base}.{imported}"
-                if imported != "*" and submodule in resolver.modules:
-                    add_edge(name, submodule, rec, rec["scope"])
-                elif base_module:
-                    add_edge(name, base_module, rec, rec["scope"])
-                elif not (is_known_elsewhere(base) or is_known_elsewhere(submodule)):
-                    unresolved(name, rec, submodule if imported != "*" else base)
+            targets, missing = resolve_import_targets(name, fact.is_package, rec, resolver, is_known_elsewhere)
+            for target in targets:
+                add_edge(name, target, rec, rec["scope"])
+            for target in missing:
+                unresolved(name, rec, target)
         for dyn in node.dynamic_imports:
             target = dyn["target"]
             if target and not target.startswith("."):
