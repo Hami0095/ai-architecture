@@ -420,3 +420,55 @@ footer .small { color: #9a9a9a; max-width: 560px; }
 /* Keep the .wrap side gutters on the desk (the shorthand above only meant top/bottom). */
 .wrap.desk { padding-left: var(--gutter); padding-right: var(--gutter); }
 @media (max-width: 720px) { .kicker .dots { display: none; } }
+
+/* ---- "What can it do for me / what does it need from me" ---------------- */
+.outcome .win-title { justify-content: space-between; }
+.outcome .win-title .name { font-size: 12px; }
+.outcome-icons { display: flex; gap: 4px; padding-right: 4px; }
+.outcome .win-body { gap: 12px; }
+.outcome h3 { font-size: 22px; }
+.outcome dl { margin: 0; display: grid; gap: 4px; }
+.outcome dt { font-family: var(--mono); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--orange-deep); margin-top: 6px; }
+.outcome dd { margin: 0; color: var(--ink-2); font-size: 15.5px; }
+.outcome-cmd, .quickstart code, .ai-setup code {
+  display: block; font-family: var(--mono); font-size: 12px; background: var(--term-bg); color: var(--term-ink);
+  padding: 8px 10px; overflow-x: auto; white-space: pre; cursor: copy; margin-top: auto;
+}
+.outcome-cmd::before, .quickstart code::before, .ai-setup code::before { content: "$ "; color: var(--orange); }
+.outcome-cmd.copied, .quickstart code.copied, .ai-setup code.copied { outline: 2px solid var(--orange); }
+.reqs .win-body { font-family: var(--display); font-size: 15.5px; }
+.req-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.req-list li { display: grid; gap: 2px; padding-left: 22px; position: relative; }
+.req-list li::before { content: "■"; position: absolute; left: 0; top: 0; color: var(--orange); font-size: 12px; }
+.req-not .req-list li::before { content: "✕"; color: var(--ink); font-size: 13px; font-weight: 700; }
+.req-list span { color: var(--ink-2); }
+.req-not { border-style: dashed; }
+.qs-title { display: block; margin: 48px 0 12px; font-size: 13px; }
+.quickstart { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.quickstart li { display: flex; gap: 12px; align-items: flex-start; border: 2px solid var(--ink); padding: 12px; min-width: 0; }
+.quickstart li > div { min-width: 0; display: grid; gap: 8px; }
+.qs-n { font-family: var(--pixel); background: var(--orange); border: 2px solid var(--ink); width: 28px; height: 28px; display: grid; place-items: center; flex: none; }
+.ai-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+.ai-points { padding-left: 18px; color: var(--ink-2); font-size: 17px; }
+.ai-points li { margin: 8px 0; }
+.ai-tools .win-body { display: grid; gap: 10px; }
+.tool-row { display: grid; grid-template-columns: 20px 92px 1fr; gap: 10px; align-items: start; }
+.tool-row code, .mcp-tools code { font-size: 11px; background: var(--paper-2); border: 1px solid rgba(20, 20, 20, .2); padding: 1px 5px; display: inline-block; margin: 0 4px 4px 0; }
+.give-need { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; border: 2px solid var(--ink); padding: 4px 16px 12px; margin-top: 14px; background: var(--paper-2); }
+.give-need h3 { margin-top: 10px !important; }
+.whats-new { list-style: none; padding: 0; margin: 0; border-top: 2px solid var(--ink); }
+.whats-new li { display: grid; grid-template-columns: 120px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px dashed rgba(20, 20, 20, .3); }
+.new-date { font-family: var(--pixel); font-size: 11px; color: var(--orange-deep); padding-top: 4px; }
+.whats-new a { text-decoration: none; font-size: 20px; letter-spacing: -.02em; }
+.whats-new a:hover { color: var(--orange-deep); }
+.whats-new p { margin: 2px 0 0; color: var(--ink-2); }
+@media (max-width: 980px) {
+  .quickstart { grid-template-columns: 1fr 1fr; }
+  .ai-grid, .give-need { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .quickstart { grid-template-columns: 1fr; }
+  .whats-new li { grid-template-columns: 1fr; gap: 4px; }
+}
+.ai-grid > *, .give-need > *, .quickstart > * { min-width: 0; }
+.outcome-cmd, .quickstart code, .ai-setup code { white-space: pre-wrap; overflow-wrap: anywhere; }
