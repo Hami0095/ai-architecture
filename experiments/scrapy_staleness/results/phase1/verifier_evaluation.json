@@ -1,0 +1,2521 @@
+{
+ "2.10.0->2.11.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.11.0",
+  "distance": {
+   "releases": 1,
+   "commits": 124,
+   "days": 44
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 0,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 0,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 0,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": null,
+   "stale_recall": null,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 2,
+   "truly_unchanged": 528,
+   "labels": {
+    "VERIFIED": 505,
+    "STALE": 25,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 2,
+   "stale_fp": 23,
+   "false_verified": 0,
+   "unchanged_verified": 505,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 5,
+    "statement no longer within 5 lines": 18
+   },
+   "stale_precision": 0.08,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9564
+  },
+  "missing_knowledge": {
+   "new_modules": 1,
+   "new_edges": 6,
+   "new_edges_share_of_current": 0.0112
+  },
+  "verify_seconds": 0.2745,
+  "files_read": 170
+ },
+ "2.10.0->2.12.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.12.0",
+  "distance": {
+   "releases": 2,
+   "commits": 624,
+   "days": 471
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 166,
+   "labels": {
+    "VERIFIED": 166,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 166,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 76,
+   "truly_unchanged": 454,
+   "labels": {
+    "VERIFIED": 306,
+    "STALE": 224,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 76,
+   "stale_fp": 148,
+   "false_verified": 0,
+   "unchanged_verified": 306,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 68,
+    "statement no longer within 5 lines": 80
+   },
+   "stale_precision": 0.3393,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.674
+  },
+  "missing_knowledge": {
+   "new_modules": 4,
+   "new_edges": 56,
+   "new_edges_share_of_current": 0.1098
+  },
+  "verify_seconds": 0.2991,
+  "files_read": 170
+ },
+ "2.10.0->2.13.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.13.0",
+  "distance": {
+   "releases": 3,
+   "commits": 789,
+   "days": 642
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 166,
+   "labels": {
+    "VERIFIED": 166,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 166,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 96,
+   "truly_unchanged": 434,
+   "labels": {
+    "VERIFIED": 289,
+    "STALE": 241,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 96,
+   "stale_fp": 145,
+   "false_verified": 0,
+   "unchanged_verified": 289,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 69,
+    "statement no longer within 5 lines": 76
+   },
+   "stale_precision": 0.3983,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.6659
+  },
+  "missing_knowledge": {
+   "new_modules": 6,
+   "new_edges": 80,
+   "new_edges_share_of_current": 0.1556
+  },
+  "verify_seconds": 0.2815,
+  "files_read": 170
+ },
+ "2.10.0->2.14.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.14.0",
+  "distance": {
+   "releases": 4,
+   "commits": 974,
+   "days": 884
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 5,
+   "truly_unchanged": 165,
+   "labels": {
+    "VERIFIED": 165,
+    "STALE": 5,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 5,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 165,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 107,
+   "truly_unchanged": 423,
+   "labels": {
+    "VERIFIED": 253,
+    "STALE": 277,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 107,
+   "stale_fp": 170,
+   "false_verified": 0,
+   "unchanged_verified": 253,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 85,
+    "statement no longer within 5 lines": 85
+   },
+   "stale_precision": 0.3863,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5981
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 154,
+   "new_edges_share_of_current": 0.2669
+  },
+  "verify_seconds": 0.3307,
+  "files_read": 170
+ },
+ "2.10.0->2.15.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.15.0",
+  "distance": {
+   "releases": 5,
+   "commits": 1068,
+   "days": 978
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 5,
+   "truly_unchanged": 165,
+   "labels": {
+    "VERIFIED": 165,
+    "STALE": 5,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 5,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 165,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 112,
+   "truly_unchanged": 418,
+   "labels": {
+    "VERIFIED": 237,
+    "STALE": 293,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 112,
+   "stale_fp": 181,
+   "false_verified": 0,
+   "unchanged_verified": 237,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 97,
+    "statement no longer within 5 lines": 84
+   },
+   "stale_precision": 0.3823,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.567
+  },
+  "missing_knowledge": {
+   "new_modules": 13,
+   "new_edges": 192,
+   "new_edges_share_of_current": 0.3148
+  },
+  "verify_seconds": 0.3063,
+  "files_read": 170
+ },
+ "2.10.0->2.16.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 6,
+   "commits": 1121,
+   "days": 1018
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 159,
+   "labels": {
+    "VERIFIED": 159,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 159,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 125,
+   "truly_unchanged": 405,
+   "labels": {
+    "VERIFIED": 236,
+    "STALE": 294,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 125,
+   "stale_fp": 169,
+   "false_verified": 0,
+   "unchanged_verified": 236,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 96,
+    "statement no longer within 5 lines": 73
+   },
+   "stale_precision": 0.4252,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5827
+  },
+  "missing_knowledge": {
+   "new_modules": 15,
+   "new_edges": 189,
+   "new_edges_share_of_current": 0.3182
+  },
+  "verify_seconds": 0.377,
+  "files_read": 170
+ },
+ "2.10.0->2.17.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 7,
+   "commits": 1202,
+   "days": 1067
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 159,
+   "labels": {
+    "VERIFIED": 159,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 159,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 125,
+   "truly_unchanged": 405,
+   "labels": {
+    "VERIFIED": 232,
+    "STALE": 298,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 125,
+   "stale_fp": 173,
+   "false_verified": 0,
+   "unchanged_verified": 232,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 95,
+    "statement no longer within 5 lines": 78
+   },
+   "stale_precision": 0.4195,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5728
+  },
+  "missing_knowledge": {
+   "new_modules": 15,
+   "new_edges": 198,
+   "new_edges_share_of_current": 0.3284
+  },
+  "verify_seconds": 0.3283,
+  "files_read": 170
+ },
+ "2.10.0->2.18.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 8,
+   "commits": 1392,
+   "days": 1112
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 15,
+   "truly_unchanged": 155,
+   "labels": {
+    "VERIFIED": 155,
+    "STALE": 15,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 15,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 155,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 131,
+   "truly_unchanged": 399,
+   "labels": {
+    "VERIFIED": 209,
+    "STALE": 321,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 131,
+   "stale_fp": 190,
+   "false_verified": 0,
+   "unchanged_verified": 209,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 101,
+    "statement no longer within 5 lines": 89
+   },
+   "stale_precision": 0.4081,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5238
+  },
+  "missing_knowledge": {
+   "new_modules": 21,
+   "new_edges": 218,
+   "new_edges_share_of_current": 0.3533
+  },
+  "verify_seconds": 0.3326,
+  "files_read": 170
+ },
+ "2.10.0->2.19.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 9,
+   "commits": 1460,
+   "days": 1132
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 15,
+   "truly_unchanged": 155,
+   "labels": {
+    "VERIFIED": 155,
+    "STALE": 15,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 15,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 155,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 131,
+   "truly_unchanged": 399,
+   "labels": {
+    "VERIFIED": 200,
+    "STALE": 330,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 131,
+   "stale_fp": 199,
+   "false_verified": 0,
+   "unchanged_verified": 200,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 104,
+    "statement no longer within 5 lines": 95
+   },
+   "stale_precision": 0.397,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5013
+  },
+  "missing_knowledge": {
+   "new_modules": 24,
+   "new_edges": 236,
+   "new_edges_share_of_current": 0.3717
+  },
+  "verify_seconds": 0.2847,
+  "files_read": 170
+ },
+ "2.11.0->2.12.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.12.0",
+  "distance": {
+   "releases": 1,
+   "commits": 500,
+   "days": 426
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 167,
+   "labels": {
+    "VERIFIED": 167,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 167,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 75,
+   "truly_unchanged": 459,
+   "labels": {
+    "VERIFIED": 298,
+    "STALE": 236,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 75,
+   "stale_fp": 161,
+   "false_verified": 0,
+   "unchanged_verified": 298,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 65,
+    "statement no longer within 5 lines": 96
+   },
+   "stale_precision": 0.3178,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.6492
+  },
+  "missing_knowledge": {
+   "new_modules": 3,
+   "new_edges": 51,
+   "new_edges_share_of_current": 0.1
+  },
+  "verify_seconds": 0.282,
+  "files_read": 171
+ },
+ "2.11.0->2.13.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.13.0",
+  "distance": {
+   "releases": 2,
+   "commits": 665,
+   "days": 597
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 167,
+   "labels": {
+    "VERIFIED": 167,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 167,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 97,
+   "truly_unchanged": 437,
+   "labels": {
+    "VERIFIED": 280,
+    "STALE": 254,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 97,
+   "stale_fp": 157,
+   "false_verified": 0,
+   "unchanged_verified": 280,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 66,
+    "statement no longer within 5 lines": 91
+   },
+   "stale_precision": 0.3819,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.6407
+  },
+  "missing_knowledge": {
+   "new_modules": 5,
+   "new_edges": 77,
+   "new_edges_share_of_current": 0.1498
+  },
+  "verify_seconds": 0.2808,
+  "files_read": 171
+ },
+ "2.11.0->2.14.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.14.0",
+  "distance": {
+   "releases": 3,
+   "commits": 850,
+   "days": 839
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 5,
+   "truly_unchanged": 166,
+   "labels": {
+    "VERIFIED": 166,
+    "STALE": 5,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 5,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 166,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 109,
+   "truly_unchanged": 425,
+   "labels": {
+    "VERIFIED": 252,
+    "STALE": 282,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 109,
+   "stale_fp": 173,
+   "false_verified": 0,
+   "unchanged_verified": 252,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 83,
+    "statement no longer within 5 lines": 90
+   },
+   "stale_precision": 0.3865,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5929
+  },
+  "missing_knowledge": {
+   "new_modules": 8,
+   "new_edges": 152,
+   "new_edges_share_of_current": 0.2634
+  },
+  "verify_seconds": 0.2904,
+  "files_read": 171
+ },
+ "2.11.0->2.15.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.15.0",
+  "distance": {
+   "releases": 4,
+   "commits": 944,
+   "days": 934
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 5,
+   "truly_unchanged": 166,
+   "labels": {
+    "VERIFIED": 166,
+    "STALE": 5,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 5,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 166,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 114,
+   "truly_unchanged": 420,
+   "labels": {
+    "VERIFIED": 240,
+    "STALE": 294,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 114,
+   "stale_fp": 180,
+   "false_verified": 0,
+   "unchanged_verified": 240,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 94,
+    "statement no longer within 5 lines": 86
+   },
+   "stale_precision": 0.3878,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5714
+  },
+  "missing_knowledge": {
+   "new_modules": 12,
+   "new_edges": 190,
+   "new_edges_share_of_current": 0.3115
+  },
+  "verify_seconds": 0.3358,
+  "files_read": 171
+ },
+ "2.11.0->2.16.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 5,
+   "commits": 997,
+   "days": 974
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 160,
+   "labels": {
+    "VERIFIED": 160,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 160,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 127,
+   "truly_unchanged": 407,
+   "labels": {
+    "VERIFIED": 235,
+    "STALE": 299,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 127,
+   "stale_fp": 172,
+   "false_verified": 0,
+   "unchanged_verified": 235,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 93,
+    "statement no longer within 5 lines": 79
+   },
+   "stale_precision": 0.4247,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5774
+  },
+  "missing_knowledge": {
+   "new_modules": 14,
+   "new_edges": 187,
+   "new_edges_share_of_current": 0.3148
+  },
+  "verify_seconds": 0.2968,
+  "files_read": 171
+ },
+ "2.11.0->2.17.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 6,
+   "commits": 1078,
+   "days": 1022
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 160,
+   "labels": {
+    "VERIFIED": 160,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 160,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 127,
+   "truly_unchanged": 407,
+   "labels": {
+    "VERIFIED": 231,
+    "STALE": 303,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 127,
+   "stale_fp": 176,
+   "false_verified": 0,
+   "unchanged_verified": 231,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 92,
+    "statement no longer within 5 lines": 84
+   },
+   "stale_precision": 0.4191,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5676
+  },
+  "missing_knowledge": {
+   "new_modules": 14,
+   "new_edges": 196,
+   "new_edges_share_of_current": 0.325
+  },
+  "verify_seconds": 0.382,
+  "files_read": 171
+ },
+ "2.11.0->2.18.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 7,
+   "commits": 1268,
+   "days": 1067
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 15,
+   "truly_unchanged": 156,
+   "labels": {
+    "VERIFIED": 156,
+    "STALE": 15,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 15,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 156,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 133,
+   "truly_unchanged": 401,
+   "labels": {
+    "VERIFIED": 209,
+    "STALE": 325,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 133,
+   "stale_fp": 192,
+   "false_verified": 0,
+   "unchanged_verified": 209,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 99,
+    "statement no longer within 5 lines": 93
+   },
+   "stale_precision": 0.4092,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.5212
+  },
+  "missing_knowledge": {
+   "new_modules": 20,
+   "new_edges": 216,
+   "new_edges_share_of_current": 0.3501
+  },
+  "verify_seconds": 0.3893,
+  "files_read": 171
+ },
+ "2.11.0->2.19.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 8,
+   "commits": 1336,
+   "days": 1087
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 15,
+   "truly_unchanged": 156,
+   "labels": {
+    "VERIFIED": 156,
+    "STALE": 15,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 15,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 156,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 133,
+   "truly_unchanged": 401,
+   "labels": {
+    "VERIFIED": 200,
+    "STALE": 334,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 133,
+   "stale_fp": 201,
+   "false_verified": 0,
+   "unchanged_verified": 200,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 102,
+    "statement no longer within 5 lines": 99
+   },
+   "stale_precision": 0.3982,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.4988
+  },
+  "missing_knowledge": {
+   "new_modules": 23,
+   "new_edges": 234,
+   "new_edges_share_of_current": 0.3685
+  },
+  "verify_seconds": 0.3909,
+  "files_read": 171
+ },
+ "2.12.0->2.13.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.13.0",
+  "distance": {
+   "releases": 1,
+   "commits": 165,
+   "days": 171
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 0,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 0,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 0,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": null,
+   "stale_recall": null,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 25,
+   "truly_unchanged": 485,
+   "labels": {
+    "VERIFIED": 465,
+    "STALE": 45,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 25,
+   "stale_fp": 20,
+   "false_verified": 0,
+   "unchanged_verified": 465,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 9,
+    "statement no longer within 5 lines": 11
+   },
+   "stale_precision": 0.5556,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9588
+  },
+  "missing_knowledge": {
+   "new_modules": 2,
+   "new_edges": 29,
+   "new_edges_share_of_current": 0.0564
+  },
+  "verify_seconds": 0.3246,
+  "files_read": 170
+ },
+ "2.12.0->2.14.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.14.0",
+  "distance": {
+   "releases": 2,
+   "commits": 350,
+   "days": 413
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 1,
+   "truly_unchanged": 169,
+   "labels": {
+    "VERIFIED": 169,
+    "STALE": 1,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 1,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 169,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 49,
+   "truly_unchanged": 461,
+   "labels": {
+    "VERIFIED": 406,
+    "STALE": 104,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 49,
+   "stale_fp": 55,
+   "false_verified": 0,
+   "unchanged_verified": 406,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 37,
+    "statement no longer within 5 lines": 18
+   },
+   "stale_precision": 0.4712,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8807
+  },
+  "missing_knowledge": {
+   "new_modules": 5,
+   "new_edges": 116,
+   "new_edges_share_of_current": 0.201
+  },
+  "verify_seconds": 0.3057,
+  "files_read": 170
+ },
+ "2.12.0->2.15.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.15.0",
+  "distance": {
+   "releases": 3,
+   "commits": 444,
+   "days": 507
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 1,
+   "truly_unchanged": 169,
+   "labels": {
+    "VERIFIED": 169,
+    "STALE": 1,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 1,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 169,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 54,
+   "truly_unchanged": 456,
+   "labels": {
+    "VERIFIED": 382,
+    "STALE": 128,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 54,
+   "stale_fp": 74,
+   "false_verified": 0,
+   "unchanged_verified": 382,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 50,
+    "statement no longer within 5 lines": 24
+   },
+   "stale_precision": 0.4219,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8377
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 154,
+   "new_edges_share_of_current": 0.2525
+  },
+  "verify_seconds": 0.3468,
+  "files_read": 170
+ },
+ "2.12.0->2.16.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 4,
+   "commits": 497,
+   "days": 547
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 7,
+   "truly_unchanged": 163,
+   "labels": {
+    "VERIFIED": 163,
+    "STALE": 7,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 7,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 163,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 66,
+   "truly_unchanged": 444,
+   "labels": {
+    "VERIFIED": 369,
+    "STALE": 141,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 66,
+   "stale_fp": 75,
+   "false_verified": 0,
+   "unchanged_verified": 369,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 52,
+    "statement no longer within 5 lines": 23
+   },
+   "stale_precision": 0.4681,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8311
+  },
+  "missing_knowledge": {
+   "new_modules": 11,
+   "new_edges": 150,
+   "new_edges_share_of_current": 0.2525
+  },
+  "verify_seconds": 0.2971,
+  "files_read": 170
+ },
+ "2.12.0->2.17.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 5,
+   "commits": 578,
+   "days": 596
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 7,
+   "truly_unchanged": 163,
+   "labels": {
+    "VERIFIED": 163,
+    "STALE": 7,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 7,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 163,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 67,
+   "truly_unchanged": 443,
+   "labels": {
+    "VERIFIED": 367,
+    "STALE": 143,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 67,
+   "stale_fp": 76,
+   "false_verified": 0,
+   "unchanged_verified": 367,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 54,
+    "statement no longer within 5 lines": 22
+   },
+   "stale_precision": 0.4685,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8284
+  },
+  "missing_knowledge": {
+   "new_modules": 11,
+   "new_edges": 160,
+   "new_edges_share_of_current": 0.2653
+  },
+  "verify_seconds": 0.2935,
+  "files_read": 170
+ },
+ "2.12.0->2.18.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 6,
+   "commits": 768,
+   "days": 640
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 159,
+   "labels": {
+    "VERIFIED": 159,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 159,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 77,
+   "truly_unchanged": 433,
+   "labels": {
+    "VERIFIED": 348,
+    "STALE": 162,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 77,
+   "stale_fp": 85,
+   "false_verified": 0,
+   "unchanged_verified": 348,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 62,
+    "statement no longer within 5 lines": 23
+   },
+   "stale_precision": 0.4753,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8037
+  },
+  "missing_knowledge": {
+   "new_modules": 17,
+   "new_edges": 184,
+   "new_edges_share_of_current": 0.2982
+  },
+  "verify_seconds": 0.3354,
+  "files_read": 170
+ },
+ "2.12.0->2.19.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 7,
+   "commits": 836,
+   "days": 661
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 159,
+   "labels": {
+    "VERIFIED": 159,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 159,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 78,
+   "truly_unchanged": 432,
+   "labels": {
+    "VERIFIED": 345,
+    "STALE": 165,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 78,
+   "stale_fp": 87,
+   "false_verified": 0,
+   "unchanged_verified": 345,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 64,
+    "statement no longer within 5 lines": 23
+   },
+   "stale_precision": 0.4727,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.7986
+  },
+  "missing_knowledge": {
+   "new_modules": 20,
+   "new_edges": 203,
+   "new_edges_share_of_current": 0.3197
+  },
+  "verify_seconds": 0.2957,
+  "files_read": 170
+ },
+ "2.13.0->2.14.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.14.0",
+  "distance": {
+   "releases": 1,
+   "commits": 185,
+   "days": 242
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 1,
+   "truly_unchanged": 171,
+   "labels": {
+    "VERIFIED": 171,
+    "STALE": 1,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 1,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 171,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 27,
+   "truly_unchanged": 487,
+   "labels": {
+    "VERIFIED": 443,
+    "STALE": 71,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 27,
+   "stale_fp": 44,
+   "false_verified": 0,
+   "unchanged_verified": 443,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 32,
+    "statement no longer within 5 lines": 12
+   },
+   "stale_precision": 0.3803,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9097
+  },
+  "missing_knowledge": {
+   "new_modules": 3,
+   "new_edges": 90,
+   "new_edges_share_of_current": 0.156
+  },
+  "verify_seconds": 0.3017,
+  "files_read": 172
+ },
+ "2.13.0->2.15.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.15.0",
+  "distance": {
+   "releases": 2,
+   "commits": 279,
+   "days": 336
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 1,
+   "truly_unchanged": 171,
+   "labels": {
+    "VERIFIED": 171,
+    "STALE": 1,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 1,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 171,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 32,
+   "truly_unchanged": 482,
+   "labels": {
+    "VERIFIED": 413,
+    "STALE": 101,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 32,
+   "stale_fp": 69,
+   "false_verified": 0,
+   "unchanged_verified": 413,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 48,
+    "statement no longer within 5 lines": 21
+   },
+   "stale_precision": 0.3168,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8568
+  },
+  "missing_knowledge": {
+   "new_modules": 7,
+   "new_edges": 128,
+   "new_edges_share_of_current": 0.2098
+  },
+  "verify_seconds": 0.3385,
+  "files_read": 172
+ },
+ "2.13.0->2.16.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 3,
+   "commits": 332,
+   "days": 376
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 7,
+   "truly_unchanged": 165,
+   "labels": {
+    "VERIFIED": 165,
+    "STALE": 7,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 7,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 165,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 56,
+   "truly_unchanged": 458,
+   "labels": {
+    "VERIFIED": 387,
+    "STALE": 127,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 56,
+   "stale_fp": 71,
+   "false_verified": 0,
+   "unchanged_verified": 387,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 50,
+    "statement no longer within 5 lines": 21
+   },
+   "stale_precision": 0.4409,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.845
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 136,
+   "new_edges_share_of_current": 0.229
+  },
+  "verify_seconds": 0.3178,
+  "files_read": 172
+ },
+ "2.13.0->2.17.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 4,
+   "commits": 413,
+   "days": 425
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 7,
+   "truly_unchanged": 165,
+   "labels": {
+    "VERIFIED": 165,
+    "STALE": 7,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 7,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 165,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 57,
+   "truly_unchanged": 457,
+   "labels": {
+    "VERIFIED": 387,
+    "STALE": 127,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 57,
+   "stale_fp": 70,
+   "false_verified": 0,
+   "unchanged_verified": 387,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 51,
+    "statement no longer within 5 lines": 19
+   },
+   "stale_precision": 0.4488,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8468
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 146,
+   "new_edges_share_of_current": 0.2421
+  },
+  "verify_seconds": 0.3184,
+  "files_read": 172
+ },
+ "2.13.0->2.18.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 5,
+   "commits": 603,
+   "days": 469
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 161,
+   "labels": {
+    "VERIFIED": 161,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 161,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 66,
+   "truly_unchanged": 448,
+   "labels": {
+    "VERIFIED": 370,
+    "STALE": 144,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 66,
+   "stale_fp": 78,
+   "false_verified": 0,
+   "unchanged_verified": 370,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 59,
+    "statement no longer within 5 lines": 19
+   },
+   "stale_precision": 0.4583,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8259
+  },
+  "missing_knowledge": {
+   "new_modules": 15,
+   "new_edges": 169,
+   "new_edges_share_of_current": 0.2739
+  },
+  "verify_seconds": 0.3162,
+  "files_read": 172
+ },
+ "2.13.0->2.19.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 6,
+   "commits": 671,
+   "days": 490
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 11,
+   "truly_unchanged": 161,
+   "labels": {
+    "VERIFIED": 161,
+    "STALE": 11,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 11,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 161,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 67,
+   "truly_unchanged": 447,
+   "labels": {
+    "VERIFIED": 367,
+    "STALE": 147,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 67,
+   "stale_fp": 80,
+   "false_verified": 0,
+   "unchanged_verified": 367,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 61,
+    "statement no longer within 5 lines": 19
+   },
+   "stale_precision": 0.4558,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.821
+  },
+  "missing_knowledge": {
+   "new_modules": 18,
+   "new_edges": 188,
+   "new_edges_share_of_current": 0.2961
+  },
+  "verify_seconds": 0.2968,
+  "files_read": 172
+ },
+ "2.14.0->2.15.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.15.0",
+  "distance": {
+   "releases": 1,
+   "commits": 94,
+   "days": 94
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 0,
+   "truly_unchanged": 174,
+   "labels": {
+    "VERIFIED": 174,
+    "STALE": 0,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 0,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 174,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": null,
+   "stale_recall": null,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 8,
+   "truly_unchanged": 569,
+   "labels": {
+    "VERIFIED": 536,
+    "STALE": 41,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 8,
+   "stale_fp": 33,
+   "false_verified": 0,
+   "unchanged_verified": 536,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 24,
+    "statement no longer within 5 lines": 9
+   },
+   "stale_precision": 0.1951,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.942
+  },
+  "missing_knowledge": {
+   "new_modules": 4,
+   "new_edges": 41,
+   "new_edges_share_of_current": 0.0672
+  },
+  "verify_seconds": 0.3196,
+  "files_read": 174
+ },
+ "2.14.0->2.16.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 2,
+   "commits": 147,
+   "days": 134
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 6,
+   "truly_unchanged": 168,
+   "labels": {
+    "VERIFIED": 168,
+    "STALE": 6,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 6,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 168,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 35,
+   "truly_unchanged": 542,
+   "labels": {
+    "VERIFIED": 500,
+    "STALE": 77,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 35,
+   "stale_fp": 42,
+   "false_verified": 0,
+   "unchanged_verified": 500,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 26,
+    "statement no longer within 5 lines": 16
+   },
+   "stale_precision": 0.4545,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9225
+  },
+  "missing_knowledge": {
+   "new_modules": 6,
+   "new_edges": 52,
+   "new_edges_share_of_current": 0.0875
+  },
+  "verify_seconds": 0.3101,
+  "files_read": 174
+ },
+ "2.14.0->2.17.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 3,
+   "commits": 228,
+   "days": 183
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 6,
+   "truly_unchanged": 168,
+   "labels": {
+    "VERIFIED": 168,
+    "STALE": 6,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 6,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 168,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 36,
+   "truly_unchanged": 541,
+   "labels": {
+    "VERIFIED": 497,
+    "STALE": 80,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 36,
+   "stale_fp": 44,
+   "false_verified": 0,
+   "unchanged_verified": 497,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 29,
+    "statement no longer within 5 lines": 15
+   },
+   "stale_precision": 0.45,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9187
+  },
+  "missing_knowledge": {
+   "new_modules": 6,
+   "new_edges": 62,
+   "new_edges_share_of_current": 0.1028
+  },
+  "verify_seconds": 0.2953,
+  "files_read": 174
+ },
+ "2.14.0->2.18.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 4,
+   "commits": 418,
+   "days": 227
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 10,
+   "truly_unchanged": 164,
+   "labels": {
+    "VERIFIED": 164,
+    "STALE": 10,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 10,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 164,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 47,
+   "truly_unchanged": 530,
+   "labels": {
+    "VERIFIED": 466,
+    "STALE": 111,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 47,
+   "stale_fp": 64,
+   "false_verified": 0,
+   "unchanged_verified": 466,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 45,
+    "statement no longer within 5 lines": 19
+   },
+   "stale_precision": 0.4234,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8792
+  },
+  "missing_knowledge": {
+   "new_modules": 12,
+   "new_edges": 87,
+   "new_edges_share_of_current": 0.141
+  },
+  "verify_seconds": 0.3017,
+  "files_read": 174
+ },
+ "2.14.0->2.19.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 5,
+   "commits": 486,
+   "days": 248
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 10,
+   "truly_unchanged": 164,
+   "labels": {
+    "VERIFIED": 164,
+    "STALE": 10,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 10,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 164,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 49,
+   "truly_unchanged": 528,
+   "labels": {
+    "VERIFIED": 462,
+    "STALE": 115,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 49,
+   "stale_fp": 66,
+   "false_verified": 0,
+   "unchanged_verified": 462,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 47,
+    "statement no longer within 5 lines": 19
+   },
+   "stale_precision": 0.4261,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.875
+  },
+  "missing_knowledge": {
+   "new_modules": 15,
+   "new_edges": 107,
+   "new_edges_share_of_current": 0.1685
+  },
+  "verify_seconds": 0.3137,
+  "files_read": 174
+ },
+ "2.15.0->2.16.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.16.0",
+  "distance": {
+   "releases": 1,
+   "commits": 53,
+   "days": 40
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 6,
+   "truly_unchanged": 172,
+   "labels": {
+    "VERIFIED": 172,
+    "STALE": 6,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 6,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 172,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 32,
+   "truly_unchanged": 578,
+   "labels": {
+    "VERIFIED": 561,
+    "STALE": 49,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 32,
+   "stale_fp": 17,
+   "false_verified": 0,
+   "unchanged_verified": 561,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 11,
+    "statement no longer within 5 lines": 6
+   },
+   "stale_precision": 0.6531,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9706
+  },
+  "missing_knowledge": {
+   "new_modules": 2,
+   "new_edges": 16,
+   "new_edges_share_of_current": 0.0269
+  },
+  "verify_seconds": 0.3089,
+  "files_read": 178
+ },
+ "2.15.0->2.17.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 2,
+   "commits": 134,
+   "days": 88
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 6,
+   "truly_unchanged": 172,
+   "labels": {
+    "VERIFIED": 172,
+    "STALE": 6,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 6,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 172,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 33,
+   "truly_unchanged": 577,
+   "labels": {
+    "VERIFIED": 553,
+    "STALE": 57,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 33,
+   "stale_fp": 24,
+   "false_verified": 0,
+   "unchanged_verified": 553,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 15,
+    "statement no longer within 5 lines": 9
+   },
+   "stale_precision": 0.5789,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9584
+  },
+  "missing_knowledge": {
+   "new_modules": 2,
+   "new_edges": 26,
+   "new_edges_share_of_current": 0.0431
+  },
+  "verify_seconds": 0.3134,
+  "files_read": 178
+ },
+ "2.15.0->2.18.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 3,
+   "commits": 324,
+   "days": 133
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 10,
+   "truly_unchanged": 168,
+   "labels": {
+    "VERIFIED": 168,
+    "STALE": 10,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 10,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 168,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 48,
+   "truly_unchanged": 562,
+   "labels": {
+    "VERIFIED": 507,
+    "STALE": 103,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 48,
+   "stale_fp": 55,
+   "false_verified": 0,
+   "unchanged_verified": 507,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 33,
+    "statement no longer within 5 lines": 22
+   },
+   "stale_precision": 0.466,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9021
+  },
+  "missing_knowledge": {
+   "new_modules": 8,
+   "new_edges": 55,
+   "new_edges_share_of_current": 0.0891
+  },
+  "verify_seconds": 0.3199,
+  "files_read": 178
+ },
+ "2.15.0->2.19.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 4,
+   "commits": 392,
+   "days": 153
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 10,
+   "truly_unchanged": 168,
+   "labels": {
+    "VERIFIED": 168,
+    "STALE": 10,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 10,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 168,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 50,
+   "truly_unchanged": 560,
+   "labels": {
+    "VERIFIED": 503,
+    "STALE": 107,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 50,
+   "stale_fp": 57,
+   "false_verified": 0,
+   "unchanged_verified": 503,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 35,
+    "statement no longer within 5 lines": 22
+   },
+   "stale_precision": 0.4673,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.8982
+  },
+  "missing_knowledge": {
+   "new_modules": 11,
+   "new_edges": 75,
+   "new_edges_share_of_current": 0.1181
+  },
+  "verify_seconds": 0.3017,
+  "files_read": 178
+ },
+ "2.16.0->2.17.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.17.0",
+  "distance": {
+   "releases": 1,
+   "commits": 81,
+   "days": 48
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 0,
+   "truly_unchanged": 174,
+   "labels": {
+    "VERIFIED": 174,
+    "STALE": 0,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 0,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 174,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": null,
+   "stale_recall": null,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 3,
+   "truly_unchanged": 591,
+   "labels": {
+    "VERIFIED": 578,
+    "STALE": 16,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 3,
+   "stale_fp": 13,
+   "false_verified": 0,
+   "unchanged_verified": 578,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 7,
+    "statement no longer within 5 lines": 6
+   },
+   "stale_precision": 0.1875,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.978
+  },
+  "missing_knowledge": {
+   "new_modules": 0,
+   "new_edges": 12,
+   "new_edges_share_of_current": 0.0199
+  },
+  "verify_seconds": 0.3498,
+  "files_read": 174
+ },
+ "2.16.0->2.18.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 2,
+   "commits": 271,
+   "days": 93
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 19,
+   "truly_unchanged": 575,
+   "labels": {
+    "VERIFIED": 524,
+    "STALE": 70,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 19,
+   "stale_fp": 51,
+   "false_verified": 0,
+   "unchanged_verified": 524,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 26,
+    "statement no longer within 5 lines": 25
+   },
+   "stale_precision": 0.2714,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9113
+  },
+  "missing_knowledge": {
+   "new_modules": 6,
+   "new_edges": 42,
+   "new_edges_share_of_current": 0.0681
+  },
+  "verify_seconds": 0.4194,
+  "files_read": 174
+ },
+ "2.16.0->2.19.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 3,
+   "commits": 339,
+   "days": 113
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 21,
+   "truly_unchanged": 573,
+   "labels": {
+    "VERIFIED": 520,
+    "STALE": 74,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 21,
+   "stale_fp": 53,
+   "false_verified": 0,
+   "unchanged_verified": 520,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 28,
+    "statement no longer within 5 lines": 25
+   },
+   "stale_precision": 0.2838,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9075
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 62,
+   "new_edges_share_of_current": 0.0976
+  },
+  "verify_seconds": 0.3054,
+  "files_read": 174
+ },
+ "2.17.0->2.18.0": {
+  "built_at": "2.17.0",
+  "checked_at": "2.18.0",
+  "distance": {
+   "releases": 1,
+   "commits": 190,
+   "days": 44
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 16,
+   "truly_unchanged": 587,
+   "labels": {
+    "VERIFIED": 541,
+    "STALE": 62,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 16,
+   "stale_fp": 46,
+   "false_verified": 0,
+   "unchanged_verified": 541,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 22,
+    "statement no longer within 5 lines": 24
+   },
+   "stale_precision": 0.2581,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9216
+  },
+  "missing_knowledge": {
+   "new_modules": 6,
+   "new_edges": 30,
+   "new_edges_share_of_current": 0.0486
+  },
+  "verify_seconds": 0.3203,
+  "files_read": 174
+ },
+ "2.17.0->2.19.0": {
+  "built_at": "2.17.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 2,
+   "commits": 258,
+   "days": 65
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 4,
+   "truly_unchanged": 170,
+   "labels": {
+    "VERIFIED": 170,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 4,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 170,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": 1.0,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 18,
+   "truly_unchanged": 585,
+   "labels": {
+    "VERIFIED": 537,
+    "STALE": 66,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 18,
+   "stale_fp": 48,
+   "false_verified": 0,
+   "unchanged_verified": 537,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 24,
+    "statement no longer within 5 lines": 24
+   },
+   "stale_precision": 0.2727,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9179
+  },
+  "missing_knowledge": {
+   "new_modules": 9,
+   "new_edges": 50,
+   "new_edges_share_of_current": 0.0787
+  },
+  "verify_seconds": 0.3293,
+  "files_read": 174
+ },
+ "2.18.0->2.19.0": {
+  "built_at": "2.18.0",
+  "checked_at": "2.19.0",
+  "distance": {
+   "releases": 1,
+   "commits": 68,
+   "days": 20
+  },
+  "window": 5,
+  "module": {
+   "truly_stale": 0,
+   "truly_unchanged": 176,
+   "labels": {
+    "VERIFIED": 176,
+    "STALE": 0,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 0,
+   "stale_fp": 0,
+   "false_verified": 0,
+   "unchanged_verified": 176,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {},
+   "stale_precision": null,
+   "stale_recall": null,
+   "unchanged_verified_share": 1.0
+  },
+  "edge": {
+   "truly_stale": 2,
+   "truly_unchanged": 616,
+   "labels": {
+    "VERIFIED": 614,
+    "STALE": 4,
+    "UNVERIFIABLE": 0
+   },
+   "stale_tp": 2,
+   "stale_fp": 2,
+   "false_verified": 0,
+   "unchanged_verified": 614,
+   "unverifiable_on_stale": 0,
+   "fp_reasons": {
+    "import statement no longer present": 2
+   },
+   "stale_precision": 0.5,
+   "stale_recall": 1.0,
+   "unchanged_verified_share": 0.9968
+  },
+  "missing_knowledge": {
+   "new_modules": 3,
+   "new_edges": 20,
+   "new_edges_share_of_current": 0.0315
+  },
+  "verify_seconds": 0.3927,
+  "files_read": 176
+ }
+}

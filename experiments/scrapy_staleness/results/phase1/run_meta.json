@@ -1,0 +1,25 @@
+{
+ "phase": 1,
+ "started_at": "2026-10-10T23:51:37Z",
+ "finished_at": "2026-10-10T23:52:44Z",
+ "archai_version": "0.2.1-pilot",
+ "engine_sha256": "ebfae8c4cd45c341",
+ "archai_commit": "ec911638feb79145e1ab35d2f81bf01281ba60b1",
+ "archai_dirty": false,
+ "python": "3.13.9",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "tags": {
+  "2.10.0": "88327c7c58928b5e1e07921ca055c8579c197234",
+  "2.11.0": "f2fb4760d2e98cc92ab00a84bcf20cd8a6de3799",
+  "2.12.0": "b1f9e56693cd2000ddcea922306f726f3e9339af",
+  "2.13.0": "82a32451583967a828c2e80a31930f64dbc136ac",
+  "2.14.0": "3ac1192f35fc32d01c69c929eed85601fb0405e8",
+  "2.15.0": "47e25fbbb5ac3012c3cc6e88bd9ff79f3a61c2a5",
+  "2.16.0": "abe9c638414e4a39a338763c85a3a0d84696b9b3",
+  "2.17.0": "feb692f552e3ed4533cf4e3af4809908d84cd763",
+  "2.18.0": "2216063c063027d541eafbf5e098557ce732528f",
+  "2.19.0": "8026deeaac371a5d9a3edbe4886d58f61139d464"
+ },
+ "window": 5,
+ "llm_used": false
+}

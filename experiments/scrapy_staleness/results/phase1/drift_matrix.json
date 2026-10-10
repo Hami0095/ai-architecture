@@ -1,0 +1,1645 @@
+{
+ "2.10.0->2.10.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.10.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 530,
+  "modules_kept": 170
+ },
+ "2.10.0->2.11.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.11.0",
+  "modules_added": [
+   "scrapy.extensions.periodic_log"
+  ],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 6,
+  "edges_removed": 2,
+  "edges_kept": 528,
+  "modules_kept": 170
+ },
+ "2.10.0->2.12.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.12.0",
+  "modules_added": [
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.utils._compression"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [],
+  "edges_added": 56,
+  "edges_removed": 76,
+  "edges_kept": 454,
+  "modules_kept": 166
+ },
+ "2.10.0->2.13.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.13.0",
+  "modules_added": [
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [],
+  "edges_added": 80,
+  "edges_removed": 96,
+  "edges_kept": 434,
+  "modules_kept": 166
+ },
+ "2.10.0->2.14.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.14.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils.asyncio"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 154,
+  "edges_removed": 107,
+  "edges_kept": 423,
+  "modules_kept": 165
+ },
+ "2.10.0->2.15.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.15.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 192,
+  "edges_removed": 112,
+  "edges_kept": 418,
+  "modules_kept": 165
+ },
+ "2.10.0->2.16.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 189,
+  "edges_removed": 125,
+  "edges_kept": 405,
+  "modules_kept": 159
+ },
+ "2.10.0->2.17.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 198,
+  "edges_removed": 125,
+  "edges_kept": 405,
+  "modules_kept": 159
+ },
+ "2.10.0->2.18.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core._http2.agent",
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.core.http2.agent",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 75
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 70
+   }
+  ],
+  "edges_added": 218,
+  "edges_removed": 131,
+  "edges_kept": 399,
+  "modules_kept": 155
+ },
+ "2.10.0->2.19.0": {
+  "built_at": "2.10.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core._http2.agent",
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.periodic_log",
+   "scrapy.extensions.remote_control",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils._remote_control",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.core.http2.agent",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 75
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 70
+   }
+  ],
+  "edges_added": 236,
+  "edges_removed": 131,
+  "edges_kept": 399,
+  "modules_kept": 155
+ },
+ "2.11.0->2.11.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.11.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 534,
+  "modules_kept": 171
+ },
+ "2.11.0->2.12.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.12.0",
+  "modules_added": [
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.http.response.json",
+   "scrapy.utils._compression"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [],
+  "edges_added": 51,
+  "edges_removed": 75,
+  "edges_kept": 459,
+  "modules_kept": 167
+ },
+ "2.11.0->2.13.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.13.0",
+  "modules_added": [
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [],
+  "edges_added": 77,
+  "edges_removed": 97,
+  "edges_kept": 437,
+  "modules_kept": 167
+ },
+ "2.11.0->2.14.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.14.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils.asyncio"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 152,
+  "edges_removed": 109,
+  "edges_kept": 425,
+  "modules_kept": 166
+ },
+ "2.11.0->2.15.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.15.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 190,
+  "edges_removed": 114,
+  "edges_kept": 420,
+  "modules_kept": 166
+ },
+ "2.11.0->2.16.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.spidermiddlewares.offsite",
+    "new": "scrapy.downloadermiddlewares.offsite",
+    "similarity": 51
+   }
+  ],
+  "edges_added": 187,
+  "edges_removed": 127,
+  "edges_kept": 407,
+  "modules_kept": 160
+ },
+ "2.11.0->2.17.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 196,
+  "edges_removed": 127,
+  "edges_kept": 407,
+  "modules_kept": 160
+ },
+ "2.11.0->2.18.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core._http2.agent",
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.core.http2.agent",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 75
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 70
+   }
+  ],
+  "edges_added": 216,
+  "edges_removed": 133,
+  "edges_kept": 401,
+  "modules_kept": 156
+ },
+ "2.11.0->2.19.0": {
+  "built_at": "2.11.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core._http2.agent",
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.downloadermiddlewares.offsite",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.remote_control",
+   "scrapy.http.response.json",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._compression",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils._remote_control",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.core.http2.agent",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.downloadermiddlewares.decompression",
+   "scrapy.http.common",
+   "scrapy.loader.common",
+   "scrapy.loader.processors",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 75
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 70
+   }
+  ],
+  "edges_added": 234,
+  "edges_removed": 133,
+  "edges_kept": 401,
+  "modules_kept": 156
+ },
+ "2.12.0->2.12.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.12.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 510,
+  "modules_kept": 170
+ },
+ "2.12.0->2.13.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.13.0",
+  "modules_added": [
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start"
+  ],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 29,
+  "edges_removed": 25,
+  "edges_kept": 485,
+  "modules_kept": 170
+ },
+ "2.12.0->2.14.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.14.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils.asyncio"
+  ],
+  "modules_removed": [
+   "scrapy.spidermiddlewares.offsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 116,
+  "edges_removed": 49,
+  "edges_kept": 461,
+  "modules_kept": 169
+ },
+ "2.12.0->2.15.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.15.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.spidermiddlewares.offsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 154,
+  "edges_removed": 54,
+  "edges_kept": 456,
+  "modules_kept": 169
+ },
+ "2.12.0->2.16.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 150,
+  "edges_removed": 66,
+  "edges_kept": 444,
+  "modules_kept": 163
+ },
+ "2.12.0->2.17.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 160,
+  "edges_removed": 67,
+  "edges_kept": 443,
+  "modules_kept": 163
+ },
+ "2.12.0->2.18.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 66
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 81
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 74
+   }
+  ],
+  "edges_added": 184,
+  "edges_removed": 77,
+  "edges_kept": 433,
+  "modules_kept": 159
+ },
+ "2.12.0->2.19.0": {
+  "built_at": "2.12.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.base",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.spidermiddlewares.start",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils._remote_control",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 58
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 81
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 74
+   }
+  ],
+  "edges_added": 203,
+  "edges_removed": 78,
+  "edges_kept": 432,
+  "modules_kept": 159
+ },
+ "2.13.0->2.13.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.13.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 514,
+  "modules_kept": 172
+ },
+ "2.13.0->2.14.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.14.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.utils.asyncio"
+  ],
+  "modules_removed": [
+   "scrapy.spidermiddlewares.offsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 90,
+  "edges_removed": 27,
+  "edges_kept": 487,
+  "modules_kept": 171
+ },
+ "2.13.0->2.15.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.15.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.spidermiddlewares.offsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 128,
+  "edges_removed": 32,
+  "edges_kept": 482,
+  "modules_kept": 171
+ },
+ "2.13.0->2.16.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 136,
+  "edges_removed": 56,
+  "edges_kept": 458,
+  "modules_kept": 165
+ },
+ "2.13.0->2.17.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 146,
+  "edges_removed": 57,
+  "edges_kept": 457,
+  "modules_kept": 165
+ },
+ "2.13.0->2.18.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 66
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 81
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 76
+   }
+  ],
+  "edges_added": 169,
+  "edges_removed": 66,
+  "edges_kept": 448,
+  "modules_kept": 161
+ },
+ "2.13.0->2.19.0": {
+  "built_at": "2.13.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.core.downloader.handlers.base",
+   "scrapy.extensions.logcount",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils._remote_control",
+   "scrapy.utils.asyncio",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spidermiddlewares.offsite",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 58
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 81
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 76
+   }
+  ],
+  "edges_added": 188,
+  "edges_removed": 67,
+  "edges_kept": 447,
+  "modules_kept": 161
+ },
+ "2.14.0->2.14.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.14.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 577,
+  "modules_kept": 174
+ },
+ "2.14.0->2.15.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.15.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 41,
+  "edges_removed": 8,
+  "edges_kept": 569,
+  "modules_kept": 174
+ },
+ "2.14.0->2.16.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 52,
+  "edges_removed": 35,
+  "edges_kept": 542,
+  "modules_kept": 168
+ },
+ "2.14.0->2.17.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 62,
+  "edges_removed": 36,
+  "edges_kept": 541,
+  "modules_kept": 168
+ },
+ "2.14.0->2.18.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 66
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 84
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 76
+   }
+  ],
+  "edges_added": 87,
+  "edges_removed": 47,
+  "edges_kept": 530,
+  "modules_kept": 164
+ },
+ "2.14.0->2.19.0": {
+  "built_at": "2.14.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.core.downloader.handlers._httpx",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._deps_compat",
+   "scrapy.utils._download_handlers",
+   "scrapy.utils._remote_control",
+   "scrapy.utils.reactorless"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 58
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 84
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 76
+   }
+  ],
+  "edges_added": 107,
+  "edges_removed": 49,
+  "edges_kept": 528,
+  "modules_kept": 164
+ },
+ "2.15.0->2.15.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.15.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 610,
+  "modules_kept": 178
+ },
+ "2.15.0->2.16.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.16.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 16,
+  "edges_removed": 32,
+  "edges_kept": 578,
+  "modules_kept": 172
+ },
+ "2.15.0->2.17.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.17.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [],
+  "edges_added": 26,
+  "edges_removed": 33,
+  "edges_kept": 577,
+  "modules_kept": 172
+ },
+ "2.15.0->2.18.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.spidermiddlewares.metacopy"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 70
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 91
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 82
+   }
+  ],
+  "edges_added": 55,
+  "edges_removed": 48,
+  "edges_kept": 562,
+  "modules_kept": 168
+ },
+ "2.15.0->2.19.0": {
+  "built_at": "2.15.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.core.downloader.handlers._base_http",
+   "scrapy.core.downloader.handlers._base_streaming",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._remote_control"
+  ],
+  "modules_removed": [
+   "scrapy.core.downloader.handlers.http10",
+   "scrapy.core.downloader.webclient",
+   "scrapy.downloadermiddlewares.ajaxcrawl",
+   "scrapy.spiders.init",
+   "scrapy.utils.testproc",
+   "scrapy.utils.testsite"
+  ],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 62
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 91
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 82
+   }
+  ],
+  "edges_added": 75,
+  "edges_removed": 50,
+  "edges_kept": 560,
+  "modules_kept": 168
+ },
+ "2.16.0->2.16.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.16.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 594,
+  "modules_kept": 174
+ },
+ "2.16.0->2.17.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.17.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 12,
+  "edges_removed": 3,
+  "edges_kept": 591,
+  "modules_kept": 174
+ },
+ "2.16.0->2.18.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.spidermiddlewares.metacopy"
+  ],
+  "modules_removed": [],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 82
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 91
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 86
+   }
+  ],
+  "edges_added": 42,
+  "edges_removed": 19,
+  "edges_kept": 575,
+  "modules_kept": 170
+ },
+ "2.16.0->2.19.0": {
+  "built_at": "2.16.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._remote_control"
+  ],
+  "modules_removed": [],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 74
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 91
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 86
+   }
+  ],
+  "edges_added": 62,
+  "edges_removed": 21,
+  "edges_kept": 573,
+  "modules_kept": 170
+ },
+ "2.17.0->2.17.0": {
+  "built_at": "2.17.0",
+  "checked_at": "2.17.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 603,
+  "modules_kept": 174
+ },
+ "2.17.0->2.18.0": {
+  "built_at": "2.17.0",
+  "checked_at": "2.18.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.spidermiddlewares.metacopy"
+  ],
+  "modules_removed": [],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 84
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 92
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 86
+   }
+  ],
+  "edges_added": 30,
+  "edges_removed": 16,
+  "edges_kept": 587,
+  "modules_kept": 170
+ },
+ "2.17.0->2.19.0": {
+  "built_at": "2.17.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader._idna_patch",
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.extensions.remote_control",
+   "scrapy.spidermiddlewares.metacopy",
+   "scrapy.utils._remote_control"
+  ],
+  "modules_removed": [],
+  "modules_moved": [
+   {
+    "old": "scrapy.core.http2",
+    "new": "scrapy.core._http2",
+    "similarity": 100
+   },
+   {
+    "old": "scrapy.core.http2.agent",
+    "new": "scrapy.core._http2.agent",
+    "similarity": 75
+   },
+   {
+    "old": "scrapy.core.http2.protocol",
+    "new": "scrapy.core._http2.protocol",
+    "similarity": 92
+   },
+   {
+    "old": "scrapy.core.http2.stream",
+    "new": "scrapy.core._http2.stream",
+    "similarity": 86
+   }
+  ],
+  "edges_added": 50,
+  "edges_removed": 18,
+  "edges_kept": 585,
+  "modules_kept": 170
+ },
+ "2.18.0->2.18.0": {
+  "built_at": "2.18.0",
+  "checked_at": "2.18.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 617,
+  "modules_kept": 176
+ },
+ "2.18.0->2.19.0": {
+  "built_at": "2.18.0",
+  "checked_at": "2.19.0",
+  "modules_added": [
+   "scrapy.core.downloader.handlers._aiohttp",
+   "scrapy.extensions.remote_control",
+   "scrapy.utils._remote_control"
+  ],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 20,
+  "edges_removed": 2,
+  "edges_kept": 615,
+  "modules_kept": 176
+ },
+ "2.19.0->2.19.0": {
+  "built_at": "2.19.0",
+  "checked_at": "2.19.0",
+  "modules_added": [],
+  "modules_removed": [],
+  "modules_moved": [],
+  "edges_added": 0,
+  "edges_removed": 0,
+  "edges_kept": 635,
+  "modules_kept": 179
+ }
+}

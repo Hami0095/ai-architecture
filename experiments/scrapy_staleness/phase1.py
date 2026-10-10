@@ -253,9 +253,9 @@ def run_all():
 
 # --- 5. Report -------------------------------------------------------------------------
 
-def svg_lines(title, xlabels, series, ylabel, ymax=None, width=720, height=360):
+def svg_lines(title, xlabels, series, ylabel, ymax=None, width=780, height=360):
     """Minimal stdlib line chart (no plotting library)."""
-    pad_l, pad_r, pad_t, pad_b = 60, 150, 36, 48
+    pad_l, pad_r, pad_t, pad_b = 60, 210, 36, 48
     w, h = width - pad_l - pad_r, height - pad_t - pad_b
     values = [v for pts in series.values() for v in pts if v is not None]
     top = ymax if ymax is not None else (max(values) * 1.1 if values else 1)

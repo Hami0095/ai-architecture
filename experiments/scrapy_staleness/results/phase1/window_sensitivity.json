@@ -1,0 +1,1498 @@
+{
+ "2.11.0": {
+  "0": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 432,
+     "STALE": 98,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 96,
+    "false_verified": 0,
+    "unchanged_verified": 432,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 91,
+     "import statement no longer present": 5
+    },
+    "stale_precision": 0.0204,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8182
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 505,
+     "STALE": 25,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 23,
+    "false_verified": 0,
+    "unchanged_verified": 505,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 5,
+     "statement no longer within 5 lines": 18
+    },
+    "stale_precision": 0.08,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9564
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 523,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 5,
+    "false_verified": 0,
+    "unchanged_verified": 523,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 5
+    },
+    "stale_precision": 0.2857,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9905
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 523,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 5,
+    "false_verified": 0,
+    "unchanged_verified": 523,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 5
+    },
+    "stale_precision": 0.2857,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9905
+   }
+  }
+ },
+ "2.12.0": {
+  "0": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 31,
+     "STALE": 499,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 423,
+    "false_verified": 0,
+    "unchanged_verified": 31,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 355,
+     "import statement no longer present": 68
+    },
+    "stale_precision": 0.1523,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0683
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 306,
+     "STALE": 224,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 148,
+    "false_verified": 0,
+    "unchanged_verified": 306,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 68,
+     "statement no longer within 5 lines": 80
+    },
+    "stale_precision": 0.3393,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.674
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 385,
+     "STALE": 145,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 69,
+    "false_verified": 0,
+    "unchanged_verified": 385,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 68,
+     "statement no longer within 20 lines": 1
+    },
+    "stale_precision": 0.5241,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.848
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 386,
+     "STALE": 144,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 68,
+    "false_verified": 0,
+    "unchanged_verified": 386,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 68
+    },
+    "stale_precision": 0.5278,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8502
+   }
+  }
+ },
+ "2.13.0": {
+  "0": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 32,
+     "STALE": 498,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 402,
+    "false_verified": 0,
+    "unchanged_verified": 32,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 333,
+     "import statement no longer present": 69
+    },
+    "stale_precision": 0.1928,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0737
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 289,
+     "STALE": 241,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 145,
+    "false_verified": 0,
+    "unchanged_verified": 289,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 69,
+     "statement no longer within 5 lines": 76
+    },
+    "stale_precision": 0.3983,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.6659
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 361,
+     "STALE": 169,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 73,
+    "false_verified": 0,
+    "unchanged_verified": 361,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 69,
+     "statement no longer within 20 lines": 4
+    },
+    "stale_precision": 0.568,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8318
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 365,
+     "STALE": 165,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 69,
+    "false_verified": 0,
+    "unchanged_verified": 365,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 69
+    },
+    "stale_precision": 0.5818,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.841
+   }
+  }
+ },
+ "2.14.0": {
+  "0": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 29,
+     "STALE": 501,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 394,
+    "false_verified": 0,
+    "unchanged_verified": 29,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 309,
+     "import statement no longer present": 85
+    },
+    "stale_precision": 0.2136,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0686
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 253,
+     "STALE": 277,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 170,
+    "false_verified": 0,
+    "unchanged_verified": 253,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 85,
+     "statement no longer within 5 lines": 85
+    },
+    "stale_precision": 0.3863,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5981
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 333,
+     "STALE": 197,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 90,
+    "false_verified": 0,
+    "unchanged_verified": 333,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 85,
+     "statement no longer within 20 lines": 4,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5431,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7872
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 337,
+     "STALE": 193,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 86,
+    "false_verified": 0,
+    "unchanged_verified": 337,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 85,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5544,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7967
+   }
+  }
+ },
+ "2.15.0": {
+  "0": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 26,
+     "STALE": 504,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 392,
+    "false_verified": 0,
+    "unchanged_verified": 26,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 295,
+     "import statement no longer present": 97
+    },
+    "stale_precision": 0.2222,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0622
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 237,
+     "STALE": 293,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 181,
+    "false_verified": 0,
+    "unchanged_verified": 237,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 97,
+     "statement no longer within 5 lines": 84
+    },
+    "stale_precision": 0.3823,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.567
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 315,
+     "STALE": 215,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 103,
+    "false_verified": 0,
+    "unchanged_verified": 315,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 97,
+     "statement no longer within 20 lines": 5,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5209,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7536
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 320,
+     "STALE": 210,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 98,
+    "false_verified": 0,
+    "unchanged_verified": 320,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 97,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5333,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7656
+   }
+  }
+ },
+ "2.16.0": {
+  "0": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 20,
+     "STALE": 510,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 385,
+    "false_verified": 0,
+    "unchanged_verified": 20,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 289,
+     "import statement no longer present": 96
+    },
+    "stale_precision": 0.2451,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0494
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 236,
+     "STALE": 294,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 169,
+    "false_verified": 0,
+    "unchanged_verified": 236,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 96,
+     "statement no longer within 5 lines": 73
+    },
+    "stale_precision": 0.4252,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5827
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 303,
+     "STALE": 227,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 102,
+    "false_verified": 0,
+    "unchanged_verified": 303,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 96,
+     "statement no longer within 20 lines": 5,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5507,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7481
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 308,
+     "STALE": 222,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 97,
+    "false_verified": 0,
+    "unchanged_verified": 308,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 96,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5631,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7605
+   }
+  }
+ },
+ "2.17.0": {
+  "0": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 22,
+     "STALE": 508,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 383,
+    "false_verified": 0,
+    "unchanged_verified": 22,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 288,
+     "import statement no longer present": 95
+    },
+    "stale_precision": 0.2461,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0543
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 232,
+     "STALE": 298,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 173,
+    "false_verified": 0,
+    "unchanged_verified": 232,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 95,
+     "statement no longer within 5 lines": 78
+    },
+    "stale_precision": 0.4195,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5728
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 304,
+     "STALE": 226,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 101,
+    "false_verified": 0,
+    "unchanged_verified": 304,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 95,
+     "statement no longer within 20 lines": 5,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5531,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7506
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 309,
+     "STALE": 221,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 96,
+    "false_verified": 0,
+    "unchanged_verified": 309,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 95,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5656,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.763
+   }
+  }
+ },
+ "2.18.0": {
+  "0": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 20,
+     "STALE": 510,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 379,
+    "false_verified": 0,
+    "unchanged_verified": 20,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 278,
+     "import statement no longer present": 101
+    },
+    "stale_precision": 0.2569,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0501
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 209,
+     "STALE": 321,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 190,
+    "false_verified": 0,
+    "unchanged_verified": 209,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 101,
+     "statement no longer within 5 lines": 89
+    },
+    "stale_precision": 0.4081,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5238
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 292,
+     "STALE": 238,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 107,
+    "false_verified": 0,
+    "unchanged_verified": 292,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 101,
+     "statement no longer within 20 lines": 5,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5504,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7318
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 297,
+     "STALE": 233,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 102,
+    "false_verified": 0,
+    "unchanged_verified": 297,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 101,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5622,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7444
+   }
+  }
+ },
+ "2.19.0": {
+  "0": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 19,
+     "STALE": 511,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 380,
+    "false_verified": 0,
+    "unchanged_verified": 19,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "statement no longer within 0 lines": 276,
+     "import statement no longer present": 104
+    },
+    "stale_precision": 0.2564,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.0476
+   }
+  },
+  "5": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 200,
+     "STALE": 330,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 199,
+    "false_verified": 0,
+    "unchanged_verified": 200,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 104,
+     "statement no longer within 5 lines": 95
+    },
+    "stale_precision": 0.397,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5013
+   }
+  },
+  "20": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 288,
+     "STALE": 242,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 111,
+    "false_verified": 0,
+    "unchanged_verified": 288,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 104,
+     "statement no longer within 20 lines": 6,
+     "statement present but now in type_checking scope, not module": 1
+    },
+    "stale_precision": 0.5413,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7218
+   }
+  },
+  "whole-file": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 293,
+     "STALE": 237,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 106,
+    "false_verified": 0,
+    "unchanged_verified": 293,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 104,
+     "statement present but now in type_checking scope, not module": 2
+    },
+    "stale_precision": 0.5527,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7343
+   }
+  }
+ }
+}
