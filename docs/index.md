@@ -1,55 +1,59 @@
-# ArchAI: The Autonomous Architectural Guardian
+# ArchAI
 
-ArchAI is a comprehensive suite of AI-driven agents designed to bridge the gap between architectural insight and engineering action. It replaces manual risk assessment and gut-instinct planning with deterministic, evidence-backed decision making.
+**Understand the code. Check the rules. Prove the findings.**
 
-## Core Mission
-To empower engineering teams to build, refactor, and release software with 100% confidence by providing auditable insights and actionable plans derived directly from the codebase.
+ArchAI checks a Python repository against engineering standards you configure,
+and cites the source evidence (file and line) for every finding. The
+repository knowledge, rules and findings can be exported as an
+[Open Knowledge Format](https://github.com/GoogleCloudPlatform/open-knowledge-format)
+(OKF) v0.2 bundle and browsed or re-checked from that bundle alone.
 
-## The ArchAI Trifecta
+Its rule is **Receipts or Silence**: a finding is a *verified violation* only
+when every supporting fact is cited from source. When static analysis cannot
+settle a question, ArchAI says so instead of guessing.
 
-### 🛡️ CIRAS (Change Impact & Risk Assessment)
-**"Is it safe to change?"**
-Identifies high-risk modules, traces call graph impact, and evaluates historical instability (churn) to predict the safety of a proposed change.
+## Install
 
-### 📋 WDP-TG (Work Decomposition & Prioritized Task Generation)
-**"What exactly should we do?"**
-Decomposes high-level goals into hierarchical Epics, Tasks, and Subtasks. It automatically maps dependencies and sequences work to mitigate architectural risk first.
-
-### 🎯 SRC-RS (Sprint & Release Confidence Engine)
-**"Will we succeed?"**
-Simulates sprint execution using probabilistic modeling. It highlights bottlenecks, predicts task completion likelihood, and provides an overall confidence score for your release.
-
-### 🔗 GitHub Integration
-**"Workflow-Native Intelligence"**
-ArchAI connects directly to your GitHub repositories, providing automated PR risk assessments and posting actionable advice directly into your code review process.
-
-### 📅 PM Tool Integration
-**"Actionable Roadmaps"**
-Automatically push decomposed tasks and epics to Jira and Trello. ArchAI ensures that every ticket is risk-aware and fully traceable to the codebase.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Python 3.9+
-- Git
-- Local LLM (Ollama) or API access (OpenAI/etc.)
-
-### Installation
 ```bash
-pip install ai-architect
+git clone https://github.com/Hami0095/ai-architecture.git
+cd ai-architecture
+pip install -e .
 ```
 
-### First Command
-Run a quick risk assessment on a core module:
+Python 3.10+. A license token (or `ARCHAI_DEV_MODE=1` for local development)
+is required; see [License](cli/configuration.md#license). Ollama is only
+needed for the LLM-assisted commands.
+
+## First commands
+
 ```bash
-ai-architect impact GraphEngine --explain
+ai-architect CHECK-STANDARDS path/to/repo --okf-out bundle --preview
+ai-architect OKF-VIEW bundle findings
 ```
 
-## Documentation Structure
-- [CLI Reference](cli/commands.md): Full command-line guide.
-- [API Reference](api/endpoints.md): Integration guide for CI/CD and internal tools.
-- [Architecture Deep Dive](architecture/ciras.md): How the agents work under the hood.
-- [Tutorials](tutorials/getting_started.md): Step-by-step guides for common workflows.
-- [Proper Flow](tutorials/proper_flow.md): The analysis-to-action pipeline.
+## Commands
+
+| | Command | |
+|---|---|---|
+| **Deterministic** | [`CHECK-STANDARDS`](cli/commands.md#check-standards) | Check standards with cited evidence; JSON, Markdown and OKF output |
+| | [`OKF-VIEW`](cli/commands.md#okf-view) | Browse any OKF bundle in the terminal |
+| **LLM-assisted** | [`AUDIT`](cli/commands.md#audit), [`IMPACT`](cli/commands.md#impact), [`G-REASON`](cli/commands.md#g-reason), [`EXPLAIN`](cli/commands.md#explain) | Exploration and explanation; not verified |
+| **Integrations** | [`GITHUB`](cli/commands.md#github) | Repositories, pull requests, diff validation |
+| **Session** | [`CONFIG`](cli/commands.md#config), [`SET-GITHUB-TOKEN`](cli/commands.md#set-github-token), [`SET-PM-TOKEN`](cli/commands.md#set-pm-token), [`TRACE`](cli/commands.md#trace), [`HELP`](cli/commands.md#help) | |
+
+Sprint planning (`PLAN`, `SIMULATE`, `RELEASE-CONFIDENCE`) is deferred; see
+[Legacy planning commands](cli/commands.md#legacy-planning-commands).
+
+## Documentation
+
+- [CLI Command Reference](cli/commands.md): every command, argument and exit code.
+- [Standards & Rules](cli/check-standards.md): configuration, the five rule kinds, finding statuses, JSON and OKF output.
+- [Configuration & Environment](cli/configuration.md): license, modes, config files, environment variables, LLM runtime.
+- [Recipes](cli/examples.md): CI gating, investigating findings, sharing bundles, reproducibility.
+
+## What ArchAI does not do
+
+- Analyze languages other than Python (they are reported as not covered).
+- See runtime wiring such as dependency injection or plugins.
+- Measure test coverage.
+- Verify anything produced by the LLM-assisted commands.

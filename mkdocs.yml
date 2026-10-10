@@ -1,5 +1,5 @@
 site_name: ArchAI Documentation
-site_description: Autonomous Architectural Guardian for Engineering Teams
+site_description: Evidence-backed standards checking for Python codebases
 site_url: https://system-designing.vercel.app
 
 theme:
@@ -33,16 +33,19 @@ nav:
   - Home: index.md
   - CLI Reference:
       - Commands: cli/commands.md
-      - Examples: cli/examples.md
+      - Standards & Rules: cli/check-standards.md
+      - Configuration & Environment: cli/configuration.md
+      - Recipes: cli/examples.md
   - API Reference:
       - Endpoints: api/endpoints.md
       - JSON Schemas: api/json-schemas.md
   - Architecture:
       - CIRAS: architecture/ciras.md
-      - WDP-TG: architecture/wdp-tg.md
-      - SRC-RS: architecture/src-rs.md
       - GitHub Integration: architecture/github-integration.md
       - PM Integration: architecture/pm-integration.md
+  - Legacy (deferred):
+      - WDP-TG: architecture/wdp-tg.md
+      - SRC-RS: architecture/src-rs.md
   - Tutorials:
       - Getting Started: tutorials/getting_started.md
       - Chaining Workflows: tutorials/chaining_workflows.md

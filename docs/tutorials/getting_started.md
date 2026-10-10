@@ -1,38 +1,76 @@
-# Tutorial: Getting Started with ArchAI
+# Tutorial: Getting Started
 
-Welcome to ArchAI! This tutorial will guide you through your first architectural audit and successful sprint planning session.
+From installation to your first verified finding in about ten minutes.
 
-## Step 1: Initialize the Environment
-Ensure you have a local LLM running (e.g., Ollama) or your secrets configured in a `.env` file.
-
-```bash
-# Check if ArchAI is installed
-ai-architect --help
-```
-
-## Step 2: Run Your First Impact Analysis
-Pick a module in your code you're thinking of refactoring.
+## Step 1: Install and unlock
 
 ```bash
-ai-architect impact MyComponentName --explain
+git clone https://github.com/Hami0095/ai-architecture.git
+cd ai-architecture
+pip install -e .
+ai-architect --version
 ```
-**Look for**: The "Risk Level" and "Affected Components" list. This tells you the "blast radius" of your change.
 
-## Step 3: Decompose a Goal into Tasks
-Now, let's plan the actual change.
+Set your license token (see [License](../cli/configuration.md#license)), or
+for local experiments:
 
 ```bash
-ai-architect plan "Refactor the authentication flow to use JWT" --verbose
+export ARCHAI_DEV_MODE=1          # PowerShell: $env:ARCHAI_DEV_MODE=1
 ```
-**Look for**: The hierarchical list of tasks and the "Effort" estimates. Notice how high-risk components are prioritized first.
 
-## Step 4: Simulate the Sprint
-Finally, see if your team can actually deliver this in the planned timeframe.
+## Step 2: Run the default check
 
 ```bash
-ai-architect simulate-sprint "Refactor authentication flow" --team-size 3 --days 10
+ai-architect CHECK-STANDARDS path/to/your/repo
 ```
-**Look for**: The "Overall Confidence" score. If it's below 0.8, check the "Recommendations" to see what pre-work (like adding tests) is needed.
 
-## Next Steps
-Explore [Chaining Workflows](chaining_workflows.md) to automate this in your CI/CD pipeline!
+With no configuration, ArchAI runs one default rule: no import cycles. The
+report starts by saying so. **Look for:** section 2 ("What was found") and,
+for each finding, the `file:line` evidence in section 3.
+
+## Step 3: Write your first rule
+
+Create `archai_standards.yaml` in the repository you are checking:
+
+```yaml
+version: 1
+exclude: ["tests/*"]
+layers:
+  domain: ["myapp.domain"]
+  infrastructure: ["myapp.db"]
+rules:
+  - id: domain-is-pure
+    kind: layer_boundary
+    layer: domain
+    forbidden_layers: [infrastructure]
+  - id: no-cycles
+    kind: circular_dependency
+```
+
+Replace `myapp.domain` and `myapp.db` with real module names. Run the check again:
+
+```bash
+ai-architect CHECK-STANDARDS path/to/your/repo
+```
+
+If a rule's patterns match nothing, it reports `INSUFFICIENT_GRAPH_EVIDENCE`
+instead of `PASS`; fix the pattern and rerun. All rule kinds are in
+[Standards & Rules](../cli/check-standards.md).
+
+## Step 4: Explore the results
+
+```bash
+ai-architect CHECK-STANDARDS path/to/your/repo --okf-out ../bundle --preview
+ai-architect OKF-VIEW ../bundle findings
+ai-architect OKF-VIEW ../bundle <finding-id>
+```
+
+**Look for:** the status of each finding (`VIOLATION`, `RISK`,
+`NO-EVIDENCE`) and its evidence lines. A `PASS` covers only the rule's
+declared scope.
+
+## Next steps
+
+- [Recipes](../cli/examples.md): CI gating, sharing bundles, reproducible runs.
+- [CLI Command Reference](../cli/commands.md): every command, including the
+  LLM-assisted `AUDIT`, `IMPACT`, `G-REASON` and `EXPLAIN`.

@@ -8,6 +8,11 @@ where it applies, line). The repository knowledge, the rules and the findings ca
 [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/open-knowledge-format)
 v0.2 bundle and re-checked from that bundle alone.
 
+**Documentation:** [command reference](docs/cli/commands.md) ·
+[standards & rules](docs/cli/check-standards.md) ·
+[configuration & environment](docs/cli/configuration.md) ·
+[recipes](docs/cli/examples.md). Build the site with `mkdocs serve`.
+
 ## Core principle: Receipts or Silence
 
 - A finding is reported as a **verified violation** only when every fact behind
