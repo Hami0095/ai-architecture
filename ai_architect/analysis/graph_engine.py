@@ -23,6 +23,12 @@ class ModuleNode:
         self.functions: Dict[str, FunctionNode] = {} # func_name -> FunctionNode (includes class.method)
         self.imports: List[str] = [] # Absolute module names after resolution
         self.docstring: Optional[str] = None
+        # Every import statement in the file (any nesting), with line numbers and
+        # execution scope. Used by the standards checker; `imports` is kept as-is.
+        self.import_records: List[Dict[str, Any]] = []
+        # importlib.import_module / __import__ calls (literal target or None).
+        self.dynamic_imports: List[Dict[str, Any]] = []
+        self.parse_error: Optional[str] = None
         self.ownership: str = "Unknown"
         self.metrics: Dict[str, Any] = {
             "dependency_depth": 0,
@@ -38,10 +44,21 @@ class GraphEngine:
     Uses AST analysis to build a granular dependency graph and execution paths.
     """
     
-    def __init__(self, root_path: Path):
+    def __init__(self, root_path: Path, compute_churn: bool = True):
         self.root_path = root_path
+        self.compute_churn = compute_churn
         self.nodes: Dict[str, ModuleNode] = {} # module_name -> ModuleNode
-        self.ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build'}
+        self.ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build',
+                            '.tox', '.nox', '.mypy_cache', '.pytest_cache', 'site-packages'}
+
+    def is_ignored(self, path: Path) -> bool:
+        """Checks ignored directory names relative to the root, so a repository
+        that itself lives under e.g. a 'build' folder is still analyzed."""
+        try:
+            parts = path.relative_to(self.root_path).parts
+        except ValueError:
+            parts = path.parts
+        return any(part in self.ignore_dirs for part in parts)
 
     def resolve_module_name(self, file_path: Path) -> str:
         """Converts file path to dot-notation module name."""
@@ -55,8 +72,8 @@ class GraphEngine:
     def analyze_project(self):
         """Walks the project and analyzes all Python files."""
         # 1. First pass: Identify all internal modules
-        for path in self.root_path.rglob('*.py'):
-            if any(part in self.ignore_dirs for part in path.parts):
+        for path in sorted(self.root_path.rglob('*.py')):
+            if self.is_ignored(path):
                 continue
             module_name = self.resolve_module_name(path)
             self.nodes[module_name] = ModuleNode(path, module_name)
@@ -97,9 +114,69 @@ class GraphEngine:
                     node.functions[item.name] = func_node
                 elif isinstance(item, (ast.Import, ast.ImportFrom)):
                     self._extract_imports(item, node)
-                    
+
+            self._collect_import_records(tree, node)
+
         except Exception as e:
+            node.parse_error = f"{type(e).__name__}: {e}"
             logger.warning(f"AST Analysis failed for {node.file_path}: {e}")
+
+    def _collect_import_records(self, tree: ast.AST, node: ModuleNode):
+        """Records every import with its line and execution scope.
+
+        scope is "module" (runs at import time), "function" (deferred until
+        called) or "type_checking" (inside `if TYPE_CHECKING:`, never at runtime).
+        """
+        def is_type_checking_test(test: ast.AST) -> bool:
+            if isinstance(test, ast.Name):
+                return test.id == "TYPE_CHECKING"
+            if isinstance(test, ast.Attribute):
+                return test.attr == "TYPE_CHECKING"
+            return False
+
+        def visit(item: ast.AST, scope: str):
+            if isinstance(item, ast.Import):
+                node.import_records.append({
+                    "kind": "import", "module": None, "level": 0,
+                    "names": [a.name for a in item.names],
+                    "line": item.lineno, "scope": scope,
+                    "statement": ast.unparse(item),
+                })
+            elif isinstance(item, ast.ImportFrom):
+                node.import_records.append({
+                    "kind": "from", "module": item.module, "level": item.level,
+                    "names": [a.name for a in item.names],
+                    "line": item.lineno, "scope": scope,
+                    "statement": ast.unparse(item),
+                })
+            elif isinstance(item, ast.Call):
+                func = item.func
+                name = func.id if isinstance(func, ast.Name) else func.attr if isinstance(func, ast.Attribute) else None
+                if name in ("import_module", "__import__"):
+                    arg = item.args[0] if item.args else None
+                    literal = arg.value if isinstance(arg, ast.Constant) and isinstance(arg.value, str) else None
+                    node.dynamic_imports.append({
+                        "target": literal, "line": item.lineno, "scope": scope,
+                        "statement": ast.unparse(item),
+                    })
+
+            if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)):
+                child_scope = "type_checking" if scope == "type_checking" else "function"
+                for child in ast.iter_child_nodes(item):
+                    visit(child, child_scope)
+            elif isinstance(item, ast.If) and is_type_checking_test(item.test):
+                visit(item.test, scope)
+                for child in item.body:
+                    visit(child, "type_checking")
+                for child in item.orelse:
+                    visit(child, scope)
+            else:
+                for child in ast.iter_child_nodes(item):
+                    visit(child, scope)
+
+        visit(tree, "module")
+        node.import_records.sort(key=lambda r: (r["line"], r["statement"]))
+        node.dynamic_imports.sort(key=lambda r: (r["line"], r["statement"]))
 
     def _extract_calls_from_scope(self, scope: ast.AST, func_node: FunctionNode):
         """Recursively finds all calls within a function scope."""
@@ -154,20 +231,20 @@ class GraphEngine:
         """Calculates advanced metrics like dependency depth, fan-in/out, and churn."""
         for name, node in self.nodes.items():
             # 1. Fan-out (Imports of internal modules)
-            internal_imports = [imp for imp in node.imports if any(imp.startswith(n) for n in self.nodes.keys())]
+            internal_imports = [imp for imp in node.imports if any(imp == n or imp.startswith(n + ".") for n in self.nodes.keys())]
             node.metrics["fan_out"] = len(internal_imports)
             
             # 2. Fan-in (How many modules import this one)
             fan_in = 0
             for other_name, other_node in self.nodes.items():
                 if other_name == name: continue
-                if any(imp.startswith(name) for imp in other_node.imports):
+                if any(imp == name or imp.startswith(name + ".") for imp in other_node.imports):
                     fan_in += 1
             node.metrics["fan_in"] = fan_in
             node.metrics["callers_count"] = fan_in # Approximation
 
             # 3. Churn
-            node.metrics["churn"] = self._get_git_churn(node.file_path)
+            node.metrics["churn"] = self._get_git_churn(node.file_path) if self.compute_churn else 0
 
             # 4. Dependency Depth (recursive)
             node.metrics["dependency_depth"] = self._get_depth(name, set())
