@@ -64,6 +64,6 @@ phase2:
       - [C, B]
   ollama:
     url: http://127.0.0.1:11434    # local only; nothing is sent to a remote service
-    num_ctx: 8192
+    num_ctx: 4096            # longest prompt ~1.7k tokens; 8192 ran out of GPU memory (6 GB) in the smoke test
     num_predict: 1024
   models: PENDING            # Ollama, at least two model families; not installed yet

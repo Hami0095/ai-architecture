@@ -25,6 +25,7 @@ import statistics
 import subprocess
 import sys
 import time
+import urllib.error
 import urllib.request
 from collections import Counter, defaultdict, deque
 from datetime import datetime, timezone
@@ -413,6 +414,7 @@ def prompt(q, condition):
 
 ANSWER_RE = re.compile(r"^[\s>*_#`]*ANSWER\s*:\s*(.*?)[\s*_`]*$", re.I | re.M)
 NAME_RE = re.compile(r"[A-Za-z_][\w.]*")
+BARE_RE = re.compile(r"(?i)(cannot[_ ]verify|yes|no)\.?|\{[^{}\n]*\}|moved to `?[\w.]+`?\.?|yes\s*:\s*[^\n]+->[^\n]+")
 
 
 def clean(name):
@@ -423,7 +425,13 @@ def parse(text, template):
     """Parse the final `ANSWER:` line. Returns {"kind": abstain|unparseable|yes|no|set|moved, ...}."""
     hits = ANSWER_RE.findall(text or "")
     if not hits:
-        return {"kind": "unparseable"}
+        # A response that is exactly one allowed answer form (e.g. a bare "CANNOT_VERIFY") is
+        # accepted; anything else without an ANSWER: line is unparseable. Rule added after the
+        # smoke test, before the full run.
+        bare = (text or "").strip().strip("`*").strip()
+        if not BARE_RE.fullmatch(bare):
+            return {"kind": "unparseable"}
+        hits = [bare]
     raw = hits[-1].strip().strip("`").strip()
     low = raw.lower()
     if re.fullmatch(r"cannot[_ ]verify\.?", low):
@@ -615,10 +623,18 @@ def ollama_chat(model, system, user):
                         "num_predict": o["num_predict"]}}
     req = urllib.request.Request(ollama_url() + "/api/chat", data=json.dumps(body).encode("utf-8"),
                                  headers={"Content-Type": "application/json"})
-    t0 = time.perf_counter()
-    with urllib.request.urlopen(req, timeout=1800) as r:
-        out = json.load(r)
-    return {"response": out["message"]["content"], "tokens_in": out.get("prompt_eval_count"),
+    for attempt in range(3):   # Ollama answers 500 after a GPU out-of-memory and reloads the model
+        t0 = time.perf_counter()
+        try:
+            with urllib.request.urlopen(req, timeout=1800) as r:
+                out = json.load(r)
+            break
+        except (urllib.error.HTTPError, urllib.error.URLError) as e:
+            if attempt == 2:
+                raise
+            print(f"ollama error {e}; retrying in 15 s", file=sys.stderr)
+            time.sleep(15)
+    return {"attempts": attempt + 1, "response": out["message"]["content"], "tokens_in": out.get("prompt_eval_count"),
             "tokens_out": out.get("eval_count"), "latency_s": round(time.perf_counter() - t0, 3),
             "done_reason": out.get("done_reason")}
 
