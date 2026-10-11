@@ -32,6 +32,13 @@ python -m pytest experiments/scrapy_staleness/test_phase2.py           # harness
   C (relevant 2.10.0 facts), D-strict / D-reanchored (the same facts with evidence,
   verifier labels, coverage labels and rules), E (relevant facts from the target graph,
   as a ceiling). Every condition gets the same system prompt and question.
+- **Scoring:** the final `ANSWER:` line is parsed deterministically. If a response has no
+  such line, its whole text, last line or first line is accepted only when it is exactly
+  one allowed answer. False confidence means a parseable, non-abstaining, wrong answer
+  on a changed question. Unparseable responses are counted separately. `analyze`
+  re-scores the stored responses with the current rules. Both parsing rules and the
+  4096-token context were set after the smoke test and before the full run (see
+  `results/qwen2.5_7b-instruct-smoke-v1/` for the first smoke run).
 - **Models:** `mock` is a deterministic rule-based reader of the context. It tests the
   harness and is not a result. Real models run only through a local Ollama server
   (`ollama:<name>`), with temperature 0, seed 42 and 3 runs per prompt.

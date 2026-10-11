@@ -425,11 +425,12 @@ def parse(text, template):
     """Parse the final `ANSWER:` line. Returns {"kind": abstain|unparseable|yes|no|set|moved, ...}."""
     hits = ANSWER_RE.findall(text or "")
     if not hits:
-        # A response that is exactly one allowed answer form (e.g. a bare "CANNOT_VERIFY") is
-        # accepted; anything else without an ANSWER: line is unparseable. Rule added after the
-        # smoke test, before the full run.
-        bare = (text or "").strip().strip("`*").strip()
-        if not BARE_RE.fullmatch(bare):
+        # Without an ANSWER: line, a response whose whole text, last line or first line is exactly
+        # one allowed answer form (e.g. "CANNOT_VERIFY" followed by an explanation) is accepted;
+        # anything else is unparseable. Rule added after the smoke test, before the full run.
+        lines = [l.strip().strip("`*").strip() for l in (text or "").strip().splitlines() if l.strip()]
+        bare = next((l for l in ([" ".join(lines)] + lines[-1:] + lines[:1]) if BARE_RE.fullmatch(l)), None)
+        if bare is None:
             return {"kind": "unparseable"}
         hits = [bare]
     raw = hits[-1].strip().strip("`").strip()
@@ -775,6 +776,11 @@ def holm(pvalues):
     return adj
 
 
+def falsely_confident(s):
+    """A wrong answer that was given with confidence: parseable, not an abstention, not correct."""
+    return not (s["correct"] or s["abstain"] or s["unparseable"])
+
+
 def metrics(items, reps, rng):
     if not items:
         return {"n": 0}
@@ -782,7 +788,7 @@ def metrics(items, reps, rng):
     abst = [i["score"]["abstain"] for i in items]
     changed = [i for i in items if i["stratum"] == "changed"]
     unchanged = [i for i in items if i["stratum"] == "unchanged"]
-    fc = [(not i["score"]["correct"]) and not i["score"]["abstain"] for i in changed]
+    fc = [falsely_confident(i["score"]) for i in changed]
     q2 = [i["score"] for i in items if i["template"] == "Q2" and "precision" in i["score"]]
     m = {"n": len(items), "accuracy": round(sum(corr) / len(items), 4), "accuracy_ci95": bootstrap_ci(corr, reps, rng),
          "abstention": round(sum(abst) / len(items), 4),
@@ -805,6 +811,13 @@ def analyze(model, label=None):
     import numpy as np
     out_dir = model_dir(model, label)
     rows = [json.loads(l) for l in (out_dir / "raw.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    # Re-parse and re-score every stored response with the current (deterministic) rules.
+    questions = {q["id"]: q for t in {r["target"] for r in rows} for q in load_questions(t)}
+    for r in rows:
+        q = questions[r["qid"]]
+        r["parsed"] = parse(r["response"], q["template"])
+        r["score"] = score(q, r["parsed"])
+        r["canonical"] = canonical(q, r["parsed"], r["score"])
     agg = aggregate(rows)
     reps = P2["bootstrap_resamples"]
     rng = np.random.default_rng(P2["seed"])
@@ -831,7 +844,7 @@ def analyze(model, label=None):
                 xa = [agg[(q, a)]["score"]["correct"] for q in ids]
                 xb = [agg[(q, b)]["score"]["correct"] for q in ids]
             else:
-                fc = lambda s: (not s["correct"]) and not s["abstain"]
+                fc = falsely_confident
                 xa = [fc(agg[(q, a)]["score"]) for q in ids]
                 xb = [fc(agg[(q, b)]["score"]) for q in ids]
             n01, n10, p = mcnemar_exact(xa, xb)
