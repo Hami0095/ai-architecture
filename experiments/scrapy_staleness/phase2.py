@@ -636,8 +636,9 @@ def call(model, system, user):
 
 # --- Runner -------------------------------------------------------------------------------
 
-def model_dir(model):
-    return EXP / "results" / re.sub(r"[^\w.-]+", "_", model.removeprefix("ollama:"))
+def model_dir(model, label=None):
+    name = re.sub(r"[^\w.-]+", "_", model.removeprefix("ollama:"))
+    return EXP / "results" / (f"{name}-{label}" if label else name)
 
 
 def sha(text):
@@ -652,8 +653,8 @@ def git_head():
     return head, dirty
 
 
-def run(model, targets, n_questions=None, conditions=None, runs=None):
-    out_dir = model_dir(model)
+def run(model, targets, n_questions=None, conditions=None, runs=None, label=None):
+    out_dir = model_dir(model, label)
     out_dir.mkdir(parents=True, exist_ok=True)
     raw = out_dir / "raw.jsonl"
     done = set()
@@ -784,9 +785,9 @@ def metrics(items, reps, rng):
     return m
 
 
-def analyze(model):
+def analyze(model, label=None):
     import numpy as np
-    out_dir = model_dir(model)
+    out_dir = model_dir(model, label)
     rows = [json.loads(l) for l in (out_dir / "raw.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     agg = aggregate(rows)
     reps = P2["bootstrap_resamples"]
@@ -889,17 +890,19 @@ def main():
     rp.add_argument("--questions", type=int, default=None, help="first N questions per target (smoke test)")
     rp.add_argument("--conditions", nargs="*", default=None)
     rp.add_argument("--runs", type=int, default=None)
+    rp.add_argument("--label", default=None, help="results/<model>-<label>/ (e.g. smoke)")
     an = sub.add_parser("analyze")
     an.add_argument("--model", required=True)
+    an.add_argument("--label", default=None)
     args = ap.parse_args()
     if args.cmd == "questions":
         write_questions()
     elif args.cmd == "samples":
         write_samples(args.target)
     elif args.cmd == "run":
-        run(args.model, args.targets, args.questions, args.conditions, args.runs)
+        run(args.model, args.targets, args.questions, args.conditions, args.runs, args.label)
     else:
-        analyze(args.model)
+        analyze(args.model, args.label)
 
 
 if __name__ == "__main__":
