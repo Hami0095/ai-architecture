@@ -1,4 +1,5 @@
 import ast
+import functools
 import os
 import json
 import subprocess
@@ -38,27 +39,61 @@ class ModuleNode:
             "fan_out": 0
         }
 
+def git_visible_files(root: Path) -> Optional[Set[str]]:
+    """Files git considers part of the repository at `root`: tracked files plus untracked
+    files that no .gitignore (nested, global or info/exclude) excludes. Paths are relative
+    to `root`, with forward slashes.
+
+    Returns None, meaning "do not filter", when `root` is not inside a git work tree, git
+    is unavailable, or `root` is itself ignored by an enclosing repository (a vendored or
+    extracted tree is then analyzed as a standalone folder).
+    """
+    def git(*args):
+        return subprocess.run(["git", "-C", str(root), *args], capture_output=True, timeout=30, check=False)
+
+    try:
+        if git("rev-parse", "--is-inside-work-tree").returncode != 0:
+            return None
+        if git("check-ignore", "-q", ".").returncode == 0:
+            return None
+        listed = git("ls-files", "-z", "--cached", "--others", "--exclude-standard")
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if listed.returncode != 0:
+        return None
+    return {p for p in listed.stdout.decode("utf-8", errors="replace").split("\0") if p}
+
+
 class GraphEngine:
     """
     Deterministic Architecture Graph Engine with Function-Level Call Tracing.
     Uses AST analysis to build a granular dependency graph and execution paths.
     """
     
-    def __init__(self, root_path: Path, compute_churn: bool = True):
+    def __init__(self, root_path: Path, compute_churn: bool = True, respect_gitignore: bool = True):
         self.root_path = root_path
         self.compute_churn = compute_churn
+        self.respect_gitignore = respect_gitignore
         self.nodes: Dict[str, ModuleNode] = {} # module_name -> ModuleNode
         self.ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build',
                             '.tox', '.nox', '.mypy_cache', '.pytest_cache', 'site-packages'}
 
+    @functools.cached_property
+    def git_files(self) -> Optional[Set[str]]:
+        return git_visible_files(Path(self.root_path)) if self.respect_gitignore else None
+
     def is_ignored(self, path: Path) -> bool:
-        """Checks ignored directory names relative to the root, so a repository
-        that itself lives under e.g. a 'build' folder is still analyzed."""
+        """True for files under ignored directory names (checked relative to the root, so a
+        repository that itself lives under e.g. a 'build' folder is still analyzed) and for
+        files the repository's .gitignore excludes."""
         try:
-            parts = path.relative_to(self.root_path).parts
+            rel = path.relative_to(self.root_path)
         except ValueError:
-            parts = path.parts
-        return any(part in self.ignore_dirs for part in parts)
+            return any(part in self.ignore_dirs for part in path.parts)
+        if any(part in self.ignore_dirs for part in rel.parts):
+            return True
+        files = self.git_files
+        return files is not None and path.is_file() and rel.as_posix() not in files
 
     def resolve_module_name(self, file_path: Path) -> str:
         """Converts file path to dot-notation module name."""

@@ -48,9 +48,10 @@ class ArchitecturalAuditor:
 
     def _locate_symbol(self, root: Path, symbol: str) -> Optional[str]:
         """Scans the codebase for the definition of a symbol (class or function)."""
-        ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build'}
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(root, compute_churn=False)
         for path in root.rglob("*.py"):
-            if any(part in ignore_dirs for part in path.parts): continue
+            if engine.is_ignored(path): continue
             try:
                 content = path.read_text(encoding="utf-8", errors="ignore")
                 # Regex to find 'class Symbol' or 'def Symbol'
@@ -67,12 +68,13 @@ class ArchitecturalAuditor:
         if not root.exists(): return f"Error: Directory {root} does not exist."
 
         summary = f"Project Root: {root}\nStructure:\n"
-        ignore_dirs = {'.git', '__pycache__', '.venv', 'venv', 'env', 'node_modules', 'dist', 'build'}
+        from ..analysis.graph_engine import GraphEngine
+        engine = GraphEngine(root, compute_churn=False)
         relevant_extensions = {'.py', '.md', '.sql', '.yaml', '.yml', '.json', '.toml', '.env', 'Dockerfile'}
         file_contents = ""
         files_scanned = 0
         for path in root.rglob('*'):
-            if any(part in ignore_dirs for part in path.parts): continue
+            if engine.is_ignored(path): continue
             try: depth = len(path.relative_to(root).parts)
             except: depth = 0
             if depth > max_depth: continue

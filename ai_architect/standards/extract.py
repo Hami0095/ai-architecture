@@ -149,6 +149,8 @@ def _inventory(root: Path, engine: GraphEngine) -> Tuple[List[str], Dict[str, in
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = sorted(d for d in dirnames if d not in engine.ignore_dirs)
         for filename in sorted(filenames):
+            if engine.is_ignored(Path(dirpath, filename)):
+                continue
             rel = _posix(Path(dirpath, filename).relative_to(root))
             files.append(rel)
             ext = Path(filename).suffix.lower()
