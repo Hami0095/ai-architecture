@@ -46,5 +46,24 @@ phase2:
   temperature: 0
   runs_per_question: 3       # majority vote for the answer, median for tokens and latency
   questions_per_target: 40
-  context_facts_max: 40      # cap on facts per prompt in C / D / E
+  context_facts_max: 40      # cap on (source, target) pairs per prompt in C / D / E
+  bootstrap_resamples: 10000
+  # Pre-registered paired comparisons (exact McNemar, Holm-corrected across all of them):
+  comparisons:
+    accuracy:                # all questions
+      - [D-strict, C]
+      - [D-reanchored, C]
+      - [D-reanchored, D-strict]
+      - [C, B]
+      - [B, A]
+      - [E, D-reanchored]
+    false_confidence:        # changed questions only
+      - [D-strict, C]
+      - [D-reanchored, C]
+      - [D-reanchored, D-strict]
+      - [C, B]
+  ollama:
+    url: http://127.0.0.1:11434    # local only; nothing is sent to a remote service
+    num_ctx: 8192
+    num_predict: 1024
   models: PENDING            # Ollama, at least two model families; not installed yet

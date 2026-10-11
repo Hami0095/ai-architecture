@@ -1,0 +1,558 @@
+[
+ {
+  "id": "2.12.0-00-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "new_edge",
+  "x": "scrapy.downloadermiddlewares.downloadtimeout",
+  "text": "Does module `scrapy.downloadermiddlewares.downloadtimeout` import module `scrapy`?",
+  "truth": "yes",
+  "base_truth": "no",
+  "y": "scrapy"
+ },
+ {
+  "id": "2.12.0-01-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "gained_imports",
+  "x": "scrapy.commands.shell",
+  "text": "Which scrapy modules does module `scrapy.commands.shell` import?",
+  "truth": [
+   "scrapy",
+   "scrapy.commands",
+   "scrapy.http",
+   "scrapy.shell",
+   "scrapy.utils.spider",
+   "scrapy.utils.url"
+  ],
+  "base_truth": [
+   "scrapy.commands",
+   "scrapy.http",
+   "scrapy.shell",
+   "scrapy.utils.spider",
+   "scrapy.utils.url"
+  ]
+ },
+ {
+  "id": "2.12.0-02-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "new_module",
+  "x": "scrapy.downloadermiddlewares.offsite",
+  "text": "Does module `scrapy.downloadermiddlewares.offsite` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "no"
+ },
+ {
+  "id": "2.12.0-03-Q4-changed",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "changed",
+  "subtype": "left_cycle",
+  "x": "scrapy.utils.gz",
+  "text": "Is module `scrapy.utils.gz` part of an import cycle? If yes, name one cycle.",
+  "truth": "no",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-04-Q1-unchanged",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "unchanged",
+  "subtype": "kept_edge",
+  "x": "scrapy.contracts.default",
+  "text": "Does module `scrapy.contracts.default` import module `scrapy.exceptions`?",
+  "truth": "yes",
+  "base_truth": "yes",
+  "y": "scrapy.exceptions"
+ },
+ {
+  "id": "2.12.0-05-Q2-unchanged",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "unchanged",
+  "subtype": "same_imports",
+  "x": "scrapy.core.downloader.handlers.http10",
+  "text": "Which scrapy modules does module `scrapy.core.downloader.handlers.http10` import?",
+  "truth": [
+   "scrapy.utils.misc",
+   "scrapy.utils.python"
+  ],
+  "base_truth": [
+   "scrapy.utils.misc",
+   "scrapy.utils.python"
+  ]
+ },
+ {
+  "id": "2.12.0-06-Q3-unchanged",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "unchanged",
+  "subtype": "exists",
+  "x": "scrapy.core.downloader.handlers.http",
+  "text": "Does module `scrapy.core.downloader.handlers.http` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-07-Q4-unchanged",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "unchanged",
+  "subtype": "still_in_cycle",
+  "x": "scrapy.http.request.rpc",
+  "text": "Is module `scrapy.http.request.rpc` part of an import cycle? If yes, name one cycle.",
+  "truth": "yes",
+  "base_truth": "yes",
+  "example_cycle": [
+   "scrapy.http.request.rpc",
+   "scrapy.http.request",
+   "scrapy",
+   "scrapy.http",
+   "scrapy.http.request.rpc"
+  ]
+ },
+ {
+  "id": "2.12.0-08-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "removed_edge",
+  "x": "scrapy.core.downloader",
+  "text": "Does module `scrapy.core.downloader` import module `scrapy.http`?",
+  "truth": "no",
+  "base_truth": "yes",
+  "y": "scrapy.http"
+ },
+ {
+  "id": "2.12.0-09-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "lost_imports_only",
+  "x": "scrapy.commands",
+  "text": "Which scrapy modules does module `scrapy.commands` import?",
+  "truth": [
+   "scrapy.exceptions",
+   "scrapy.utils.conf"
+  ],
+  "base_truth": [
+   "scrapy.crawler",
+   "scrapy.exceptions",
+   "scrapy.utils.conf"
+  ]
+ },
+ {
+  "id": "2.12.0-10-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "removed",
+  "x": "scrapy.downloadermiddlewares.decompression",
+  "text": "Does module `scrapy.downloadermiddlewares.decompression` exist? If it moved, what is its new name?",
+  "truth": "no",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-11-Q4-changed",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "changed",
+  "subtype": "left_cycle",
+  "x": "scrapy.utils.response",
+  "text": "Is module `scrapy.utils.response` part of an import cycle? If yes, name one cycle.",
+  "truth": "no",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-12-Q1-unchanged",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "unchanged",
+  "subtype": "never_edge",
+  "x": "scrapy.link",
+  "text": "Does module `scrapy.link` import module `scrapy.downloadermiddlewares.httpproxy`?",
+  "truth": "no",
+  "base_truth": "no",
+  "y": "scrapy.downloadermiddlewares.httpproxy"
+ },
+ {
+  "id": "2.12.0-13-Q2-unchanged",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "unchanged",
+  "subtype": "same_imports",
+  "x": "scrapy.downloadermiddlewares.httpproxy",
+  "text": "Which scrapy modules does module `scrapy.downloadermiddlewares.httpproxy` import?",
+  "truth": [
+   "scrapy.exceptions",
+   "scrapy.utils.httpobj",
+   "scrapy.utils.python"
+  ],
+  "base_truth": [
+   "scrapy.exceptions",
+   "scrapy.utils.httpobj",
+   "scrapy.utils.python"
+  ]
+ },
+ {
+  "id": "2.12.0-14-Q3-unchanged",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "unchanged",
+  "subtype": "exists",
+  "x": "scrapy.downloadermiddlewares.httpcache",
+  "text": "Does module `scrapy.downloadermiddlewares.httpcache` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-15-Q4-unchanged",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "unchanged",
+  "subtype": "never_in_cycle",
+  "x": "scrapy.__main__",
+  "text": "Is module `scrapy.__main__` part of an import cycle? If yes, name one cycle.",
+  "truth": "no",
+  "base_truth": "no"
+ },
+ {
+  "id": "2.12.0-16-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "new_edge",
+  "x": "scrapy.pipelines.media",
+  "text": "Does module `scrapy.pipelines.media` import module `scrapy.exceptions`?",
+  "truth": "yes",
+  "base_truth": "no",
+  "y": "scrapy.exceptions"
+ },
+ {
+  "id": "2.12.0-17-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "gained_imports",
+  "x": "scrapy.downloadermiddlewares.downloadtimeout",
+  "text": "Which scrapy modules does module `scrapy.downloadermiddlewares.downloadtimeout` import?",
+  "truth": [
+   "scrapy",
+   "scrapy.signals"
+  ],
+  "base_truth": [
+   "scrapy.signals"
+  ]
+ },
+ {
+  "id": "2.12.0-18-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "new_module",
+  "x": "scrapy.extensions.periodic_log",
+  "text": "Does module `scrapy.extensions.periodic_log` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "no"
+ },
+ {
+  "id": "2.12.0-19-Q1-unchanged",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "unchanged",
+  "subtype": "kept_edge",
+  "x": "scrapy.http",
+  "text": "Does module `scrapy.http` import module `scrapy.http.request.form`?",
+  "truth": "yes",
+  "base_truth": "yes",
+  "y": "scrapy.http.request.form"
+ },
+ {
+  "id": "2.12.0-20-Q2-unchanged",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "unchanged",
+  "subtype": "same_imports",
+  "x": "scrapy.http.response.xml",
+  "text": "Which scrapy modules does module `scrapy.http.response.xml` import?",
+  "truth": [
+   "scrapy.http.response.text"
+  ],
+  "base_truth": [
+   "scrapy.http.response.text"
+  ]
+ },
+ {
+  "id": "2.12.0-21-Q3-unchanged",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "unchanged",
+  "subtype": "exists",
+  "x": "scrapy.extensions.statsmailer",
+  "text": "Does module `scrapy.extensions.statsmailer` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-22-Q4-unchanged",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "unchanged",
+  "subtype": "still_in_cycle",
+  "x": "scrapy.selector",
+  "text": "Is module `scrapy.selector` part of an import cycle? If yes, name one cycle.",
+  "truth": "yes",
+  "base_truth": "yes",
+  "example_cycle": [
+   "scrapy.selector",
+   "scrapy.selector.unified",
+   "scrapy.http",
+   "scrapy.http.request",
+   "scrapy",
+   "scrapy.selector"
+  ]
+ },
+ {
+  "id": "2.12.0-23-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "removed_edge",
+  "x": "scrapy.downloadermiddlewares.httpcache",
+  "text": "Does module `scrapy.downloadermiddlewares.httpcache` import module `scrapy.http.request`?",
+  "truth": "no",
+  "base_truth": "yes",
+  "y": "scrapy.http.request"
+ },
+ {
+  "id": "2.12.0-24-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "lost_imports_only",
+  "x": "scrapy.downloadermiddlewares.retry",
+  "text": "Which scrapy modules does module `scrapy.downloadermiddlewares.retry` import?",
+  "truth": [
+   "scrapy.exceptions",
+   "scrapy.utils.misc",
+   "scrapy.utils.python",
+   "scrapy.utils.response"
+  ],
+  "base_truth": [
+   "scrapy.exceptions",
+   "scrapy.http.request",
+   "scrapy.settings",
+   "scrapy.spiders",
+   "scrapy.utils.misc",
+   "scrapy.utils.python",
+   "scrapy.utils.response"
+  ]
+ },
+ {
+  "id": "2.12.0-25-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "removed",
+  "x": "scrapy.loader.common",
+  "text": "Does module `scrapy.loader.common` exist? If it moved, what is its new name?",
+  "truth": "no",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-26-Q1-unchanged",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "unchanged",
+  "subtype": "never_edge",
+  "x": "scrapy.spiders.crawl",
+  "text": "Does module `scrapy.spiders.crawl` import module `scrapy.downloadermiddlewares`?",
+  "truth": "no",
+  "base_truth": "no",
+  "y": "scrapy.downloadermiddlewares"
+ },
+ {
+  "id": "2.12.0-27-Q2-unchanged",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "unchanged",
+  "subtype": "same_imports",
+  "x": "scrapy.utils.trackref",
+  "text": "Which scrapy modules does module `scrapy.utils.trackref` import?",
+  "truth": [],
+  "base_truth": []
+ },
+ {
+  "id": "2.12.0-28-Q3-unchanged",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "unchanged",
+  "subtype": "exists",
+  "x": "scrapy.shell",
+  "text": "Does module `scrapy.shell` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-29-Q4-unchanged",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "unchanged",
+  "subtype": "never_in_cycle",
+  "x": "scrapy.contracts.default",
+  "text": "Is module `scrapy.contracts.default` part of an import cycle? If yes, name one cycle.",
+  "truth": "no",
+  "base_truth": "no"
+ },
+ {
+  "id": "2.12.0-30-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "new_edge",
+  "x": "scrapy.utils.misc",
+  "text": "Does module `scrapy.utils.misc` import module `scrapy.exceptions`?",
+  "truth": "yes",
+  "base_truth": "no",
+  "y": "scrapy.exceptions"
+ },
+ {
+  "id": "2.12.0-31-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "gained_imports",
+  "x": "scrapy.extensions.memdebug",
+  "text": "Which scrapy modules does module `scrapy.extensions.memdebug` import?",
+  "truth": [
+   "scrapy",
+   "scrapy.exceptions",
+   "scrapy.signals",
+   "scrapy.utils.trackref"
+  ],
+  "base_truth": [
+   "scrapy.exceptions",
+   "scrapy.signals",
+   "scrapy.utils.trackref"
+  ]
+ },
+ {
+  "id": "2.12.0-32-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "new_module",
+  "x": "scrapy.utils._compression",
+  "text": "Does module `scrapy.utils._compression` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "no"
+ },
+ {
+  "id": "2.12.0-33-Q1-unchanged",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "unchanged",
+  "subtype": "kept_edge",
+  "x": "scrapy.spidermiddlewares.urllength",
+  "text": "Does module `scrapy.spidermiddlewares.urllength` import module `scrapy.exceptions`?",
+  "truth": "yes",
+  "base_truth": "yes",
+  "y": "scrapy.exceptions"
+ },
+ {
+  "id": "2.12.0-34-Q2-unchanged",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "unchanged",
+  "subtype": "same_imports",
+  "x": "scrapy.utils.url",
+  "text": "Which scrapy modules does module `scrapy.utils.url` import?",
+  "truth": [
+   "scrapy.utils.python"
+  ],
+  "base_truth": [
+   "scrapy.utils.python"
+  ]
+ },
+ {
+  "id": "2.12.0-35-Q3-unchanged",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "unchanged",
+  "subtype": "exists",
+  "x": "scrapy.utils.decorators",
+  "text": "Does module `scrapy.utils.decorators` exist? If it moved, what is its new name?",
+  "truth": "yes",
+  "base_truth": "yes"
+ },
+ {
+  "id": "2.12.0-36-Q4-unchanged",
+  "target": "2.12.0",
+  "template": "Q4",
+  "stratum": "unchanged",
+  "subtype": "still_in_cycle",
+  "x": "scrapy.utils.spider",
+  "text": "Is module `scrapy.utils.spider` part of an import cycle? If yes, name one cycle.",
+  "truth": "yes",
+  "base_truth": "yes",
+  "example_cycle": [
+   "scrapy.utils.spider",
+   "scrapy.spiders",
+   "scrapy.spiders.crawl",
+   "scrapy.utils.spider"
+  ]
+ },
+ {
+  "id": "2.12.0-37-Q1-changed",
+  "target": "2.12.0",
+  "template": "Q1",
+  "stratum": "changed",
+  "subtype": "removed_edge",
+  "x": "scrapy.downloadermiddlewares.httpcache",
+  "text": "Does module `scrapy.downloadermiddlewares.httpcache` import module `scrapy.spiders`?",
+  "truth": "no",
+  "base_truth": "yes",
+  "y": "scrapy.spiders"
+ },
+ {
+  "id": "2.12.0-38-Q2-changed",
+  "target": "2.12.0",
+  "template": "Q2",
+  "stratum": "changed",
+  "subtype": "lost_imports_only",
+  "x": "scrapy.http.request",
+  "text": "Which scrapy modules does module `scrapy.http.request` import?",
+  "truth": [
+   "scrapy",
+   "scrapy.http.headers",
+   "scrapy.utils.curl",
+   "scrapy.utils.python",
+   "scrapy.utils.trackref",
+   "scrapy.utils.url"
+  ],
+  "base_truth": [
+   "scrapy",
+   "scrapy.http.common",
+   "scrapy.http.headers",
+   "scrapy.utils.curl",
+   "scrapy.utils.python",
+   "scrapy.utils.trackref",
+   "scrapy.utils.url"
+  ]
+ },
+ {
+  "id": "2.12.0-39-Q3-changed",
+  "target": "2.12.0",
+  "template": "Q3",
+  "stratum": "changed",
+  "subtype": "removed",
+  "x": "scrapy.loader.processors",
+  "text": "Does module `scrapy.loader.processors` exist? If it moved, what is its new name?",
+  "truth": "no",
+  "base_truth": "yes"
+ }
+]

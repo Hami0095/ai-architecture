@@ -11,7 +11,30 @@ hashes are pinned in `config.yaml`; Scrapy's code is never modified.
 | Phase | Status | Report |
 |---|---|---|
 | 1. Ground truth and staleness detection (no LLM) | done | [phase1_report.md](phase1_report.md) |
-| 2. Does the trust layer change LLM answers? | PENDING | — |
+| 2. Does the trust layer change LLM answers? | harness and mock run done; smoke test and model runs PENDING | — |
+
+## Phase 2 harness
+
+```bash
+python experiments/scrapy_staleness/phase2.py questions                # questions/<tag>.json (seed 42)
+python experiments/scrapy_staleness/phase2.py samples                  # questions/sample_prompts.md
+python experiments/scrapy_staleness/phase2.py run --model mock         # results/mock/raw.jsonl (resumable)
+python experiments/scrapy_staleness/phase2.py analyze --model mock     # results/mock/analysis.json + SVG plots
+python -m pytest experiments/scrapy_staleness/test_phase2.py           # harness tests
+```
+
+- **Questions:** Q1–Q4, generated from the ground-truth graphs only, 40 per target
+  tag, half `changed` and half `unchanged` relative to 2.10.0, split equally across
+  templates and subtypes. The changed stratum includes answers that became yes
+  (`new_edge`, `gained_imports`, `new_module`). For Q4, `unchanged` means cycle
+  membership is unchanged, and a named cycle must exist at the target tag.
+- **Conditions:** A (no context), B (AGENTS.md-style notes from the 2.10.0 graph),
+  C (relevant 2.10.0 facts), D-strict / D-reanchored (the same facts with evidence,
+  verifier labels, coverage labels and rules), E (relevant facts from the target graph,
+  as a ceiling). Every condition gets the same system prompt and question.
+- **Models:** `mock` is a deterministic rule-based reader of the context. It tests the
+  harness and is not a result. Real models run only through a local Ollama server
+  (`ollama:<name>`), with temperature 0, seed 42 and 3 runs per prompt.
 
 ## Reproduce Phase 1
 

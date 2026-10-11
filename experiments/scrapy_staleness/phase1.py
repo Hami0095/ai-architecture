@@ -344,7 +344,7 @@ def svg_lines(title, xlabels, series, ylabel, ymax=None, width=780, height=360):
     top = ymax if ymax is not None else (max(values) * 1.1 if values else 1)
     x = lambda i: pad_l + (w * i / max(len(xlabels) - 1, 1))
     y = lambda v: pad_t + h - (h * v / top if top else 0)
-    colors = ["#E8590C", "#141414", "#2f7d32", "#6a4fd6", "#9a6700"]
+    colors = ["#E8590C", "#141414", "#2f7d32", "#6a4fd6", "#9a6700", "#1971c2"]
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" font-family="monospace" font-size="11">',
            f'<rect width="{width}" height="{height}" fill="#fff"/>',
            f'<text x="{pad_l}" y="20" font-size="13" font-weight="bold">{title}</text>']
