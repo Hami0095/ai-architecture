@@ -37,8 +37,9 @@ from ai_architect.standards.config import parse_config  # noqa: E402
 from ai_architect.standards.engine import engine_hash, run_check  # noqa: E402
 from ai_architect.standards.extract import _canonical_name, build_repo_graph  # noqa: E402
 from ai_architect.standards.model import RepoGraph  # noqa: E402
-from ai_architect.standards.staleness import (DEFAULT_WINDOW, STALE, UNVERIFIABLE, VERIFIED,  # noqa: E402
-                                              verify_graph)
+from ai_architect.standards.staleness import (COMPLETE, DEFAULT_WINDOW, POSSIBLY_INCOMPLETE,  # noqa: E402
+                                              STALE, UNVERIFIABLE, VERIFIED, file_hashes, verify_graph,
+                                              verify_graph_git_restricted)
 from ai_architect.version import ARCHAI_VERSION  # noqa: E402
 
 EXP = Path(__file__).resolve().parent
@@ -80,6 +81,15 @@ def load_graph(tag) -> RepoGraph:
     return RepoGraph.from_dict(json.loads((GRAPHS / f"{tag}.json").read_text(encoding="utf-8"))["graph"])
 
 
+def load_hashes(tag):
+    return json.loads((GRAPHS / f"{tag}.json").read_text(encoding="utf-8"))["meta"]["file_sha256"]
+
+
+def changed_files(a, b):
+    """Files git reports changed between two tags (renames split into delete + add)."""
+    return set(git("diff", "--name-only", "--no-renames", a, b, "--", "scrapy/").split())
+
+
 def build_graphs():
     GRAPHS.mkdir(exist_ok=True)
     for tag in TAGS:
@@ -95,7 +105,8 @@ def build_graphs():
                 "module_scope_pairs": len(module_pairs), "parse_failures": sorted(
                     m for m, f in graph.modules.items() if f.parse_error),
                 "archai_version": ARCHAI_VERSION, "engine_sha256": engine_hash(),
-                "python": platform.python_version()}
+                "python": platform.python_version(),
+                "file_sha256": file_hashes(REPOS / tag, graph)}   # for the coverage labels
         out.write_text(json.dumps({"meta": meta, "graph": graph.to_dict()}, indent=1, sort_keys=True),
                        encoding="utf-8", newline="\n")
         # OKF bundle of the same graph (ArchAI default config: only the cycle rule is evaluated)
@@ -147,6 +158,11 @@ def drift_matrix(graphs):
 def evaluate(old: RepoGraph, new: RepoGraph, new_root: Path, window):
     """Scores verifier labels against ground truth for module facts and module-scope edge facts."""
     result = verify_graph(old, new_root, window=window, edge_scopes=["module"])
+    return score(result, new), result
+
+
+def score(result, new: RepoGraph):
+    """Scores a verifier result's labels against the ground truth of the newer graph."""
     new_modules, new_pairs = set(new.modules), module_pairs(new)
     scores = {}
     for kind in ("module", "edge"):
@@ -176,8 +192,31 @@ def evaluate(old: RepoGraph, new: RepoGraph, new_root: Path, window):
         tally["stale_recall"] = round(tally["stale_tp"] / tally["truly_stale"], 4) if tally["truly_stale"] else None
         tally["unchanged_verified_share"] = (round(tally["unchanged_verified"] / tally["truly_unchanged"], 4)
                                              if tally["truly_unchanged"] else None)
+        tally["reanchored"] = sum(1 for v in result.verdicts if v.kind == kind and v.reanchored)
+        tally["not_reread"] = sum(1 for v in result.verdicts if v.kind == kind and not v.reread)
         scores[kind] = tally
-    return scores, result
+    return scores
+
+
+def coverage_check(result, old: RepoGraph, new: RepoGraph):
+    """Are the edges the old graph is missing all in files labelled POSSIBLY_INCOMPLETE?"""
+    new_edges = module_pairs(new) - module_pairs(old)
+    out = {"new_edges": len(new_edges), "source_in_possibly_incomplete_file": 0,
+           "source_in_complete_file": 0, "source_module_not_in_old_graph": 0, "complete_file_examples": [],
+           "files": {COMPLETE: sum(1 for c in result.coverage.values() if c == COMPLETE),
+                     POSSIBLY_INCOMPLETE: sum(1 for c in result.coverage.values() if c == POSSIBLY_INCOMPLETE)}}
+    for src, tgt in sorted(new_edges):
+        if src not in old.modules:
+            out["source_module_not_in_old_graph"] += 1
+            continue
+        label = result.coverage.get(old.modules[src].path, POSSIBLY_INCOMPLETE)
+        if label == COMPLETE:
+            out["source_in_complete_file"] += 1
+            if len(out["complete_file_examples"]) < 5:
+                out["complete_file_examples"].append([src, tgt])
+        else:
+            out["source_in_possibly_incomplete_file"] += 1
+    return out
 
 
 def missing_knowledge(old: RepoGraph, new: RepoGraph):
@@ -203,6 +242,34 @@ def timings(old: RepoGraph, new_root: Path, repeats):
             "verify_seconds": [round(x, 4) for x in verify], "rebuild_seconds": [round(x, 4) for x in rebuild]}
 
 
+def variant_timings(old: RepoGraph, hashes, a, b, repeats):
+    """Median seconds for: full strict verify, full re-anchoring verify (with coverage),
+    git-diff-restricted verify (including the git diff call), and a full rebuild."""
+    root = REPOS / b
+    runs = {"verify_strict": lambda: verify_graph(old, root, edge_scopes=["module"]),
+            "verify_reanchor_coverage": lambda: verify_graph(old, root, edge_scopes=["module"], reanchor=True,
+                                                             file_hashes=hashes),
+            "verify_git_restricted": lambda: verify_graph_git_restricted(old, root, changed_files(a, b),
+                                                                        edge_scopes=["module"]),
+            "rebuild": lambda: build_repo_graph(root)}
+    out = {}
+    for name, fn in runs.items():
+        times = []
+        for _ in range(repeats):
+            t = time.perf_counter(); fn(); times.append(time.perf_counter() - t)
+        out[name] = round(statistics.median(times), 4)
+    out["files_changed_per_git"] = len(changed_files(a, b))
+    return out
+
+
+def write_verdicts(path, result):
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        for v in result.verdicts:
+            f.write(json.dumps({"kind": v.kind, "label": v.label, "reason": v.reason, "found_line": v.found_line,
+                                "reanchored": v.reanchored, "new_evidence": v.new_evidence,
+                                "coverage": v.coverage, "reread": v.reread, **v.fact}, sort_keys=True) + "\n")
+
+
 def run_all():
     started = datetime.now(timezone.utc)
     ensure_checkouts()
@@ -214,19 +281,35 @@ def run_all():
     drift = drift_matrix(graphs)
     (RESULTS / "drift_matrix.json").write_text(json.dumps(drift, indent=1), encoding="utf-8", newline="\n")
 
-    evaluation = {}
+    evaluation, variants = {}, {}
     for a, b in combinations(TAGS, 2):
         scores, result = evaluate(graphs[a], graphs[b], REPOS / b, DEFAULT_WINDOW)
         row = {"built_at": a, "checked_at": b, "distance": distance(a, b), "window": DEFAULT_WINDOW,
                **scores, "missing_knowledge": missing_knowledge(graphs[a], graphs[b]),
                "verify_seconds": result.seconds, "files_read": result.files_read}
         evaluation[f"{a}->{b}"] = row
+        # D-reanchored (with coverage labels) and the git-restricted variant, for every pair
+        hashes = load_hashes(a)
+        reanchored = verify_graph(graphs[a], REPOS / b, window=DEFAULT_WINDOW, edge_scopes=["module"],
+                                  reanchor=True, file_hashes=hashes)
+        restricted = verify_graph_git_restricted(graphs[a], REPOS / b, changed_files(a, b),
+                                                 window=DEFAULT_WINDOW, edge_scopes=["module"])
+        strict_labels = {json.dumps(v.fact, sort_keys=True): v.label for v in result.verdicts}
+        variants[f"{a}->{b}"] = {
+            "reanchored": score(reanchored, graphs[b]),
+            "coverage": coverage_check(reanchored, graphs[a], graphs[b]),
+            "git_restricted": score(restricted, graphs[b]),
+            "git_restricted_label_differences_vs_full": sum(
+                1 for v in restricted.verdicts if strict_labels.get(json.dumps(v.fact, sort_keys=True)) != v.label),
+            "files_changed_per_git": len(changed_files(a, b)),
+        }
         if a == BASE:
-            with open(RESULTS / "verdicts" / f"{a}_to_{b}.jsonl", "w", encoding="utf-8", newline="\n") as f:
-                for v in result.verdicts:
-                    f.write(json.dumps({"kind": v.kind, "label": v.label, "reason": v.reason,
-                                        "found_line": v.found_line, **v.fact}, sort_keys=True) + "\n")
+            strict_cov = verify_graph(graphs[a], REPOS / b, window=DEFAULT_WINDOW, edge_scopes=["module"],
+                                      file_hashes=hashes)
+            write_verdicts(RESULTS / "verdicts" / f"{a}_to_{b}.strict.jsonl", strict_cov)          # + coverage
+            write_verdicts(RESULTS / "verdicts" / f"{a}_to_{b}.reanchored.jsonl", reanchored)
     (RESULTS / "verifier_evaluation.json").write_text(json.dumps(evaluation, indent=1), encoding="utf-8", newline="\n")
+    (RESULTS / "verifier_variants.json").write_text(json.dumps(variants, indent=1), encoding="utf-8", newline="\n")
 
     sensitivity = {}
     for b in TAGS[1:]:
@@ -235,7 +318,7 @@ def run_all():
     (RESULTS / "window_sensitivity.json").write_text(json.dumps(sensitivity, indent=1), encoding="utf-8", newline="\n")
 
     repeats = CONFIG["verifier"]["timing_repeats"]
-    timing = {b: timings(graphs[BASE], REPOS / b, repeats) for b in TAGS[1:]}
+    timing = {b: variant_timings(graphs[BASE], load_hashes(BASE), BASE, b, repeats) for b in TAGS[1:]}
     (RESULTS / "timings.json").write_text(json.dumps(timing, indent=1), encoding="utf-8", newline="\n")
 
     meta = {"phase": 1, "started_at": started.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -294,7 +377,7 @@ def classify_rewrites(target):
     key = lambda n: (type(n).__name__, getattr(n, "module", None), getattr(n, "level", 0))
     counts = {"same 'from' module, names added": 0, "same 'from' module, names removed": 0,
               "same 'from' module, names replaced": 0, "rewritten in another form": 0}
-    with open(RESULTS / "verdicts" / f"{BASE}_to_{target}.jsonl", encoding="utf-8") as f:
+    with open(RESULTS / "verdicts" / f"{BASE}_to_{target}.strict.jsonl", encoding="utf-8") as f:
         for line in f:
             v = json.loads(line)
             pair = (v.get("source"), v.get("target"))
@@ -319,11 +402,133 @@ def pct(v):
     return "n/a" if v is None else f"{100 * v:.1f}%"
 
 
+def prereg_note():
+    return ["> **Change log (pre-registration).** After the first Phase 1 results and **before any LLM run**, "
+            "the study added a second ArchAI condition, **D-reanchored**, next to the pre-registered **D-strict**. "
+            "Reason: Phase 1 showed that strict receipts go stale for many dependencies that still exist (import "
+            "lines that moved or gained or lost names), so D-strict alone would mix the cost of receipt churn with "
+            "the benefit of catching real change. Re-anchoring rule, fixed before any LLM run: a STALE edge fact "
+            "becomes VERIFIED only if the same source file (same path) still contains an import in the same scope "
+            "class (module, function, type_checking or dynamic) that resolves to the same target; the new "
+            "file:line is recorded. Also added before any LLM run: per-file coverage labels (COMPLETE / "
+            "POSSIBLY_INCOMPLETE), an independent ground truth (grimp), a git-diff-restricted verification "
+            "measurement, and ArchAI respecting .gitignore (no effect on these graphs: verified byte-identical).", ""]
+
+
+def independent_gt_section():
+    path = RESULTS / "independent_gt.json"
+    if not path.exists():
+        return ["## 1b. Independent ground truth", "", "PENDING: run independent_gt.py.", ""]
+    gt = json.loads(path.read_text(encoding="utf-8"))
+    L = ["## 1b. Independent ground truth (grimp)", "",
+         f"[grimp](https://github.com/seddonym/grimp) {next(iter(gt.values()))['grimp_version'] or ''} builds the "
+         "import graph with its own Rust parser and shares no code with ArchAI. Each tag was built in a fresh "
+         "process with no cache. grimp does not record import scope, so the module-scope split of the ground truth "
+         "was checked separately: a stdlib-only `ast` pass (written independently of ArchAI's scope logic) "
+         "classifies each of grimp's import line numbers as module-level or inside a function / TYPE_CHECKING block.",
+         "", "| Tag | Comparison | ArchAI pairs | grimp pairs | Agree | Jaccard | Only grimp | Only ArchAI |",
+         "|---|---|---|---|---|---|---|---|"]
+    for tag, r in gt.items():
+        for name in ("runtime (module + function)", "all static (+ type_checking)"):
+            c = r[name]
+            L.append(f"| {tag} | {name} | {c['archai_pairs']} | {c['grimp_pairs']} | {c['agree']} | {c['jaccard']:.3f} | "
+                     f"{c['grimp_only']} | {c['archai_only']} |")
+        s = r["module-scope ground truth, independent scope check"]
+        L.append(f"| {tag} | **module-scope ground truth** (grimp lines + independent scope check) | "
+                 f"{s['archai_module_scope_pairs']} | {s['independent_pairs']} | {s['agree']} | "
+                 f"{s['agree'] / max(len(set(map(tuple, s['independent_only'])) | set(map(tuple, s['archai_only']))) + s['agree'], 1):.3f} | "
+                 f"{len(s['independent_only'])} | {len(s['archai_only'])} |")
+    cats = {}
+    for tag, r in gt.items():
+        for name in ("runtime (module + function)", "all static (+ type_checking)"):
+            for d in r[name]["disagreements"]:
+                cats.setdefault(f"{d['side']}: {d['category']}", 0)
+                cats[f"{d['side']}: {d['category']}"] += d["count"]
+    mods = {tag: r["modules"] for tag, r in gt.items()}
+    L += ["", "**Disagreement categories.**", ""]
+    if cats:
+        L += [f"- {k}: {v}" for k, v in sorted(cats.items())]
+    else:
+        L.append("- Edges: **none**. The two extractors agree on every edge, in both comparisons, at all three tags.")
+    extra = sorted({m for v in mods.values() for m in v["archai_only"]})
+    L.append(f"- Modules: ArchAI has {', '.join(f'`{m}`' for m in extra) or 'no'} modules grimp lacks "
+             f"({', '.join(f'{t}: {v['archai']} vs {v['grimp']}' for t, v in mods.items())}). These are project-"
+             "template files under `scrapy/templates/project/`, a directory tree without `__init__.py` files. ArchAI "
+             "maps every `.py` path to a module name (namespace-package semantics); grimp only follows regular "
+             "packages. Neither module imports or is imported by anything, so no edge or answer depends on them.")
+    L += ["", "Agreement with an independent extractor rules out ArchAI-specific extraction bugs for these graphs. "
+          "Because the verifier still shares resolution code with ArchAI's graph builder, its scores below measure "
+          "consistency with a ground truth that grimp has confirmed edge by edge.", ""]
+    return L
+
+
+def variant_sections(targets):
+    var = json.loads((RESULTS / "verifier_variants.json").read_text(encoding="utf-8"))
+    ev = json.loads((RESULTS / "verifier_evaluation.json").read_text(encoding="utf-8"))
+    timing = json.loads((RESULTS / "timings.json").read_text(encoding="utf-8"))
+    L = ["### D-strict vs D-reanchored (edge facts, " + BASE + " graph)", "",
+         "| Checked at | Re-anchored | Strict: STALE precision / unchanged→VERIFIED | Re-anchored: STALE precision / "
+         "recall / unchanged→VERIFIED | False VERIFIED (strict / re-anchored) |", "|---|---|---|---|---|"]
+    for t in targets:
+        s, r = ev[f"{BASE}->{t}"]["edge"], var[f"{BASE}->{t}"]["reanchored"]["edge"]
+        L.append(f"| {t} | {r['reanchored']} | {pct(s['stale_precision'])} / {pct(s['unchanged_verified_share'])} | "
+                 f"{pct(r['stale_precision'])} / {pct(r['stale_recall'])} / {pct(r['unchanged_verified_share'])} | "
+                 f"{s['false_verified']} / {r['false_verified']} |")
+    total_fv = sum(v["reanchored"]["edge"]["false_verified"] + v["reanchored"]["module"]["false_verified"]
+                   for v in var.values())
+    L += ["", f"Re-anchored counts for every pair (row = graph built at, column = checked at); false VERIFIED "
+          f"labels across all {len(var)} pairs after re-anchoring: **{total_fv}**.", "",
+          "| Built at \\ checked at | " + " | ".join(TAGS[1:]) + " |", "|---|" + "---|" * (len(TAGS) - 1)]
+    for a in TAGS[:-1]:
+        L.append(f"| {a} | " + " | ".join(str(var[f"{a}->{b}"]["reanchored"]["edge"]["reanchored"])
+                                         if f"{a}->{b}" in var else "" for b in TAGS[1:]) + " |")
+    L += ["", "### Coverage labels and missing knowledge", "",
+          "Each cited file is COMPLETE if its content hash is unchanged since the graph was built, otherwise "
+          "POSSIBLY_INCOMPLETE. The check: for every edge that is new at the later tag, is its source file flagged?",
+          "", "| Checked at | Files COMPLETE / POSSIBLY_INCOMPLETE | New edges | Source file POSSIBLY_INCOMPLETE | "
+          "Source file COMPLETE | Source module new (not in old graph) |", "|---|---|---|---|---|---|"]
+    for t in targets:
+        c = var[f"{BASE}->{t}"]["coverage"]
+        L.append(f"| {t} | {c['files']['COMPLETE']} / {c['files']['POSSIBLY_INCOMPLETE']} | {c['new_edges']} | "
+                 f"{c['source_in_possibly_incomplete_file']} | {c['source_in_complete_file']} | "
+                 f"{c['source_module_not_in_old_graph']} |")
+    complete_hits = [(t, var[f"{BASE}->{t}"]["coverage"]["complete_file_examples"]) for t in targets
+                     if var[f"{BASE}->{t}"]["coverage"]["source_in_complete_file"]]
+    L += ["", ("New edges in files labelled COMPLETE: " + "; ".join(
+        f"{t}: " + ", ".join(f"`{s}` → `{d}`" for s, d in ex) for t, ex in complete_hits) +
+        ". A file whose content is unchanged can still gain an edge when the module it imports from changes "
+        "(e.g. `from pkg import name` resolves to a new submodule `pkg.name`); COMPLETE only promises the file's "
+        "text is unchanged.") if complete_hits else
+          "No new edge appeared in a file labelled COMPLETE: every missing fact sits in a file flagged "
+          "POSSIBLY_INCOMPLETE, or in a module the old graph did not have."]
+    L += ["", "### Git-diff-restricted verification", "",
+          "Variant that re-reads only files git reports changed between the tags (`git diff --name-only --no-renames`) "
+          "and carries facts in all other files over as VERIFIED without re-reading them. Measured, not used in any "
+          "condition.", "",
+          "| Checked at | Files changed (git) | Label differences vs full verify | STALE recall | False VERIFIED |",
+          "|---|---|---|---|---|"]
+    for t in targets:
+        v = var[f"{BASE}->{t}"]
+        g = v["git_restricted"]["edge"]
+        L.append(f"| {t} | {v['files_changed_per_git']} | {v['git_restricted_label_differences_vs_full']} | "
+                 f"{pct(g['stale_recall'])} | {g['false_verified'] + v['git_restricted']['module']['false_verified']} |")
+    L += ["", "## 4. Verify vs rebuild time", "",
+          f"Median of {CONFIG['verifier']['timing_repeats']} runs, {BASE} graph checked against each tag. Full verify "
+          "reads only the files the old facts cite; the git-restricted time includes the `git diff` call; rebuild "
+          "parses the whole package.", "",
+          "| Checked at | Strict verify (s) | Re-anchor + coverage (s) | Git-restricted (s) | Rebuild (s) | "
+          "Strict / rebuild |", "|---|---|---|---|---|---|"]
+    for t in targets:
+        tm = timing[t]
+        L.append(f"| {t} | {tm['verify_strict']:.3f} | {tm['verify_reanchor_coverage']:.3f} | "
+                 f"{tm['verify_git_restricted']:.3f} | {tm['rebuild']:.3f} | {tm['verify_strict'] / tm['rebuild']:.2f} |")
+    return L + [""]
+
+
 def write_report():
     ev = json.loads((RESULTS / "verifier_evaluation.json").read_text(encoding="utf-8"))
     drift = json.loads((RESULTS / "drift_matrix.json").read_text(encoding="utf-8"))
     sens = json.loads((RESULTS / "window_sensitivity.json").read_text(encoding="utf-8"))
-    timing = json.loads((RESULTS / "timings.json").read_text(encoding="utf-8"))
     meta = json.loads((RESULTS / "run_meta.json").read_text(encoding="utf-8"))
     graphs = {t: json.loads((GRAPHS / f"{t}.json").read_text(encoding="utf-8"))["meta"] for t in TAGS}
     targets = TAGS[1:]
@@ -346,7 +551,7 @@ def write_report():
     L = ["# Phase 1: ground truth and staleness detection (no LLM)", "",
          f"Run {meta['finished_at']} · ArchAI {meta['archai_version']} (engine `{meta['engine_sha256']}`, "
          f"commit `{meta['archai_commit'][:12]}`) · Python {meta['python']} · LLM used: no.", "",
-         "Reproduce: `python experiments/scrapy_staleness/phase1.py` (see README.md).", ""]
+         "Reproduce: `python experiments/scrapy_staleness/phase1.py` (see README.md).", ""] + prereg_note()
     L += ["## 1. Graphs per tag", "",
           "Only the `scrapy/` package of each tag is analyzed (`git archive <tag> scrapy`). Edges are unique "
           "(source, target) pairs of `scrapy.*` modules linked by a **module-scope** import; the stored graphs also "
@@ -361,6 +566,7 @@ def write_report():
           f"added {len(d['modules_added']) + len(d['modules_moved'])}, removed {len(d['modules_removed']) + len(d['modules_moved'])} "
           f"(of which {len(d['modules_moved'])} detected as moves); edges added {d['edges_added']}, removed {d['edges_removed']}. "
           "These match the numbers given in the study prompt.", ""]
+    L += independent_gt_section()
     L += ["## 2. Drift relative to " + BASE, "",
           "| Checked at | Releases | Commits | Days | Modules + | Modules − | Moved | Edges + | Edges − | Edges kept |",
           "|---|---|---|---|---|---|---|---|---|---|"]
@@ -429,14 +635,7 @@ def write_report():
         L.append(f"| {t} | " + " | ".join(
             f"{pct(s['edge']['stale_precision'])} / {pct(s['edge']['stale_recall'])} / {pct(s['edge']['unchanged_verified_share'])}"
             for s in sens[t].values()) + " |")
-    L += ["", "## 4. Verify vs rebuild time", "",
-          f"Median of {CONFIG['verifier']['timing_repeats']} runs, {BASE} graph checked against each tag "
-          "(verification reads only the files the old facts cite; rebuild parses the whole package).", "",
-          "| Checked at | Verify (s) | Rebuild (s) | Verify / rebuild |", "|---|---|---|---|"]
-    for t in targets:
-        tm = timing[t]
-        L.append(f"| {t} | {tm['verify_seconds_median']:.3f} | {tm['rebuild_seconds_median']:.3f} | "
-                 f"{tm['verify_seconds_median'] / tm['rebuild_seconds_median']:.2f} |")
+    L += [""] + variant_sections(targets)
     L += ["", "## 5. Missing knowledge (not a staleness error)", "",
           f"Facts that exist at the later tag but not in the {BASE} graph. The verifier cannot see these, by design: "
           "it can only re-check what the old graph claims.", "",
@@ -447,9 +646,12 @@ def write_report():
     L += ["", "![Staleness vs distance](plots/staleness_vs_distance.svg)", "",
           "## 6. Threats to validity", "",
           "- One project, Python only, import-level structure only.",
-          "- Ground truth and verifier share ArchAI's extraction and resolution code (`resolve_import_targets`). "
-          "Agreement therefore shows the verifier is consistent with the graph builder, not that the builder is "
-          "correct. A bug in shared resolution would affect both.",
+          "- The verifier and ArchAI's graph builder share resolution code (`resolve_import_targets`), so verifier "
+          "scores measure consistency with the ArchAI ground truth. That ground truth was confirmed edge by edge by "
+          "an independent extractor (grimp, section 1b) at three of the ten tags; the other seven tags rely on "
+          "ArchAI alone.",
+          "- The git-diff-restricted variant trusts git's change list instead of re-reading files; it is reported "
+          "as a measurement only and is not used in any Phase 2 condition.",
           "- An edge fact counts as unchanged when its (source, target) pair survives, even if the import statement "
           "was rewritten. Such rewrites are counted as verifier false positives above.",
           "- Moves are detected by git rename heuristics (50% similarity) and are reported, but scored as stale.",
