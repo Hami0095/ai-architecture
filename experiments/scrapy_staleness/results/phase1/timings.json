@@ -1,128 +1,65 @@
 {
  "2.11.0": {
-  "verify_seconds_median": 0.2401,
-  "rebuild_seconds_median": 0.4998,
-  "verify_seconds": [
-   0.2364,
-   0.2566,
-   0.2401
-  ],
-  "rebuild_seconds": [
-   0.4998,
-   0.5362,
-   0.4935
-  ]
+  "verify_strict": 0.4499,
+  "verify_reanchor_coverage": 0.411,
+  "verify_git_restricted": 0.2355,
+  "rebuild": 0.7863,
+  "files_changed_per_git": 49
  },
  "2.12.0": {
-  "verify_seconds_median": 0.2746,
-  "rebuild_seconds_median": 0.5272,
-  "verify_seconds": [
-   0.2691,
-   0.2746,
-   0.2859
-  ],
-  "rebuild_seconds": [
-   0.5486,
-   0.5272,
-   0.5254
-  ]
+  "verify_strict": 0.4591,
+  "verify_reanchor_coverage": 0.5032,
+  "verify_git_restricted": 0.4919,
+  "rebuild": 0.8545,
+  "files_changed_per_git": 161
  },
  "2.13.0": {
-  "verify_seconds_median": 0.2875,
-  "rebuild_seconds_median": 0.527,
-  "verify_seconds": [
-   0.2961,
-   0.2875,
-   0.2768
-  ],
-  "rebuild_seconds": [
-   0.527,
-   0.5242,
-   0.5973
-  ]
+  "verify_strict": 0.4837,
+  "verify_reanchor_coverage": 0.4916,
+  "verify_git_restricted": 0.4852,
+  "rebuild": 0.9434,
+  "files_changed_per_git": 168
  },
  "2.14.0": {
-  "verify_seconds_median": 0.3368,
-  "rebuild_seconds_median": 0.5801,
-  "verify_seconds": [
-   0.3919,
-   0.2891,
-   0.3368
-  ],
-  "rebuild_seconds": [
-   0.5674,
-   0.6142,
-   0.5801
-  ]
+  "verify_strict": 0.4744,
+  "verify_reanchor_coverage": 0.481,
+  "verify_git_restricted": 0.4906,
+  "rebuild": 0.9065,
+  "files_changed_per_git": 172
  },
  "2.15.0": {
-  "verify_seconds_median": 0.3017,
-  "rebuild_seconds_median": 0.6194,
-  "verify_seconds": [
-   0.2946,
-   0.3094,
-   0.3017
-  ],
-  "rebuild_seconds": [
-   0.6385,
-   0.6194,
-   0.6172
-  ]
+  "verify_strict": 0.5386,
+  "verify_reanchor_coverage": 0.5266,
+  "verify_git_restricted": 0.6702,
+  "rebuild": 1.012,
+  "files_changed_per_git": 178
  },
  "2.16.0": {
-  "verify_seconds_median": 0.3055,
-  "rebuild_seconds_median": 0.6165,
-  "verify_seconds": [
-   0.3199,
-   0.3055,
-   0.2971
-  ],
-  "rebuild_seconds": [
-   0.6132,
-   0.6206,
-   0.6165
-  ]
+  "verify_strict": 0.5547,
+  "verify_reanchor_coverage": 0.6256,
+  "verify_git_restricted": 0.8526,
+  "rebuild": 1.1338,
+  "files_changed_per_git": 180
  },
  "2.17.0": {
-  "verify_seconds_median": 0.2988,
-  "rebuild_seconds_median": 0.6338,
-  "verify_seconds": [
-   0.2988,
-   0.2876,
-   0.3067
-  ],
-  "rebuild_seconds": [
-   0.6255,
-   0.7737,
-   0.6338
-  ]
+  "verify_strict": 0.5516,
+  "verify_reanchor_coverage": 0.5743,
+  "verify_git_restricted": 0.6553,
+  "rebuild": 1.0181,
+  "files_changed_per_git": 183
  },
  "2.18.0": {
-  "verify_seconds_median": 0.2955,
-  "rebuild_seconds_median": 0.6589,
-  "verify_seconds": [
-   0.3138,
-   0.2955,
-   0.2936
-  ],
-  "rebuild_seconds": [
-   0.6697,
-   0.6386,
-   0.6589
-  ]
+  "verify_strict": 0.5106,
+  "verify_reanchor_coverage": 0.4924,
+  "verify_git_restricted": 0.5486,
+  "rebuild": 1.1308,
+  "files_changed_per_git": 190
  },
  "2.19.0": {
-  "verify_seconds_median": 0.2974,
-  "rebuild_seconds_median": 0.6759,
-  "verify_seconds": [
-   0.2974,
-   0.2982,
-   0.2969
-  ],
-  "rebuild_seconds": [
-   0.6759,
-   0.6709,
-   0.6977
-  ]
+  "verify_strict": 0.5705,
+  "verify_reanchor_coverage": 0.5216,
+  "verify_git_restricted": 0.5585,
+  "rebuild": 1.1677,
+  "files_changed_per_git": 193
  }
 }

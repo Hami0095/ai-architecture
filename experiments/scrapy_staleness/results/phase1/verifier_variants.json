@@ -1,0 +1,4591 @@
+{
+ "2.10.0->2.11.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 528,
+     "STALE": 2,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 528,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 23,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 6,
+   "source_in_possibly_incomplete_file": 3,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 3,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 123,
+    "POSSIBLY_INCOMPLETE": 47
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 123
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 505,
+     "STALE": 25,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 23,
+    "false_verified": 0,
+    "unchanged_verified": 505,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 5,
+     "statement no longer within 5 lines": 18
+    },
+    "stale_precision": 0.08,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9564,
+    "reanchored": 0,
+    "not_reread": 337
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 49
+ },
+ "2.10.0->2.12.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 454,
+     "STALE": 76,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 454,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 148,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 56,
+   "source_in_possibly_incomplete_file": 46,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 10,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 16,
+    "POSSIBLY_INCOMPLETE": 154
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 16
+   },
+   "edge": {
+    "truly_stale": 76,
+    "truly_unchanged": 454,
+    "labels": {
+     "VERIFIED": 306,
+     "STALE": 224,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 76,
+    "stale_fp": 148,
+    "false_verified": 0,
+    "unchanged_verified": 306,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 68,
+     "statement no longer within 5 lines": 80
+    },
+    "stale_precision": 0.3393,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.674,
+    "reanchored": 0,
+    "not_reread": 6
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 161
+ },
+ "2.10.0->2.13.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 434,
+     "STALE": 96,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 434,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 145,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 80,
+   "source_in_possibly_incomplete_file": 68,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 12,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 12,
+    "POSSIBLY_INCOMPLETE": 158
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 12
+   },
+   "edge": {
+    "truly_stale": 96,
+    "truly_unchanged": 434,
+    "labels": {
+     "VERIFIED": 289,
+     "STALE": 241,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 96,
+    "stale_fp": 145,
+    "false_verified": 0,
+    "unchanged_verified": 289,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 69,
+     "statement no longer within 5 lines": 76
+    },
+    "stale_precision": 0.3983,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.6659,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 168
+ },
+ "2.10.0->2.14.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 423,
+     "STALE": 107,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 423,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 170,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 154,
+   "source_in_possibly_incomplete_file": 135,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 19,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 11,
+    "POSSIBLY_INCOMPLETE": 159
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 11
+   },
+   "edge": {
+    "truly_stale": 107,
+    "truly_unchanged": 423,
+    "labels": {
+     "VERIFIED": 253,
+     "STALE": 277,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 107,
+    "stale_fp": 170,
+    "false_verified": 0,
+    "unchanged_verified": 253,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 85,
+     "statement no longer within 5 lines": 85
+    },
+    "stale_precision": 0.3863,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5981,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 172
+ },
+ "2.10.0->2.15.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 418,
+     "STALE": 112,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 418,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 181,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 192,
+   "source_in_possibly_incomplete_file": 160,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 32,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 161
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 112,
+    "truly_unchanged": 418,
+    "labels": {
+     "VERIFIED": 237,
+     "STALE": 293,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 112,
+    "stale_fp": 181,
+    "false_verified": 0,
+    "unchanged_verified": 237,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 97,
+     "statement no longer within 5 lines": 84
+    },
+    "stale_precision": 0.3823,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.567,
+    "reanchored": 0,
+    "not_reread": 1
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 178
+ },
+ "2.10.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 405,
+     "STALE": 125,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 405,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 169,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 189,
+   "source_in_possibly_incomplete_file": 152,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 37,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 161
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 236,
+     "STALE": 294,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 169,
+    "false_verified": 0,
+    "unchanged_verified": 236,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 96,
+     "statement no longer within 5 lines": 73
+    },
+    "stale_precision": 0.4252,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5827,
+    "reanchored": 0,
+    "not_reread": 1
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 180
+ },
+ "2.10.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 405,
+     "STALE": 125,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 405,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 173,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 198,
+   "source_in_possibly_incomplete_file": 160,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 38,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 8,
+    "POSSIBLY_INCOMPLETE": 162
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 8
+   },
+   "edge": {
+    "truly_stale": 125,
+    "truly_unchanged": 405,
+    "labels": {
+     "VERIFIED": 232,
+     "STALE": 298,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 125,
+    "stale_fp": 173,
+    "false_verified": 0,
+    "unchanged_verified": 232,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 95,
+     "statement no longer within 5 lines": 78
+    },
+    "stale_precision": 0.4195,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5728,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 183
+ },
+ "2.10.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 399,
+     "STALE": 131,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 399,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 190,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 218,
+   "source_in_possibly_incomplete_file": 167,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 51,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 7,
+    "POSSIBLY_INCOMPLETE": 163
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 7
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 209,
+     "STALE": 321,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 190,
+    "false_verified": 0,
+    "unchanged_verified": 209,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 101,
+     "statement no longer within 5 lines": 89
+    },
+    "stale_precision": 0.4081,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5238,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 190
+ },
+ "2.10.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 399,
+     "STALE": 131,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 399,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 199,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 236,
+   "source_in_possibly_incomplete_file": 176,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 60,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 7,
+    "POSSIBLY_INCOMPLETE": 163
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 155,
+    "labels": {
+     "VERIFIED": 155,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 155,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 7
+   },
+   "edge": {
+    "truly_stale": 131,
+    "truly_unchanged": 399,
+    "labels": {
+     "VERIFIED": 200,
+     "STALE": 330,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 131,
+    "stale_fp": 199,
+    "false_verified": 0,
+    "unchanged_verified": 200,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 104,
+     "statement no longer within 5 lines": 95
+    },
+    "stale_precision": 0.397,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5013,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 193
+ },
+ "2.11.0->2.12.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 167,
+    "labels": {
+     "VERIFIED": 167,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 167,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 75,
+    "truly_unchanged": 459,
+    "labels": {
+     "VERIFIED": 459,
+     "STALE": 75,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 75,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 459,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 161,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 51,
+   "source_in_possibly_incomplete_file": 45,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 6,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 16,
+    "POSSIBLY_INCOMPLETE": 155
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 167,
+    "labels": {
+     "VERIFIED": 167,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 167,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 16
+   },
+   "edge": {
+    "truly_stale": 75,
+    "truly_unchanged": 459,
+    "labels": {
+     "VERIFIED": 298,
+     "STALE": 236,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 75,
+    "stale_fp": 161,
+    "false_verified": 0,
+    "unchanged_verified": 298,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 65,
+     "statement no longer within 5 lines": 96
+    },
+    "stale_precision": 0.3178,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.6492,
+    "reanchored": 0,
+    "not_reread": 6
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 161
+ },
+ "2.11.0->2.13.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 167,
+    "labels": {
+     "VERIFIED": 167,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 167,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 97,
+    "truly_unchanged": 437,
+    "labels": {
+     "VERIFIED": 437,
+     "STALE": 97,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 97,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 437,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 157,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 77,
+   "source_in_possibly_incomplete_file": 69,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 8,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 12,
+    "POSSIBLY_INCOMPLETE": 159
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 167,
+    "labels": {
+     "VERIFIED": 167,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 167,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 12
+   },
+   "edge": {
+    "truly_stale": 97,
+    "truly_unchanged": 437,
+    "labels": {
+     "VERIFIED": 280,
+     "STALE": 254,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 97,
+    "stale_fp": 157,
+    "false_verified": 0,
+    "unchanged_verified": 280,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 66,
+     "statement no longer within 5 lines": 91
+    },
+    "stale_precision": 0.3819,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.6407,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 168
+ },
+ "2.11.0->2.14.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 109,
+    "truly_unchanged": 425,
+    "labels": {
+     "VERIFIED": 425,
+     "STALE": 109,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 109,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 425,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 173,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 152,
+   "source_in_possibly_incomplete_file": 138,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 14,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 11,
+    "POSSIBLY_INCOMPLETE": 160
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 11
+   },
+   "edge": {
+    "truly_stale": 109,
+    "truly_unchanged": 425,
+    "labels": {
+     "VERIFIED": 252,
+     "STALE": 282,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 109,
+    "stale_fp": 173,
+    "false_verified": 0,
+    "unchanged_verified": 252,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 83,
+     "statement no longer within 5 lines": 90
+    },
+    "stale_precision": 0.3865,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5929,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 172
+ },
+ "2.11.0->2.15.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 114,
+    "truly_unchanged": 420,
+    "labels": {
+     "VERIFIED": 420,
+     "STALE": 114,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 114,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 420,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 180,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 190,
+   "source_in_possibly_incomplete_file": 163,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 27,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 162
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 5,
+    "truly_unchanged": 166,
+    "labels": {
+     "VERIFIED": 166,
+     "STALE": 5,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 5,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 166,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 114,
+    "truly_unchanged": 420,
+    "labels": {
+     "VERIFIED": 240,
+     "STALE": 294,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 114,
+    "stale_fp": 180,
+    "false_verified": 0,
+    "unchanged_verified": 240,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 94,
+     "statement no longer within 5 lines": 86
+    },
+    "stale_precision": 0.3878,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5714,
+    "reanchored": 0,
+    "not_reread": 1
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 178
+ },
+ "2.11.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 160,
+    "labels": {
+     "VERIFIED": 160,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 160,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 127,
+    "truly_unchanged": 407,
+    "labels": {
+     "VERIFIED": 407,
+     "STALE": 127,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 127,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 407,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 172,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 187,
+   "source_in_possibly_incomplete_file": 155,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 32,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 162
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 160,
+    "labels": {
+     "VERIFIED": 160,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 160,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 127,
+    "truly_unchanged": 407,
+    "labels": {
+     "VERIFIED": 235,
+     "STALE": 299,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 127,
+    "stale_fp": 172,
+    "false_verified": 0,
+    "unchanged_verified": 235,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 93,
+     "statement no longer within 5 lines": 79
+    },
+    "stale_precision": 0.4247,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5774,
+    "reanchored": 0,
+    "not_reread": 1
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 180
+ },
+ "2.11.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 160,
+    "labels": {
+     "VERIFIED": 160,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 160,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 127,
+    "truly_unchanged": 407,
+    "labels": {
+     "VERIFIED": 407,
+     "STALE": 127,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 127,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 407,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 176,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 196,
+   "source_in_possibly_incomplete_file": 163,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 33,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 8,
+    "POSSIBLY_INCOMPLETE": 163
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 160,
+    "labels": {
+     "VERIFIED": 160,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 160,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 8
+   },
+   "edge": {
+    "truly_stale": 127,
+    "truly_unchanged": 407,
+    "labels": {
+     "VERIFIED": 231,
+     "STALE": 303,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 127,
+    "stale_fp": 176,
+    "false_verified": 0,
+    "unchanged_verified": 231,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 92,
+     "statement no longer within 5 lines": 84
+    },
+    "stale_precision": 0.4191,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5676,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 183
+ },
+ "2.11.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 156,
+    "labels": {
+     "VERIFIED": 156,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 156,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 133,
+    "truly_unchanged": 401,
+    "labels": {
+     "VERIFIED": 401,
+     "STALE": 133,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 133,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 401,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 192,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 216,
+   "source_in_possibly_incomplete_file": 170,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 46,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 7,
+    "POSSIBLY_INCOMPLETE": 164
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 156,
+    "labels": {
+     "VERIFIED": 156,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 156,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 7
+   },
+   "edge": {
+    "truly_stale": 133,
+    "truly_unchanged": 401,
+    "labels": {
+     "VERIFIED": 209,
+     "STALE": 325,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 133,
+    "stale_fp": 192,
+    "false_verified": 0,
+    "unchanged_verified": 209,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 99,
+     "statement no longer within 5 lines": 93
+    },
+    "stale_precision": 0.4092,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.5212,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 190
+ },
+ "2.11.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 156,
+    "labels": {
+     "VERIFIED": 156,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 156,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 133,
+    "truly_unchanged": 401,
+    "labels": {
+     "VERIFIED": 401,
+     "STALE": 133,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 133,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 401,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 201,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 234,
+   "source_in_possibly_incomplete_file": 179,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 55,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 7,
+    "POSSIBLY_INCOMPLETE": 164
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 15,
+    "truly_unchanged": 156,
+    "labels": {
+     "VERIFIED": 156,
+     "STALE": 15,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 15,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 156,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 7
+   },
+   "edge": {
+    "truly_stale": 133,
+    "truly_unchanged": 401,
+    "labels": {
+     "VERIFIED": 200,
+     "STALE": 334,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 133,
+    "stale_fp": 201,
+    "false_verified": 0,
+    "unchanged_verified": 200,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 102,
+     "statement no longer within 5 lines": 99
+    },
+    "stale_precision": 0.3982,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.4988,
+    "reanchored": 0,
+    "not_reread": 0
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 193
+ },
+ "2.12.0->2.13.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 25,
+    "truly_unchanged": 485,
+    "labels": {
+     "VERIFIED": 485,
+     "STALE": 25,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 25,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 485,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 20,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 29,
+   "source_in_possibly_incomplete_file": 27,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 2,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 54,
+    "POSSIBLY_INCOMPLETE": 116
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 54
+   },
+   "edge": {
+    "truly_stale": 25,
+    "truly_unchanged": 485,
+    "labels": {
+     "VERIFIED": 465,
+     "STALE": 45,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 25,
+    "stale_fp": 20,
+    "false_verified": 0,
+    "unchanged_verified": 465,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 9,
+     "statement no longer within 5 lines": 11
+    },
+    "stale_precision": 0.5556,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9588,
+    "reanchored": 0,
+    "not_reread": 90
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 121
+ },
+ "2.12.0->2.14.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 169,
+    "labels": {
+     "VERIFIED": 169,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 169,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 49,
+    "truly_unchanged": 461,
+    "labels": {
+     "VERIFIED": 461,
+     "STALE": 49,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 49,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 461,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 55,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 116,
+   "source_in_possibly_incomplete_file": 108,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 8,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 28,
+    "POSSIBLY_INCOMPLETE": 142
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 169,
+    "labels": {
+     "VERIFIED": 169,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 169,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 28
+   },
+   "edge": {
+    "truly_stale": 49,
+    "truly_unchanged": 461,
+    "labels": {
+     "VERIFIED": 406,
+     "STALE": 104,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 49,
+    "stale_fp": 55,
+    "false_verified": 0,
+    "unchanged_verified": 406,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 37,
+     "statement no longer within 5 lines": 18
+    },
+    "stale_precision": 0.4712,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8807,
+    "reanchored": 0,
+    "not_reread": 31
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 150
+ },
+ "2.12.0->2.15.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 169,
+    "labels": {
+     "VERIFIED": 169,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 169,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 54,
+    "truly_unchanged": 456,
+    "labels": {
+     "VERIFIED": 456,
+     "STALE": 54,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 54,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 456,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 74,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 154,
+   "source_in_possibly_incomplete_file": 133,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 21,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 18,
+    "POSSIBLY_INCOMPLETE": 152
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 169,
+    "labels": {
+     "VERIFIED": 169,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 169,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 18
+   },
+   "edge": {
+    "truly_stale": 54,
+    "truly_unchanged": 456,
+    "labels": {
+     "VERIFIED": 382,
+     "STALE": 128,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 54,
+    "stale_fp": 74,
+    "false_verified": 0,
+    "unchanged_verified": 382,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 50,
+     "statement no longer within 5 lines": 24
+    },
+    "stale_precision": 0.4219,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8377,
+    "reanchored": 0,
+    "not_reread": 16
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 164
+ },
+ "2.12.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 163,
+    "labels": {
+     "VERIFIED": 163,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 163,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 66,
+    "truly_unchanged": 444,
+    "labels": {
+     "VERIFIED": 444,
+     "STALE": 66,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 66,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 444,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 75,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 150,
+   "source_in_possibly_incomplete_file": 124,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 26,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 16,
+    "POSSIBLY_INCOMPLETE": 154
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 163,
+    "labels": {
+     "VERIFIED": 163,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 163,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 16
+   },
+   "edge": {
+    "truly_stale": 66,
+    "truly_unchanged": 444,
+    "labels": {
+     "VERIFIED": 369,
+     "STALE": 141,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 66,
+    "stale_fp": 75,
+    "false_verified": 0,
+    "unchanged_verified": 369,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 52,
+     "statement no longer within 5 lines": 23
+    },
+    "stale_precision": 0.4681,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8311,
+    "reanchored": 0,
+    "not_reread": 14
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 168
+ },
+ "2.12.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 163,
+    "labels": {
+     "VERIFIED": 163,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 163,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 67,
+    "truly_unchanged": 443,
+    "labels": {
+     "VERIFIED": 443,
+     "STALE": 67,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 67,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 443,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 76,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 160,
+   "source_in_possibly_incomplete_file": 133,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 27,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 11,
+    "POSSIBLY_INCOMPLETE": 159
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 163,
+    "labels": {
+     "VERIFIED": 163,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 163,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 11
+   },
+   "edge": {
+    "truly_stale": 67,
+    "truly_unchanged": 443,
+    "labels": {
+     "VERIFIED": 367,
+     "STALE": 143,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 67,
+    "stale_fp": 76,
+    "false_verified": 0,
+    "unchanged_verified": 367,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 54,
+     "statement no longer within 5 lines": 22
+    },
+    "stale_precision": 0.4685,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8284,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 175
+ },
+ "2.12.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 77,
+    "truly_unchanged": 433,
+    "labels": {
+     "VERIFIED": 433,
+     "STALE": 77,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 77,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 433,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 85,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 184,
+   "source_in_possibly_incomplete_file": 144,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 40,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 161
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 77,
+    "truly_unchanged": 433,
+    "labels": {
+     "VERIFIED": 348,
+     "STALE": 162,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 77,
+    "stale_fp": 85,
+    "false_verified": 0,
+    "unchanged_verified": 348,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 62,
+     "statement no longer within 5 lines": 23
+    },
+    "stale_precision": 0.4753,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8037,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 183
+ },
+ "2.12.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 78,
+    "truly_unchanged": 432,
+    "labels": {
+     "VERIFIED": 432,
+     "STALE": 78,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 78,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 432,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 87,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 203,
+   "source_in_possibly_incomplete_file": 154,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 49,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 9,
+    "POSSIBLY_INCOMPLETE": 161
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 159,
+    "labels": {
+     "VERIFIED": 159,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 159,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 9
+   },
+   "edge": {
+    "truly_stale": 78,
+    "truly_unchanged": 432,
+    "labels": {
+     "VERIFIED": 345,
+     "STALE": 165,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 78,
+    "stale_fp": 87,
+    "false_verified": 0,
+    "unchanged_verified": 345,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 64,
+     "statement no longer within 5 lines": 23
+    },
+    "stale_precision": 0.4727,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.7986,
+    "reanchored": 0,
+    "not_reread": 3
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 186
+ },
+ "2.13.0->2.14.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 171,
+    "labels": {
+     "VERIFIED": 171,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 171,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 27,
+    "truly_unchanged": 487,
+    "labels": {
+     "VERIFIED": 487,
+     "STALE": 27,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 27,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 487,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 44,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 90,
+   "source_in_possibly_incomplete_file": 85,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 5,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 51,
+    "POSSIBLY_INCOMPLETE": 121
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 171,
+    "labels": {
+     "VERIFIED": 171,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 171,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 51
+   },
+   "edge": {
+    "truly_stale": 27,
+    "truly_unchanged": 487,
+    "labels": {
+     "VERIFIED": 443,
+     "STALE": 71,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 27,
+    "stale_fp": 44,
+    "false_verified": 0,
+    "unchanged_verified": 443,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 32,
+     "statement no longer within 5 lines": 12
+    },
+    "stale_precision": 0.3803,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9097,
+    "reanchored": 0,
+    "not_reread": 75
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 127
+ },
+ "2.13.0->2.15.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 171,
+    "labels": {
+     "VERIFIED": 171,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 171,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 32,
+    "truly_unchanged": 482,
+    "labels": {
+     "VERIFIED": 482,
+     "STALE": 32,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 32,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 482,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 69,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 128,
+   "source_in_possibly_incomplete_file": 110,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 18,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 29,
+    "POSSIBLY_INCOMPLETE": 143
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 1,
+    "truly_unchanged": 171,
+    "labels": {
+     "VERIFIED": 171,
+     "STALE": 1,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 1,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 171,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 29
+   },
+   "edge": {
+    "truly_stale": 32,
+    "truly_unchanged": 482,
+    "labels": {
+     "VERIFIED": 413,
+     "STALE": 101,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 32,
+    "stale_fp": 69,
+    "false_verified": 0,
+    "unchanged_verified": 413,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 48,
+     "statement no longer within 5 lines": 21
+    },
+    "stale_precision": 0.3168,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8568,
+    "reanchored": 0,
+    "not_reread": 37
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 153
+ },
+ "2.13.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 56,
+    "truly_unchanged": 458,
+    "labels": {
+     "VERIFIED": 458,
+     "STALE": 56,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 56,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 458,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 71,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 136,
+   "source_in_possibly_incomplete_file": 113,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 23,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 25,
+    "POSSIBLY_INCOMPLETE": 147
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 25
+   },
+   "edge": {
+    "truly_stale": 56,
+    "truly_unchanged": 458,
+    "labels": {
+     "VERIFIED": 387,
+     "STALE": 127,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 56,
+    "stale_fp": 71,
+    "false_verified": 0,
+    "unchanged_verified": 387,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 50,
+     "statement no longer within 5 lines": 21
+    },
+    "stale_precision": 0.4409,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.845,
+    "reanchored": 0,
+    "not_reread": 24
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 159
+ },
+ "2.13.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 57,
+    "truly_unchanged": 457,
+    "labels": {
+     "VERIFIED": 457,
+     "STALE": 57,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 57,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 457,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 70,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 146,
+   "source_in_possibly_incomplete_file": 122,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 24,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 18,
+    "POSSIBLY_INCOMPLETE": 154
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 7,
+    "truly_unchanged": 165,
+    "labels": {
+     "VERIFIED": 165,
+     "STALE": 7,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 7,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 165,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 18
+   },
+   "edge": {
+    "truly_stale": 57,
+    "truly_unchanged": 457,
+    "labels": {
+     "VERIFIED": 387,
+     "STALE": 127,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 57,
+    "stale_fp": 70,
+    "false_verified": 0,
+    "unchanged_verified": 387,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 51,
+     "statement no longer within 5 lines": 19
+    },
+    "stale_precision": 0.4488,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8468,
+    "reanchored": 0,
+    "not_reread": 20
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 168
+ },
+ "2.13.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 161,
+    "labels": {
+     "VERIFIED": 161,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 161,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 66,
+    "truly_unchanged": 448,
+    "labels": {
+     "VERIFIED": 448,
+     "STALE": 66,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 66,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 448,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 78,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 169,
+   "source_in_possibly_incomplete_file": 132,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 37,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 15,
+    "POSSIBLY_INCOMPLETE": 157
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 161,
+    "labels": {
+     "VERIFIED": 161,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 161,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 15
+   },
+   "edge": {
+    "truly_stale": 66,
+    "truly_unchanged": 448,
+    "labels": {
+     "VERIFIED": 370,
+     "STALE": 144,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 66,
+    "stale_fp": 78,
+    "false_verified": 0,
+    "unchanged_verified": 370,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 59,
+     "statement no longer within 5 lines": 19
+    },
+    "stale_precision": 0.4583,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8259,
+    "reanchored": 0,
+    "not_reread": 20
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 177
+ },
+ "2.13.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 161,
+    "labels": {
+     "VERIFIED": 161,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 161,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 67,
+    "truly_unchanged": 447,
+    "labels": {
+     "VERIFIED": 447,
+     "STALE": 67,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 67,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 447,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 80,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 188,
+   "source_in_possibly_incomplete_file": 142,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 46,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 15,
+    "POSSIBLY_INCOMPLETE": 157
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 11,
+    "truly_unchanged": 161,
+    "labels": {
+     "VERIFIED": 161,
+     "STALE": 11,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 11,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 161,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 15
+   },
+   "edge": {
+    "truly_stale": 67,
+    "truly_unchanged": 447,
+    "labels": {
+     "VERIFIED": 367,
+     "STALE": 147,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 67,
+    "stale_fp": 80,
+    "false_verified": 0,
+    "unchanged_verified": 367,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 61,
+     "statement no longer within 5 lines": 19
+    },
+    "stale_precision": 0.4558,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.821,
+    "reanchored": 0,
+    "not_reread": 20
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 180
+ },
+ "2.14.0->2.15.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 174,
+    "labels": {
+     "VERIFIED": 174,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 174,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 8,
+    "truly_unchanged": 569,
+    "labels": {
+     "VERIFIED": 569,
+     "STALE": 8,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 8,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 569,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 33,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 41,
+   "source_in_possibly_incomplete_file": 28,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 13,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 66,
+    "POSSIBLY_INCOMPLETE": 108
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 174,
+    "labels": {
+     "VERIFIED": 174,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 174,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 66
+   },
+   "edge": {
+    "truly_stale": 8,
+    "truly_unchanged": 569,
+    "labels": {
+     "VERIFIED": 536,
+     "STALE": 41,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 8,
+    "stale_fp": 33,
+    "false_verified": 0,
+    "unchanged_verified": 536,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 24,
+     "statement no longer within 5 lines": 9
+    },
+    "stale_precision": 0.1951,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.942,
+    "reanchored": 0,
+    "not_reread": 147
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 113
+ },
+ "2.14.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 35,
+    "truly_unchanged": 542,
+    "labels": {
+     "VERIFIED": 542,
+     "STALE": 35,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 35,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 542,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 42,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 52,
+   "source_in_possibly_incomplete_file": 34,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 18,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 51,
+    "POSSIBLY_INCOMPLETE": 123
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 51
+   },
+   "edge": {
+    "truly_stale": 35,
+    "truly_unchanged": 542,
+    "labels": {
+     "VERIFIED": 500,
+     "STALE": 77,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 35,
+    "stale_fp": 42,
+    "false_verified": 0,
+    "unchanged_verified": 500,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 26,
+     "statement no longer within 5 lines": 16
+    },
+    "stale_precision": 0.4545,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9225,
+    "reanchored": 0,
+    "not_reread": 96
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 130
+ },
+ "2.14.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 36,
+    "truly_unchanged": 541,
+    "labels": {
+     "VERIFIED": 541,
+     "STALE": 36,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 36,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 541,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 44,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 62,
+   "source_in_possibly_incomplete_file": 43,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 19,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 39,
+    "POSSIBLY_INCOMPLETE": 135
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 39
+   },
+   "edge": {
+    "truly_stale": 36,
+    "truly_unchanged": 541,
+    "labels": {
+     "VERIFIED": 497,
+     "STALE": 80,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 36,
+    "stale_fp": 44,
+    "false_verified": 0,
+    "unchanged_verified": 497,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 29,
+     "statement no longer within 5 lines": 15
+    },
+    "stale_precision": 0.45,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9187,
+    "reanchored": 0,
+    "not_reread": 73
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 144
+ },
+ "2.14.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 164,
+    "labels": {
+     "VERIFIED": 164,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 164,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 47,
+    "truly_unchanged": 530,
+    "labels": {
+     "VERIFIED": 530,
+     "STALE": 47,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 47,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 530,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 64,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 87,
+   "source_in_possibly_incomplete_file": 55,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 32,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 23,
+    "POSSIBLY_INCOMPLETE": 151
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 164,
+    "labels": {
+     "VERIFIED": 164,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 164,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 23
+   },
+   "edge": {
+    "truly_stale": 47,
+    "truly_unchanged": 530,
+    "labels": {
+     "VERIFIED": 466,
+     "STALE": 111,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 47,
+    "stale_fp": 64,
+    "false_verified": 0,
+    "unchanged_verified": 466,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 45,
+     "statement no longer within 5 lines": 19
+    },
+    "stale_precision": 0.4234,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8792,
+    "reanchored": 0,
+    "not_reread": 36
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 166
+ },
+ "2.14.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 164,
+    "labels": {
+     "VERIFIED": 164,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 164,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 49,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 528,
+     "STALE": 49,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 49,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 528,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 66,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 107,
+   "source_in_possibly_incomplete_file": 66,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 41,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 22,
+    "POSSIBLY_INCOMPLETE": 152
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 164,
+    "labels": {
+     "VERIFIED": 164,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 164,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 22
+   },
+   "edge": {
+    "truly_stale": 49,
+    "truly_unchanged": 528,
+    "labels": {
+     "VERIFIED": 462,
+     "STALE": 115,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 49,
+    "stale_fp": 66,
+    "false_verified": 0,
+    "unchanged_verified": 462,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 47,
+     "statement no longer within 5 lines": 19
+    },
+    "stale_precision": 0.4261,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.875,
+    "reanchored": 0,
+    "not_reread": 32
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 170
+ },
+ "2.15.0->2.16.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 172,
+    "labels": {
+     "VERIFIED": 172,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 172,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 32,
+    "truly_unchanged": 578,
+    "labels": {
+     "VERIFIED": 578,
+     "STALE": 32,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 32,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 578,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 17,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 16,
+   "source_in_possibly_incomplete_file": 8,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 8,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 107,
+    "POSSIBLY_INCOMPLETE": 71
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 172,
+    "labels": {
+     "VERIFIED": 172,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 172,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 107
+   },
+   "edge": {
+    "truly_stale": 32,
+    "truly_unchanged": 578,
+    "labels": {
+     "VERIFIED": 561,
+     "STALE": 49,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 32,
+    "stale_fp": 17,
+    "false_verified": 0,
+    "unchanged_verified": 561,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 11,
+     "statement no longer within 5 lines": 6
+    },
+    "stale_precision": 0.6531,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9706,
+    "reanchored": 0,
+    "not_reread": 286
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 74
+ },
+ "2.15.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 172,
+    "labels": {
+     "VERIFIED": 172,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 172,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 33,
+    "truly_unchanged": 577,
+    "labels": {
+     "VERIFIED": 577,
+     "STALE": 33,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 33,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 577,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 24,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 26,
+   "source_in_possibly_incomplete_file": 18,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 8,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 72,
+    "POSSIBLY_INCOMPLETE": 106
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 6,
+    "truly_unchanged": 172,
+    "labels": {
+     "VERIFIED": 172,
+     "STALE": 6,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 6,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 172,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 72
+   },
+   "edge": {
+    "truly_stale": 33,
+    "truly_unchanged": 577,
+    "labels": {
+     "VERIFIED": 553,
+     "STALE": 57,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 33,
+    "stale_fp": 24,
+    "false_verified": 0,
+    "unchanged_verified": 553,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 15,
+     "statement no longer within 5 lines": 9
+    },
+    "stale_precision": 0.5789,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9584,
+    "reanchored": 0,
+    "not_reread": 171
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 111
+ },
+ "2.15.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 48,
+    "truly_unchanged": 562,
+    "labels": {
+     "VERIFIED": 562,
+     "STALE": 48,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 48,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 562,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 55,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 55,
+   "source_in_possibly_incomplete_file": 34,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 21,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 37,
+    "POSSIBLY_INCOMPLETE": 141
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 37
+   },
+   "edge": {
+    "truly_stale": 48,
+    "truly_unchanged": 562,
+    "labels": {
+     "VERIFIED": 507,
+     "STALE": 103,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 48,
+    "stale_fp": 55,
+    "false_verified": 0,
+    "unchanged_verified": 507,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 33,
+     "statement no longer within 5 lines": 22
+    },
+    "stale_precision": 0.466,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9021,
+    "reanchored": 0,
+    "not_reread": 72
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 152
+ },
+ "2.15.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 50,
+    "truly_unchanged": 560,
+    "labels": {
+     "VERIFIED": 560,
+     "STALE": 50,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 50,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 560,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 57,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 75,
+   "source_in_possibly_incomplete_file": 45,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 30,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 34,
+    "POSSIBLY_INCOMPLETE": 144
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 10,
+    "truly_unchanged": 168,
+    "labels": {
+     "VERIFIED": 168,
+     "STALE": 10,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 10,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 168,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 34
+   },
+   "edge": {
+    "truly_stale": 50,
+    "truly_unchanged": 560,
+    "labels": {
+     "VERIFIED": 503,
+     "STALE": 107,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 50,
+    "stale_fp": 57,
+    "false_verified": 0,
+    "unchanged_verified": 503,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 35,
+     "statement no longer within 5 lines": 22
+    },
+    "stale_precision": 0.4673,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.8982,
+    "reanchored": 0,
+    "not_reread": 65
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 158
+ },
+ "2.16.0->2.17.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 174,
+    "labels": {
+     "VERIFIED": 174,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 174,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 3,
+    "truly_unchanged": 591,
+    "labels": {
+     "VERIFIED": 591,
+     "STALE": 3,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 3,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 591,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 13,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 12,
+   "source_in_possibly_incomplete_file": 12,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 0,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 99,
+    "POSSIBLY_INCOMPLETE": 75
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 174,
+    "labels": {
+     "VERIFIED": 174,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 174,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 99
+   },
+   "edge": {
+    "truly_stale": 3,
+    "truly_unchanged": 591,
+    "labels": {
+     "VERIFIED": 578,
+     "STALE": 16,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 3,
+    "stale_fp": 13,
+    "false_verified": 0,
+    "unchanged_verified": 578,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 7,
+     "statement no longer within 5 lines": 6
+    },
+    "stale_precision": 0.1875,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.978,
+    "reanchored": 0,
+    "not_reread": 281
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 78
+ },
+ "2.16.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 19,
+    "truly_unchanged": 575,
+    "labels": {
+     "VERIFIED": 575,
+     "STALE": 19,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 19,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 575,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 51,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 42,
+   "source_in_possibly_incomplete_file": 29,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 13,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 47,
+    "POSSIBLY_INCOMPLETE": 127
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 47
+   },
+   "edge": {
+    "truly_stale": 19,
+    "truly_unchanged": 575,
+    "labels": {
+     "VERIFIED": 524,
+     "STALE": 70,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 19,
+    "stale_fp": 51,
+    "false_verified": 0,
+    "unchanged_verified": 524,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 26,
+     "statement no longer within 5 lines": 25
+    },
+    "stale_precision": 0.2714,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9113,
+    "reanchored": 0,
+    "not_reread": 90
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 136
+ },
+ "2.16.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 21,
+    "truly_unchanged": 573,
+    "labels": {
+     "VERIFIED": 573,
+     "STALE": 21,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 21,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 573,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 53,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 62,
+   "source_in_possibly_incomplete_file": 40,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 22,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 42,
+    "POSSIBLY_INCOMPLETE": 132
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 42
+   },
+   "edge": {
+    "truly_stale": 21,
+    "truly_unchanged": 573,
+    "labels": {
+     "VERIFIED": 520,
+     "STALE": 74,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 21,
+    "stale_fp": 53,
+    "false_verified": 0,
+    "unchanged_verified": 520,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 28,
+     "statement no longer within 5 lines": 25
+    },
+    "stale_precision": 0.2838,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9075,
+    "reanchored": 0,
+    "not_reread": 78
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 144
+ },
+ "2.17.0->2.18.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 16,
+    "truly_unchanged": 587,
+    "labels": {
+     "VERIFIED": 587,
+     "STALE": 16,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 16,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 587,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 46,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 30,
+   "source_in_possibly_incomplete_file": 17,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 13,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 70,
+    "POSSIBLY_INCOMPLETE": 104
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 70
+   },
+   "edge": {
+    "truly_stale": 16,
+    "truly_unchanged": 587,
+    "labels": {
+     "VERIFIED": 541,
+     "STALE": 62,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 16,
+    "stale_fp": 46,
+    "false_verified": 0,
+    "unchanged_verified": 541,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 22,
+     "statement no longer within 5 lines": 24
+    },
+    "stale_precision": 0.2581,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9216,
+    "reanchored": 0,
+    "not_reread": 176
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 111
+ },
+ "2.17.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 18,
+    "truly_unchanged": 585,
+    "labels": {
+     "VERIFIED": 585,
+     "STALE": 18,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 18,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 585,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 48,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 50,
+   "source_in_possibly_incomplete_file": 28,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 22,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 59,
+    "POSSIBLY_INCOMPLETE": 115
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 4,
+    "truly_unchanged": 170,
+    "labels": {
+     "VERIFIED": 170,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 4,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 170,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 59
+   },
+   "edge": {
+    "truly_stale": 18,
+    "truly_unchanged": 585,
+    "labels": {
+     "VERIFIED": 537,
+     "STALE": 66,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 18,
+    "stale_fp": 48,
+    "false_verified": 0,
+    "unchanged_verified": 537,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 24,
+     "statement no longer within 5 lines": 24
+    },
+    "stale_precision": 0.2727,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9179,
+    "reanchored": 0,
+    "not_reread": 141
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 125
+ },
+ "2.18.0->2.19.0": {
+  "reanchored": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 176,
+    "labels": {
+     "VERIFIED": 176,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 176,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 0
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 616,
+    "labels": {
+     "VERIFIED": 616,
+     "STALE": 2,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 616,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": 1.0,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 2,
+    "not_reread": 0
+   }
+  },
+  "coverage": {
+   "new_edges": 20,
+   "source_in_possibly_incomplete_file": 11,
+   "source_in_complete_file": 0,
+   "source_module_not_in_old_graph": 9,
+   "complete_file_examples": [],
+   "files": {
+    "COMPLETE": 130,
+    "POSSIBLY_INCOMPLETE": 46
+   }
+  },
+  "git_restricted": {
+   "module": {
+    "truly_stale": 0,
+    "truly_unchanged": 176,
+    "labels": {
+     "VERIFIED": 176,
+     "STALE": 0,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 0,
+    "stale_fp": 0,
+    "false_verified": 0,
+    "unchanged_verified": 176,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {},
+    "stale_precision": null,
+    "stale_recall": null,
+    "unchanged_verified_share": 1.0,
+    "reanchored": 0,
+    "not_reread": 130
+   },
+   "edge": {
+    "truly_stale": 2,
+    "truly_unchanged": 616,
+    "labels": {
+     "VERIFIED": 614,
+     "STALE": 4,
+     "UNVERIFIABLE": 0
+    },
+    "stale_tp": 2,
+    "stale_fp": 2,
+    "false_verified": 0,
+    "unchanged_verified": 614,
+    "unverifiable_on_stale": 0,
+    "fp_reasons": {
+     "import statement no longer present": 2
+    },
+    "stale_precision": 0.5,
+    "stale_recall": 1.0,
+    "unchanged_verified_share": 0.9968,
+    "reanchored": 0,
+    "not_reread": 410
+   }
+  },
+  "git_restricted_label_differences_vs_full": 0,
+  "files_changed_per_git": 50
+ }
+}

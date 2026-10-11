@@ -1,0 +1,131 @@
+{
+ "2.10.0": {
+  "grimp_version": "3.17",
+  "runtime (module + function)": {
+   "archai_pairs": 537,
+   "grimp_pairs": 537,
+   "agree": 537,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "all static (+ type_checking)": {
+   "archai_pairs": 550,
+   "grimp_pairs": 550,
+   "agree": 550,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "module-scope ground truth contained in grimp": {
+   "archai_module_scope_pairs": 530,
+   "found_in_grimp": 530,
+   "missing_from_grimp": []
+  },
+  "module-scope ground truth, independent scope check": {
+   "independent_pairs": 530,
+   "archai_module_scope_pairs": 530,
+   "agree": 530,
+   "independent_only": [],
+   "archai_only": []
+  },
+  "modules": {
+   "archai": 170,
+   "grimp": 168,
+   "agree": 168,
+   "archai_only": [
+    "scrapy.templates.project.module",
+    "scrapy.templates.project.module.spiders"
+   ],
+   "grimp_only": []
+  }
+ },
+ "2.16.0": {
+  "grimp_version": "3.17",
+  "runtime (module + function)": {
+   "archai_pairs": 604,
+   "grimp_pairs": 604,
+   "agree": 604,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "all static (+ type_checking)": {
+   "archai_pairs": 819,
+   "grimp_pairs": 819,
+   "agree": 819,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "module-scope ground truth contained in grimp": {
+   "archai_module_scope_pairs": 594,
+   "found_in_grimp": 594,
+   "missing_from_grimp": []
+  },
+  "module-scope ground truth, independent scope check": {
+   "independent_pairs": 594,
+   "archai_module_scope_pairs": 594,
+   "agree": 594,
+   "independent_only": [],
+   "archai_only": []
+  },
+  "modules": {
+   "archai": 174,
+   "grimp": 172,
+   "agree": 172,
+   "archai_only": [
+    "scrapy.templates.project.module",
+    "scrapy.templates.project.module.spiders"
+   ],
+   "grimp_only": []
+  }
+ },
+ "2.19.0": {
+  "grimp_version": "3.17",
+  "runtime (module + function)": {
+   "archai_pairs": 646,
+   "grimp_pairs": 646,
+   "agree": 646,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "all static (+ type_checking)": {
+   "archai_pairs": 871,
+   "grimp_pairs": 871,
+   "agree": 871,
+   "jaccard": 1.0,
+   "grimp_only": 0,
+   "archai_only": 0,
+   "disagreements": []
+  },
+  "module-scope ground truth contained in grimp": {
+   "archai_module_scope_pairs": 635,
+   "found_in_grimp": 635,
+   "missing_from_grimp": []
+  },
+  "module-scope ground truth, independent scope check": {
+   "independent_pairs": 635,
+   "archai_module_scope_pairs": 635,
+   "agree": 635,
+   "independent_only": [],
+   "archai_only": []
+  },
+  "modules": {
+   "archai": 179,
+   "grimp": 177,
+   "agree": 177,
+   "archai_only": [
+    "scrapy.templates.project.module",
+    "scrapy.templates.project.module.spiders"
+   ],
+   "grimp_only": []
+  }
+ }
+}
