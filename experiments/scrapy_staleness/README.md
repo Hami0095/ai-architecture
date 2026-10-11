@@ -11,7 +11,7 @@ hashes are pinned in `config.yaml`; Scrapy's code is never modified.
 | Phase | Status | Report |
 |---|---|---|
 | 1. Ground truth and staleness detection (no LLM) | done | [phase1_report.md](phase1_report.md) |
-| 2. Does the trust layer change LLM answers? | harness and mock run done; smoke test and model runs PENDING | — |
+| 2. Does the trust layer change LLM answers? | done (qwen2.5 7B, llama3.2 3B; primary targets) | [phase2_report.md](phase2_report.md) |
 
 ## Phase 2 harness
 

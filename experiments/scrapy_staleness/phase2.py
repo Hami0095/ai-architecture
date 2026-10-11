@@ -907,6 +907,132 @@ def write_samples(target="2.16.0"):
     print("wrote", path)
 
 
+# --- Report -------------------------------------------------------------------------------
+
+def f2(v):
+    return "–" if v is None else f"{v:.2f}"
+
+
+def ci(c):
+    return "" if not c else f" [{c[0]:.2f}, {c[1]:.2f}]"
+
+
+def model_section(model):
+    out_dir = model_dir(model)
+    a = json.loads((out_dir / "analysis.json").read_text(encoding="utf-8"))
+    meta = json.loads((out_dir / "run_meta.json").read_text(encoding="utf-8"))
+    s = meta["sessions"][-1]
+    det = s.get("model_details") or {}
+    rel = out_dir.relative_to(EXP).as_posix()
+    pc, conds = a["per_condition"], list(a["per_condition"])
+    L = [f"### {model}", "",
+         f"{det.get('family', '?')} family, {det.get('parameter_size', '?')} parameters, {det.get('quantization_level', '?')}; "
+         f"digest `{s.get('model_digest', '?')[:12]}`, Ollama {s.get('ollama_version', '?')}, ArchAI commit "
+         f"`{s['archai_commit'][:7]}`. {a['questions']} questions × {len(conds)} conditions × {s['runs']} runs. "
+         f"Raw responses: `{rel}/raw.jsonl`; analysis: `{rel}/analysis.json`.", "",
+         "| Condition | Accuracy [95% CI] | False confidence, changed [95% CI] | Abstention (all / unchanged) | "
+         "Q2 precision / recall | Unparseable | Median tokens in / out | Median latency (s) |",
+         "|---|---|---|---|---|---|---|---|"]
+    for c in conds:
+        m = pc[c]
+        L.append(f"| {c} | {f2(m['accuracy'])}{ci(m['accuracy_ci95'])} | {f2(m['false_confidence_changed'])}"
+                 f"{ci(m['false_confidence_changed_ci95'])} | {f2(m['abstention'])} / {f2(m['abstention_unchanged'])} | "
+                 f"{f2(m.get('q2_precision'))} / {f2(m.get('q2_recall'))} | {m['unparseable']} | "
+                 f"{m['median_tokens_in']:g} / {m['median_tokens_out']:g} | {m['median_latency_s']:.2f} |")
+    L += ["", "Accuracy by stratum (changed / unchanged) and by template:", "",
+          "| Condition | Changed | Unchanged | Q1 | Q2 | Q3 | Q4 |", "|---|---|---|---|---|---|---|"]
+    for c in conds:
+        st, tp = a["per_condition_stratum"][c], a["per_condition_template"][c]
+        L.append(f"| {c} | {f2(st['changed']['accuracy'])} | {f2(st['unchanged']['accuracy'])} | " +
+                 " | ".join(f2(tp[t].get("accuracy")) for t in TEMPLATES) + " |")
+    L += ["", "By target tag (accuracy / false confidence on changed questions), and gap to the E ceiling (E − condition):", "",
+          "| Condition | " + " | ".join(a["targets"]) + " | Gap to E |", "|---|" + "---|" * (len(a["targets"]) + 1)]
+    for c in conds:
+        pt = a["per_condition_target"][c]
+        gap = a.get("gap_to_ceiling", {}).get(c)
+        L.append(f"| {c} | " + " | ".join(f"{f2(pt[t]['accuracy'])} / {f2(pt[t]['false_confidence_changed'])}"
+                                          for t in a["targets"]) +
+                 " | " + (" / ".join(f2(gap[t]) for t in a["targets"]) if gap else "–") + " |")
+    L += ["", "Paired comparisons (exact McNemar, Holm-corrected across all ten tests; difference = a − b with "
+          "paired bootstrap 95% CI):", "",
+          "| Metric | a vs b | n | Only a | Only b | Difference [95% CI] | p (exact) | p (Holm) |",
+          "|---|---|---|---|---|---|---|---|"]
+    for t in a["mcnemar"]:
+        L.append(f"| {t['metric'].replace('_', ' ')} | {t['a']} vs {t['b']} | {t['n']} | {t['a_only']} | {t['b_only']} | "
+                 f"{t['difference']:+.3f}{ci(t['difference_ci95'])} | {t['p_exact']:.4f} | {t['p_holm']:.4f} |")
+    L += ["", f"![accuracy by tag]({rel}/accuracy_vs_distance.svg)", "",
+          f"![false confidence by tag]({rel}/false_confidence_vs_distance.svg)", ""]
+    return L, a
+
+
+def write_report(models, findings=None):
+    qs = {t: load_questions(t) for t in P2["primary_targets"]}
+    L = ["# Phase 2: does the trust layer change LLM answers?", "",
+         "Subject: Scrapy, graph built at " + BASE + ", questions about " + ", ".join(P2["primary_targets"]) + ". "
+         "Ground truth comes only from the per-tag import graphs (Phase 1, confirmed edge by edge by grimp) and git "
+         "rename detection. No model decides truth. All runs are local (Ollama); no code or prompt left the machine.", ""]
+    L += ["## Findings", ""] + (findings or ["PENDING"]) + [""]
+    L += ["## Method", "",
+          "- **Questions** (`questions/<tag>.json`, seed " + str(P2["seed"]) + "): Q1 does X import Y; Q2 which scrapy "
+          "modules does X import (set); Q3 does X exist / where did it move; Q4 is X in an import cycle (name one). "
+          f"{P2['questions_per_target']} per tag, half `changed` and half `unchanged` relative to {BASE}, split equally "
+          "across templates and subtypes with spill-over where a subtype has too few candidates.",
+          "- **Conditions** (same system prompt and question; only the context differs): A none; B an AGENTS.md-style "
+          f"note written from the {BASE} graph (no version information); C the relevant {BASE} facts; D-strict and "
+          "D-reanchored the same facts with file:line evidence, verifier labels (VERIFIED / STALE / UNVERIFIABLE), "
+          "per-file coverage labels (COMPLETE / POSSIBLY_INCOMPLETE) and the rule to answer CANNOT_VERIFY instead of "
+          "relying on STALE or UNVERIFIABLE facts; E the relevant facts from the target tag's graph (ceiling). Sample "
+          "prompts: `questions/sample_prompts.md`.",
+          "- **Scoring:** the final `ANSWER:` line, parsed and scored deterministically against the target graph. Q4 "
+          "is correct only if a named cycle exists in the target graph. Each (question, condition) is run "
+          f"{P2['runs_per_question']} times at temperature {P2['temperature']}, seed {P2['seed']}; the majority answer "
+          "is scored (no majority = wrong). **False confidence** = a parseable, non-abstaining, wrong answer on a "
+          "changed question.",
+          "- **Statistics:** bootstrap 95% CIs over questions (" + str(P2["bootstrap_resamples"]) + " resamples); "
+          "exact McNemar tests for the comparisons fixed in `config.yaml` before any run, Holm-corrected per model.", ""]
+    summary = Counter()
+    for t, ql in qs.items():
+        for q in ql:
+            summary[(q["template"], q["stratum"], q["subtype"])] += 1
+    L += ["Question sample (all three tags together):", "", "| Template | Stratum | Subtype | Questions |", "|---|---|---|---|"]
+    L += [f"| {tp} | {st} | {sub} | {n} |" for (tp, st, sub), n in sorted(summary.items(),
+                                                                         key=lambda kv: (kv[0][0], kv[0][1] != 'changed', kv[0][2]))]
+    L += ["", "## Results", ""]
+    for m in models:
+        L += model_section(m)[0]
+    L += ["## Changes after pre-registration", "",
+          "All made before the full runs, recorded in commits on `exp/scrapy-staleness`:", "",
+          "- D-reanchored, coverage labels, the grimp ground truth and the git-restricted measurement were added after "
+          "the Phase 1 results (see `phase1_report.md`).",
+          "- After the first smoke test (`results/qwen2.5_7b-instruct-smoke-v1/`): `num_ctx` 8192 → 4096 (the 6 GB GPU "
+          "ran out of memory; the longest prompt is about 1.7k tokens); a response without an `ANSWER:` line is "
+          "accepted only if its whole text, last line or first line is exactly one allowed answer; unparseable "
+          "responses are not counted as false confidence.",
+          "- Second model family: `llama3.2:3b-instruct` instead of the planned `llama3.1:8b-instruct`, because of disk "
+          "space.", "",
+          "## Limitations", "",
+          "- **Two small local models**, 3B and 7B parameters, 4-bit quantized. Larger models may follow the "
+          "labels and the answer format differently; the effect sizes here do not transfer automatically.",
+          "- **One subject repository** and one kind of structural fact (module-level imports in Python).",
+          "- **Small samples**: 120 questions per model, 60 changed. CIs are wide; per-tag and per-template cells hold "
+          "10 or fewer questions and are descriptive only.",
+          "- **The ceiling is low.** E lists only facts, never that a list is complete, so models often abstain when "
+          "the true answer is \"no\" or an empty set; and they name cycles with missing hops. E bounds what these "
+          "models do with correct facts in this format, not what perfect retrieval would allow.",
+          "- **Answer format.** Some answers do not follow the format (for example a bare module name for Q3, or a "
+          "coverage label as the answer) and are scored unparseable; llama sometimes repeats several `ANSWER:` forms, "
+          "and the last one counts.",
+          "- **Decoding is not fully deterministic** on the GPU even at temperature 0 with a fixed seed: repeated "
+          "runs occasionally differ. The majority vote over three runs absorbs most of this.",
+          "- **Abstention has a cost.** The D conditions abstain more on questions whose answer did not change; "
+          "whether that trade is worth it depends on the cost of a confident wrong answer in the task at hand.",
+          "- **The verifier and the graph share import-resolution code**; grimp's agreement covers the ground truth, "
+          "not every verifier label.", ""]
+    path = EXP / "phase2_report.md"
+    path.write_text("\n".join(L), encoding="utf-8", newline="\n")
+    print("wrote", path)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -923,7 +1049,13 @@ def main():
     an = sub.add_parser("analyze")
     an.add_argument("--model", required=True)
     an.add_argument("--label", default=None)
+    wp = sub.add_parser("report")
+    wp.add_argument("--models", nargs="+", required=True)
+    wp.add_argument("--findings", default=None, help="markdown file with the findings section")
     args = ap.parse_args()
+    if args.cmd == "report":
+        findings = Path(args.findings).read_text(encoding="utf-8").splitlines() if args.findings else None
+        return write_report(args.models, findings)
     if args.cmd == "questions":
         write_questions()
     elif args.cmd == "samples":
