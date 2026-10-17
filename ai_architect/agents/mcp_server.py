@@ -118,7 +118,22 @@ def build_server():
 
 
 def main() -> None:
-    build_server().run("stdio")
+    """stdio by default (coding agents). `--http` serves Streamable HTTP for remote clients such as Alexa+.
+
+    HTTP options: ARCHAI_HTTP_HOST (default 127.0.0.1), ARCHAI_HTTP_PORT (default 8000).
+    The endpoint is http://<host>:<port>/mcp.
+    """
+    import os
+
+    if "--http" in sys.argv[1:]:
+        build_server().run(
+            "streamable-http",
+            host=os.environ.get("ARCHAI_HTTP_HOST", "127.0.0.1"),
+            port=int(os.environ.get("ARCHAI_HTTP_PORT", "8000")),
+            streamable_http_path="/mcp",
+        )
+    else:
+        build_server().run("stdio")
 
 
 if __name__ == "__main__":
